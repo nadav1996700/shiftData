@@ -22,7 +22,6 @@ public class Activity_Entrance extends AppCompatActivity {
         setContentView(R.layout.activity_entrance);
 
         setValues();
-        startActivity(new Intent(this, Activity_SignIn.class));
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override

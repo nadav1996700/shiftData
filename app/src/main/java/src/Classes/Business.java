@@ -1,28 +1,30 @@
 package src.Classes;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class Business {
 
-    private String name;
+    private String business_name;
     private String username;
     private String password;
     private ArrayList<Worker> workers;
     private ArrayList<Shift> current_shifts;
     private ArrayList<Shift> requests;
 
-    public Business(String name, String username, String password) {
-        this.name = name;
+    public Business(String business_name, String username, String password) {
+        this.business_name = business_name;
         this.username = username;
         this.password = password;
     }
 
     public String getName() {
-        return name;
+        return business_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String business_name) {
+        this.business_name = business_name;
     }
 
     public String getUsername() {
@@ -65,8 +67,9 @@ public class Business {
         this.requests = requests;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return name;
+        return business_name;
     }
 }

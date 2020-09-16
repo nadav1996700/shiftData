@@ -23,6 +23,7 @@
             android:textSize="40sp"/>
 
         <ImageView
+            android:id="@+id/signUp_IMG_sign_up"
             android:layout_width="80dp"
             android:layout_height="120dp"
             android:paddingStart="10dp"
@@ -48,7 +49,7 @@
             android:background="#F2F4F4"/>
 
         <EditText
-            android:id="@+id/signIn_EDT_username"
+            android:id="@+id/signUp_EDT_username"
             android:layout_width="270dp"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
@@ -59,7 +60,7 @@
             android:background="#F2F4F4"/>
 
         <EditText
-            android:id="@+id/signIn_EDT_password"
+            android:id="@+id/signUp_EDT_password"
             android:layout_width="270dp"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
@@ -78,8 +79,18 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/signUp_LBL_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:textColor="#EA1D0E"/>
+
         <Button
-            android:id="@+id/signIn_BTN_signIn"
+            android:id="@+id/signUp_BTN_signUp"
             android:layout_width="320dp"
             android:layout_height="60dp"
             android:layout_marginStart="10dp"
@@ -100,7 +111,7 @@
                 android:textSize="15sp"/>
 
             <TextView
-                android:id="@+id/signUp_LBL_sign-in"
+                android:id="@+id/signUp_LBL_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_in"
