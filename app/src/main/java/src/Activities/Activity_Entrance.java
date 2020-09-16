@@ -2,13 +2,13 @@ package src.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.src.R;
-
-import src.Utils.Utils;
 
 public class Activity_Entrance extends AppCompatActivity {
 
@@ -22,6 +22,21 @@ public class Activity_Entrance extends AppCompatActivity {
         setContentView(R.layout.activity_entrance);
 
         setValues();
+        startActivity(new Intent(this, Activity_SignIn.class));
+
+        sign_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Activity_Entrance.this, Activity_SignIn.class));
+            }
+        });
+
+        sign_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Activity_Entrance.this, Activity_SignUp.class));
+            }
+        });
     }
 
     private void setValues() {
