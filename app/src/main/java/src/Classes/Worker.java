@@ -7,7 +7,7 @@ public class Worker {
     private String username;
     private String password;
     private String id;
-    private String phonee;
+    private String phone;
     private int age;
     private String company;
     private int photo;
