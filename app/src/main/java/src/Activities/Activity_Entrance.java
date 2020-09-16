@@ -43,6 +43,5 @@ public class Activity_Entrance extends AppCompatActivity {
         sign_up = findViewById(R.id.entrance_BTN_signUp);
         sign_in = findViewById(R.id.entrance_BTN_signIn);
         center_image = findViewById(R.id.entrance_IMG_entrance);
-        //Utils.getInstance().setImage(center_image, );
     }
 }

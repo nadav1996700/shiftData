@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center"
         android:background="@color/colorTopBackground"
         android:orientation="horizontal">
 
@@ -20,18 +19,23 @@
             android:id="@+id/signIn_BTN_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="47dp"
+            android:layout_marginStart="20dp"
             android:background="@color/colorTopBackground"
             android:src="@drawable/ic_back"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="50dp"
             android:text="@string/sign_in"
             android:textSize="40sp"/>
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="120dp"
+            android:layout_marginTop="10dp"
             android:paddingStart="10dp"
             android:src="@mipmap/ic_launcher"/>
 
