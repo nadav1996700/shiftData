@@ -45,7 +45,6 @@
             android:inputType="text"
             android:hint="@string/business"
             android:padding="10dp"
-            android:enabled="false"
             android:background="#F2F4F4"/>
 
         <EditText
@@ -56,7 +55,6 @@
             android:inputType="text"
             android:hint="@string/username"
             android:padding="10dp"
-            android:enabled="false"
             android:background="#F2F4F4"/>
 
         <EditText
@@ -67,7 +65,6 @@
             android:inputType="numberPassword"
             android:hint="@string/password"
             android:padding="10dp"
-            android:enabled="false"
             android:background="#F2F4F4"/>
 
     </LinearLayout>
@@ -92,10 +89,11 @@
         <Button
             android:id="@+id/signUp_BTN_signUp"
             android:layout_width="320dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/Sign_Up"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:background="@drawable/round_button"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,6 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Already_have_account"
+                android:textColor="#000000"
                 android:layout_marginEnd="5dp"
                 android:textSize="15sp"/>
 

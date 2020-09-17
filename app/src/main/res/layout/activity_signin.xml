@@ -65,7 +65,6 @@
             android:hint="@string/username"
             android:inputType="text"
             android:padding="10dp"
-            android:enabled="false"
             android:background="#F2F4F4"/>
 
         <EditText
@@ -77,7 +76,6 @@
             android:inputType="numberPassword"
             android:hint="@string/password"
             android:padding="10dp"
-            android:enabled="false"
             android:background="#F2F4F4"/>
 
     </LinearLayout>
@@ -102,10 +100,11 @@
         <Button
             android:id="@+id/signIn_BTN_signIn"
             android:layout_width="320dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/sign_in"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:background="@drawable/round_button"/>
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package src.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,13 @@ public class Activity_SignUp extends AppCompatActivity {
                             , username.getText().toString(), password.getText().toString());
                     // upload to firebase, and open login screen
                 }
+            }
+        });
+
+        sign_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
             }
         });
     }
