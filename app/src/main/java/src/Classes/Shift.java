@@ -1,19 +1,22 @@
 package src.Classes;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Shift {
-    private Date date;
+    private String date;
     private ArrayList<Worker> morning_shift;
     private ArrayList<Worker> evening_shift;
     private ArrayList<Worker> night_shift;
 
-    public Shift(Date date) {
+    public Shift(String date) {
         this.date = date;
     }
 
-    public Date getDate() {
+    public Shift() {
+
+    }
+
+    public String getDate() {
         return date;
     }
 

@@ -1,13 +1,15 @@
 package src.Utils;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 // glide
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 public class CommonUtils {
 
@@ -29,6 +31,7 @@ public class CommonUtils {
 
     /* set images using glide library*/
     public void setImage(ImageView imageView, Drawable photo) {
+        Log.d("pttt", photo.toString());
         Glide.with(context)
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

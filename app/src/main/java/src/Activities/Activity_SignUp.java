@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.src.R;
 
-import src.Classes.Business;
-
 public class Activity_SignUp extends AppCompatActivity {
 
     private ImageView signUp_image;
@@ -31,6 +29,7 @@ public class Activity_SignUp extends AppCompatActivity {
 
         setValues();
 
+        /*
         sign_up.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -42,6 +41,7 @@ public class Activity_SignUp extends AppCompatActivity {
                 }
             }
         });
+        */
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override

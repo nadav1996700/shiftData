@@ -25,6 +25,10 @@ public class Worker {
         this.photo = photo;
     }
 
+    public Worker() {
+
+    }
+
     public String getFirst_name() {
         return first_name;
     }
@@ -93,8 +97,26 @@ public class Worker {
         this.photo = photo;
     }
 
+    /*
     @Override
     public String toString() {
         return first_name + " " + last_name;
+    }
+
+     */
+
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", id='" + id + '\'' +
+                ", phone='" + phone + '\'' +
+                ", company='" + company + '\'' +
+                ", age=" + age +
+                ", photo=" + photo +
+                '}';
     }
 }

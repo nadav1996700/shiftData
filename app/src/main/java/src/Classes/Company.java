@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-public class Business {
+public class Company {
 
     private String business_name;
     private String username;
@@ -13,10 +13,14 @@ public class Business {
     private ArrayList<Shift> current_shifts;
     private ArrayList<Shift> requests;
 
-    public Business(String business_name, String username, String password) {
+    public Company(String business_name, String username, String password) {
         this.business_name = business_name;
         this.username = username;
         this.password = password;
+    }
+
+    public Company() {
+
     }
 
     public String getName() {

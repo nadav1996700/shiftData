@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.src.R;
 
-import src.Classes.Business;
-
 public class Activity_SignIn extends AppCompatActivity {
 
     private ImageView signIn_image;
