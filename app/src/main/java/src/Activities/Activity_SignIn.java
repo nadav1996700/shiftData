@@ -1,6 +1,10 @@
 package src.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,9 +14,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.src.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.UnsupportedEncodingException;
+
+import src.Utils.CommonUtils;
+import src.Utils.My_Firebase;
 
 public class Activity_SignIn extends AppCompatActivity {
 
@@ -39,21 +52,17 @@ public class Activity_SignIn extends AppCompatActivity {
         });
 
         sign_in.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                if(validateData() && userExist(spinner.getSelectedItem().toString(),
-                        username.getText().toString().trim(), password.getText().toString().trim() )) {
+                if(validateData() && My_Firebase.getInstance().userExist(spinner.getSelectedItem().toString(),
+                        username.getText().toString().trim(), password.getText().toString().trim())) {
                     // create Business/Worker object and send it to next page
+                    // set company on firebase attribute
+                    My_Firebase.getInstance().setCompany(spinner.getSelectedItem().toString());
                 }
             }
         });
 
-    }
-
-    /* check if user exist in firebase */
-    private boolean userExist(String toString, String trim, String trim1) {
-        return true;
     }
 
     /* check the fields data and raise error message if necessary */

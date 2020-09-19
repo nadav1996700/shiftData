@@ -12,10 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.src.R;
 
+import src.Classes.Company;
+import src.Utils.My_Firebase;
+
 public class Activity_SignUp extends AppCompatActivity {
 
     private ImageView signUp_image;
-    private EditText business_name;
+    private EditText company_name;
     private EditText username;
     private EditText password;
     private Button sign_up;
@@ -29,19 +32,21 @@ public class Activity_SignUp extends AppCompatActivity {
 
         setValues();
 
-        /*
+
         sign_up.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if(validateData()) {
-                    Business business = new Business(business_name.getText().toString()
+                    Company company = new Company(company_name.getText().toString()
                             , username.getText().toString(), password.getText().toString());
                     // upload to firebase, and open login screen
+                    My_Firebase.getInstance().addCompany(company);
+                    startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
                 }
             }
         });
-        */
+
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +58,7 @@ public class Activity_SignUp extends AppCompatActivity {
 
     private void setValues() {
         signUp_image = findViewById(R.id.signUp_IMG_sign_up);
-        business_name = findViewById(R.id.signUp_EDT_business);
+        company_name = findViewById(R.id.signUp_EDT_business);
         username = findViewById(R.id.signUp_EDT_username);
         password = findViewById(R.id.signUp_EDT_password);
         sign_in = findViewById(R.id.signUp_LBL_sign_in);
@@ -63,7 +68,7 @@ public class Activity_SignUp extends AppCompatActivity {
 
     /* check the fields data and raise error message if necessary */
     private boolean validateData() {
-        if(business_name.getText().toString().equals("")) {
+        if(company_name.getText().toString().equals("")) {
             error_message.setText("select Business!");
             return false;
         } else if(username.getText().toString().trim().equals("")) {

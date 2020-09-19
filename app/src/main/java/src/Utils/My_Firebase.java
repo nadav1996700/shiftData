@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import src.Classes.Company;
 import src.Classes.Worker;
 
 public class My_Firebase {
@@ -27,9 +28,7 @@ public class My_Firebase {
     private Worker worker;
     private ArrayList<Worker> workers;
 
-    private My_Firebase() {
-
-    }
+    private My_Firebase() {}
 
     public static My_Firebase getInstance() {return instance;}
 
@@ -43,23 +42,39 @@ public class My_Firebase {
         this.company = company;
     }
 
+    /* check if user exist in firebase */
+    public boolean userExist(String company, String username, String password) {
+        reference = database.getReference();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String image = snapshot.child("").getKey();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        return true;
+    }
+
     /* read single worker from firebase */
     public Worker readWorker(String id) {
-        String path = "/" + company + "/workers" + "/" + id;
+        String path = "/" + company + "/workers/" + id;
         reference = database.getReference(path);
         // Read from the database
         reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String first_name = dataSnapshot.child("first_name").getValue().toString();
-                String last_name = dataSnapshot.child("last_name").getValue().toString();
-                String username = dataSnapshot.child("username").getValue().toString();
-                String password = dataSnapshot.child("password").getValue().toString();
-                String id = dataSnapshot.child("id").getValue().toString();
-                String phone = dataSnapshot.child("phone").getValue().toString();
-                String age = dataSnapshot.child("age").getValue().toString();
-                String company = dataSnapshot.child("company").getValue().toString();
-                String photo = dataSnapshot.child("photo").getValue().toString();
+            public void onDataChange(DataSnapshot snapshot) {
+                String first_name = snapshot.child("first_name").getValue().toString();
+                String last_name = snapshot.child("last_name").getValue().toString();
+                String username = snapshot.child("username").getValue().toString();
+                String password = snapshot.child("password").getValue().toString();
+                String id = snapshot.child("id").getValue().toString();
+                String phone = snapshot.child("phone").getValue().toString();
+                String age = snapshot.child("age").getValue().toString();
+                String company = snapshot.child("company").getValue().toString();
+                String photo = snapshot.child("photo").getValue().toString();
                 // create Worker
                 worker = new Worker(first_name, last_name, username,
                         password, id, phone, company, Integer.valueOf(age), Integer.valueOf(photo));
@@ -104,26 +119,13 @@ public class My_Firebase {
         return workers;
     }
 
-    public void addCompany(final String company_name , final String username, final String password) {
-        reference = database.getReference("/company_names");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.hasChild(company_name)) {
-                    return;
-                } else {
-                    // add company name to list of company names
-                    reference = database.getReference("/" + company + "/" + company_name);
-                   // check_username_and_password(username, password);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    public void addCompany(Company company) {
+        // add company name to list of company names
+        reference = database.getReference("/");
+        reference.child("company_names/" + company.getName()).setValue("");
+        // add company object to database
+        reference = database.getReference("/" + company.getName());
+        reference.child("/").setValue(company);
     }
 
     // upload photo to firebase
