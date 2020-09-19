@@ -27,6 +27,7 @@ public class My_Firebase {
     private String company;
     private Worker worker;
     private ArrayList<Worker> workers;
+    private ArrayList<String> company_names;
 
     private My_Firebase() {}
 
@@ -38,24 +39,16 @@ public class My_Firebase {
         return instance;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public DatabaseReference getReference() {
+        return reference;
     }
 
-    /* check if user exist in firebase */
-    public boolean userExist(String company, String username, String password) {
-        reference = database.getReference();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String image = snapshot.child("").getKey();
+    public void setReference(String ref) {
+        this.reference = database.getReference(ref);
+    }
 
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-        return true;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     /* read single worker from firebase */
@@ -88,6 +81,29 @@ public class My_Firebase {
     }
 
     /* read all workers from firebase */
+    public ArrayList<String> readCompanyNames() {
+        String path = "/company_names";
+        reference = database.getReference(path);
+        // Read from the database
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                company_names = new ArrayList<>();
+                for(DataSnapshot child : snapshot.getChildren()) {
+                    String name = child.getValue().toString();
+                    // add to list
+                    company_names.add(name);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.d("ERROR_TAG", "Error in loading worker data");
+            }
+        });
+        return company_names;
+    }
+
+    /* read all workers from firebase */
     public ArrayList<Worker> readWorkers() {
         String path = "/" + company + "/workers";
         reference = database.getReference(path);
@@ -113,7 +129,7 @@ public class My_Firebase {
             }
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.d("pttt", "Error in loading worker data");
+                Log.d("ERROR_TAG", "Error in loading worker data");
             }
         });
         return workers;
@@ -122,7 +138,7 @@ public class My_Firebase {
     public void addCompany(Company company) {
         // add company name to list of company names
         reference = database.getReference("/");
-        reference.child("company_names/" + company.getName()).setValue("");
+        reference.child("company_names/" + System.currentTimeMillis()).setValue(company.getName());
         // add company object to database
         reference = database.getReference("/" + company.getName());
         reference.child("/").setValue(company);

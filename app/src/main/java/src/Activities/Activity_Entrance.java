@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Timer;
 
 import src.Classes.Worker;
 import src.Utils.CommonUtils;
@@ -43,9 +44,9 @@ public class Activity_Entrance extends AppCompatActivity {
 
         setValues();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
         //CommonUtils.getInstance().setImage(center_image, ContextCompat.getDrawable(this,R.drawable.icon_entarance));
-        DatabaseReference reference = database.getReference("/general_images/");
+        //DatabaseReference reference = database.getReference("/general_images/");
 
         /*
         My_Firebase firebase = My_Firebase.getInstance();
@@ -60,7 +61,7 @@ public class Activity_Entrance extends AppCompatActivity {
          */
 
 
-
+        /*
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -78,6 +79,8 @@ public class Activity_Entrance extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
+         */
 
 
         sign_in.setOnClickListener(new View.OnClickListener() {
