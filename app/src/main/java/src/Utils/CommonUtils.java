@@ -28,13 +28,4 @@ public class CommonUtils {
             instance = new CommonUtils(context);
         return instance;
     }
-
-    /* set images using glide library*/
-    public void setImage(ImageView imageView, Drawable photo) {
-        Log.d("pttt", photo.toString());
-        Glide.with(context)
-                .load(photo)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(imageView);
-    }
 }

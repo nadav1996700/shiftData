@@ -24,4 +24,5 @@
         android:text="id: "
         android:textColor="@color/colorPrimary"/>
 
+
 </LinearLayout>

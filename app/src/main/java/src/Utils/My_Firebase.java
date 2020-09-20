@@ -6,13 +6,13 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ import src.Classes.Worker;
 
 public class My_Firebase {
     private static My_Firebase instance;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storage_reference = storage.getReference();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference reference = database.getReference();
+    private DatabaseReference database_reference = database.getReference();
     private String company;
     private Worker worker;
-    private ArrayList<Worker> workers;
-    private ArrayList<String> company_names;
 
     private My_Firebase() {}
 
@@ -40,11 +40,23 @@ public class My_Firebase {
     }
 
     public DatabaseReference getReference() {
-        return reference;
+        return database_reference;
     }
 
     public void setReference(String ref) {
-        this.reference = database.getReference(ref);
+        this.database_reference = database.getReference(ref);
+    }
+
+    public StorageReference getStorage_reference() {
+        return storage_reference;
+    }
+
+    public void setStorage_reference(String ref) {
+        this.storage_reference = storage_reference.child(ref);
+    }
+
+    public String getCompany() {
+        return company;
     }
 
     public void setCompany(String company) {
@@ -54,9 +66,8 @@ public class My_Firebase {
     /* read single worker from firebase */
     public Worker readWorker(String id) {
         String path = "/" + company + "/workers/" + id;
-        reference = database.getReference(path);
-        // Read from the database
-        reference.addValueEventListener(new ValueEventListener() {
+        database_reference = database.getReference(path);
+        database_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String first_name = snapshot.child("first_name").getValue().toString();
@@ -80,81 +91,26 @@ public class My_Firebase {
         return worker;
     }
 
-    /* read all workers from firebase */
-    public ArrayList<String> readCompanyNames() {
-        String path = "/company_names";
-        reference = database.getReference(path);
-        // Read from the database
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                company_names = new ArrayList<>();
-                for(DataSnapshot child : snapshot.getChildren()) {
-                    String name = child.getValue().toString();
-                    // add to list
-                    company_names.add(name);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
-            }
-        });
-        return company_names;
-    }
-
-    /* read all workers from firebase */
-    public ArrayList<Worker> readWorkers() {
-        String path = "/" + company + "/workers";
-        reference = database.getReference(path);
-        // Read from the database
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                workers = new ArrayList<>();
-                for(DataSnapshot child : dataSnapshot.getChildren()) {
-                    String first_name = child.child("first_name").getValue().toString();
-                    String last_name = child.child("last_name").getValue().toString();
-                    String username = child.child("username").getValue().toString();
-                    String password = child.child("password").getValue().toString();
-                    String id = child.child("id").getValue().toString();
-                    String phone = child.child("phone").getValue().toString();
-                    String age = child.child("age").getValue().toString();
-                    String company = child.child("company").getValue().toString();
-                    String photo = child.child("photo").getValue().toString();
-                    // create Worker
-                    workers.add(new Worker(first_name, last_name, username,
-                            password, id, phone, company, Integer.valueOf(age), Integer.valueOf(photo)));
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
-            }
-        });
-        return workers;
-    }
-
+    /* add company details to firebase */
     public void addCompany(Company company) {
         // add company name to list of company names
-        reference = database.getReference("/");
-        reference.child("company_names/" + System.currentTimeMillis()).setValue(company.getName());
+        database_reference.child("/company_names/" + System.currentTimeMillis()).setValue(company.getName());
         // add company object to database
-        reference = database.getReference("/" + company.getName());
-        reference.child("/").setValue(company);
+        database_reference = database.getReference("/" + company.getName());
+        database_reference.child("/").setValue(company);
     }
 
-    // upload photo to firebase
-    public void uploadImage(String name, String path, int drawable, Resources resources) {
+    /* upload photo to firebase */
+    public void uploadImage(String path, int drawable, Resources resources) {
         Bitmap bitmap = BitmapFactory.decodeResource(resources, drawable);
         String encodedImage = Base64.encodeToString(getBytesFromBitmap(bitmap), Base64.DEFAULT);
-        reference.child("/" + path + "/" + name).setValue(encodedImage);
+        database_reference.child(path).setValue(encodedImage);
     }
 
-    // convert from bitmap to byte array
+    /* convert from bitmap to byte array */
     private byte[] getBytesFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
         return stream.toByteArray();
     }
 }

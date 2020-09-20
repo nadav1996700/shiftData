@@ -37,7 +37,7 @@ public class Activity_SignUp extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if(validateData()) {
+                if (validateData()) {
                     Company company = new Company(company_name.getText().toString()
                             , username.getText().toString(), password.getText().toString());
                     // upload to firebase, and open login screen
@@ -68,13 +68,13 @@ public class Activity_SignUp extends AppCompatActivity {
 
     /* check the fields data and raise error message if necessary */
     private boolean validateData() {
-        if(company_name.getText().toString().equals("")) {
+        if (company_name.getText().toString().equals("")) {
             error_message.setText("select Business!");
             return false;
-        } else if(username.getText().toString().trim().equals("")) {
+        } else if (username.getText().toString().trim().equals("")) {
             error_message.setText("enter username");
             return false;
-        } else if(password.getText().toString().trim().equals("")) {
+        } else if (password.getText().toString().trim().equals("")) {
             error_message.setText("enter password");
             return false;
         }
