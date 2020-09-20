@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,10 +23,10 @@ import java.util.ArrayList;
 
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
+import src.Utils.My_images;
 
 public class Activity_SignIn extends AppCompatActivity {
 
-    private ImageView signIn_image;
     private Spinner spinner;
     private EditText username;
     private EditText password;
@@ -76,7 +75,6 @@ public class Activity_SignIn extends AppCompatActivity {
     }
 
     private void setValues() {
-        signIn_image = findViewById(R.id.signIn_IMG_sign_in);
         spinner = findViewById(R.id.signIn_SPN_business);
         username = findViewById(R.id.signIn_EDT_username);
         password = findViewById(R.id.signIn_EDT_password);
@@ -86,6 +84,15 @@ public class Activity_SignIn extends AppCompatActivity {
 
         // set spinner data
         setSpinnerData();
+        // set icon
+        setImage();
+    }
+
+    private void setImage() {
+        My_images images = My_images.initHelper(this);
+        images.setPlaceholder(R.id.signIn_IMG_sign_in);
+        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
+                "login_icon.png");
     }
 
     /* set spinner data */

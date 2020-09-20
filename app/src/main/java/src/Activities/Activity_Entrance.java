@@ -14,7 +14,6 @@ import src.Utils.My_images;
 
 public class Activity_Entrance extends AppCompatActivity {
 
-    private ImageView center_image;
     private Button sign_up;
     private Button sign_in;
 
@@ -24,10 +23,6 @@ public class Activity_Entrance extends AppCompatActivity {
         setContentView(R.layout.activity_entrance);
 
         setValues();
-
-        // set center image
-        My_images.getInstance().downloadImage(center_image, "general_images/" +
-                "icon_entarance.png");
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +42,14 @@ public class Activity_Entrance extends AppCompatActivity {
     private void setValues() {
         sign_up = findViewById(R.id.entrance_BTN_signUp);
         sign_in = findViewById(R.id.entrance_BTN_signIn);
-        center_image = findViewById(R.id.entrance_IMG_entrance);
+        // set center image
+        setCenterImage();
+    }
+
+    private void setCenterImage() {
+        My_images images = My_images.initHelper(this);
+        images.setPlaceholder(R.id.entrance_IMG_entrance);
+        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
+                "icon_entarance.png");
     }
 }

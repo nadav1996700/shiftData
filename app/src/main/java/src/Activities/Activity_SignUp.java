@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +13,10 @@ import com.example.src.R;
 
 import src.Classes.Company;
 import src.Utils.My_Firebase;
+import src.Utils.My_images;
 
 public class Activity_SignUp extends AppCompatActivity {
 
-    private ImageView signUp_image;
     private EditText company_name;
     private EditText username;
     private EditText password;
@@ -57,13 +56,22 @@ public class Activity_SignUp extends AppCompatActivity {
     }
 
     private void setValues() {
-        signUp_image = findViewById(R.id.signUp_IMG_sign_up);
         company_name = findViewById(R.id.signUp_EDT_business);
         username = findViewById(R.id.signUp_EDT_username);
         password = findViewById(R.id.signUp_EDT_password);
         sign_in = findViewById(R.id.signUp_LBL_sign_in);
         sign_up = findViewById(R.id.signUp_BTN_signUp);
         error_message = findViewById(R.id.signUp_LBL_error);
+
+        // set icon
+        setImage();
+    }
+
+    private void setImage() {
+        My_images images = My_images.initHelper(this);
+        images.setPlaceholder(R.id.signUp_IMG_sign_up);
+        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
+                "register_icon.png");
     }
 
     /* check the fields data and raise error message if necessary */

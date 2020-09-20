@@ -52,7 +52,7 @@ public class My_Firebase {
     }
 
     public void setStorage_reference(String ref) {
-        this.storage_reference = storage_reference.child(ref);
+        this.storage_reference = storage.getReferenceFromUrl(ref);
     }
 
     public String getCompany() {
