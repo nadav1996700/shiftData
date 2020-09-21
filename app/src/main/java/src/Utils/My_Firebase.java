@@ -94,7 +94,7 @@ public class My_Firebase {
     /* add company details to firebase */
     public void addCompany(Company company) {
         // add company name to list of company names
-        database_reference.child("/company_names/" + System.currentTimeMillis()).setValue(company.getName());
+        database_reference.child("/company_names/" + company.getName()).setValue("");
         // add company object to database
         database_reference = database.getReference("/" + company.getName());
         database_reference.child("/").setValue(company);

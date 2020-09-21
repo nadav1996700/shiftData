@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -20,13 +21,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import src.Classes.Company;
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
 
 public class Activity_SignIn extends AppCompatActivity {
 
-    private Spinner spinner;
+    private AutoCompleteTextView spinner;
     private EditText username;
     private EditText password;
     private Button sign_in;
@@ -54,7 +56,7 @@ public class Activity_SignIn extends AppCompatActivity {
             public void onClick(View view) {
                 if (validateData()) {
                     // set company on firebase attribute
-                    firebase.setCompany(spinner.getSelectedItem().toString());
+                    firebase.setCompany(spinner.getText().toString());
                     // check if user details correct
                     checkDetails();
                 }
@@ -71,6 +73,7 @@ public class Activity_SignIn extends AppCompatActivity {
             error_message.setText(R.string.enter_password);
             return false;
         }
+        error_message.setText("");
         return true;
     }
 
@@ -100,11 +103,6 @@ public class Activity_SignIn extends AppCompatActivity {
     private void setSpinner(ArrayList<String> options) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         spinner.setAdapter(adapter);
-        if (options.size() > 0)
-            //set selected value in spinner to first company
-            spinner.setSelection(0);
-        else
-            spinner.setContentDescription("select company");
     }
 
     /* check if user exist in firebase */
@@ -155,7 +153,7 @@ public class Activity_SignIn extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<String> company_names = new ArrayList<>();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    String name = child.getValue().toString();
+                    String name = child.getKey();
                     company_names.add(name);
                 }
                 setSpinner(company_names);
