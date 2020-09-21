@@ -13,4 +13,5 @@
     <string name="enter_password">enter password</string>
     <string name="error_message">wrong username or password</string>
     <string name="select_Business">select Business!</string>
+    <string name="shifts">sifts</string>
 </resources>
