@@ -31,7 +31,7 @@ public class Activity_SignIn extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button sign_in;
-    private ImageButton back;
+    private Button new_company;
     private TextView error_message;
     My_Firebase firebase = My_Firebase.getInstance();
 
@@ -42,10 +42,11 @@ public class Activity_SignIn extends AppCompatActivity {
 
         setValues();
 
-        back.setOnClickListener(new View.OnClickListener() {
+        new_company.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Activity_SignIn.this, Activity_SignUp.class));
+                finish();
             }
         });
 
@@ -65,10 +66,10 @@ public class Activity_SignIn extends AppCompatActivity {
     /* check the fields data and raise error message if necessary */
     private boolean validateData() {
         if (username.getText().toString().trim().length() == 0) {
-            error_message.setText("enter username");
+            error_message.setText(R.string.enter_username);
             return false;
         } else if (password.getText().toString().trim().length() == 0) {
-            error_message.setText("enter password");
+            error_message.setText(R.string.enter_password);
             return false;
         }
         return true;
@@ -80,7 +81,7 @@ public class Activity_SignIn extends AppCompatActivity {
         password = findViewById(R.id.signIn_EDT_password);
         sign_in = findViewById(R.id.signIn_BTN_signIn);
         error_message = findViewById(R.id.signIn_LBL_error);
-        back = findViewById(R.id.signIn_BTN_back);
+        new_company = findViewById(R.id.signIn_BTN_register);
 
         // set spinner data
         setSpinnerData();
@@ -89,7 +90,8 @@ public class Activity_SignIn extends AppCompatActivity {
     }
 
     private void setImage() {
-        My_images images = My_images.initHelper(this);
+        My_images images = My_images.getInstance();
+        images.setActivity(Activity_SignIn.this);
         images.setPlaceholder(R.id.signIn_IMG_sign_in);
         images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
                 "login_icon.png");
@@ -97,7 +99,7 @@ public class Activity_SignIn extends AppCompatActivity {
 
     /* set spinner data */
     private void setSpinner(ArrayList<String> options) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         spinner.setAdapter(adapter);
         if (options.size() > 0)
             //set selected value in spinner to first company
@@ -151,7 +153,7 @@ public class Activity_SignIn extends AppCompatActivity {
         firebase.setReference("/company_names");
         firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<String> company_names = new ArrayList<>();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     String name = child.getValue().toString();
@@ -176,7 +178,7 @@ public class Activity_SignIn extends AppCompatActivity {
 
     /* set error message if login fail */
     private void setError_message() {
-        error_message.setText("wrong username or password");
+        error_message.setText(R.string.error_message);
     }
 
     /* read all workers from firebase */
@@ -185,7 +187,7 @@ public class Activity_SignIn extends AppCompatActivity {
         firebase.setReference(path);
         firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<Worker> workers = new ArrayList<>();
                 for(DataSnapshot child : dataSnapshot.getChildren()) {
                     String first_name = child.child("first_name").getValue().toString();
@@ -199,12 +201,12 @@ public class Activity_SignIn extends AppCompatActivity {
                     String photo = child.child("photo").getValue().toString();
                     // create Worker
                     workers.add(new Worker(first_name, last_name, username,
-                            password, id, phone, company, Integer.valueOf(age), Integer.valueOf(photo)));
+                            password, id, phone, company, Integer.parseInt(age), Integer.parseInt(photo)));
                 }
                 checkWorker(workers);
             }
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("ERROR_TAG", "Error in loading worker data");
             }
         });

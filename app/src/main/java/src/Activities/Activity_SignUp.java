@@ -68,7 +68,8 @@ public class Activity_SignUp extends AppCompatActivity {
     }
 
     private void setImage() {
-        My_images images = My_images.initHelper(this);
+        My_images images = My_images.getInstance();
+        images.setActivity(Activity_SignUp.this);
         images.setPlaceholder(R.id.signUp_IMG_sign_up);
         images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
                 "register_icon.png");
@@ -77,13 +78,13 @@ public class Activity_SignUp extends AppCompatActivity {
     /* check the fields data and raise error message if necessary */
     private boolean validateData() {
         if (company_name.getText().toString().equals("")) {
-            error_message.setText("select Business!");
+            error_message.setText(R.string.select_Business);
             return false;
         } else if (username.getText().toString().trim().equals("")) {
-            error_message.setText("enter username");
+            error_message.setText(R.string.enter_username);
             return false;
         } else if (password.getText().toString().trim().equals("")) {
-            error_message.setText("enter password");
+            error_message.setText(R.string.enter_password);
             return false;
         }
         return true;

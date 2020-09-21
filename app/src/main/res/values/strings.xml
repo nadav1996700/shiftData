@@ -8,4 +8,9 @@
     <string name="Already_have_account">Already have an account?</string>
     <string name="select_business">select business</string>
     <string name="welcome">welcome!</string>
+    <string name="register">register</string>
+    <string name="enter_username">enter username</string>
+    <string name="enter_password">enter password</string>
+    <string name="error_message">wrong username or password</string>
+    <string name="select_Business">select Business!</string>
 </resources>

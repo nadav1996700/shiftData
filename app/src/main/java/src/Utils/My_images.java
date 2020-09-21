@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +35,10 @@ public class My_images {
         if (instance == null)
             instance = new My_images(activity);
         return instance;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     public void downloadImage(String ref) {
@@ -70,7 +73,6 @@ public class My_images {
     /* set images using glide library*/
     public void setImage(int placeholder, Drawable photo) {
         ImageView imageView = this.activity.findViewById(placeholder);
-        Log.d("pttt", "imageView = " + imageView.toString());
         Glide.with(activity)
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
