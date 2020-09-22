@@ -8,12 +8,10 @@ public class Shift {
     private ArrayList<Worker> evening_shift;
     private ArrayList<Worker> night_shift;
 
+    public Shift() {}
+
     public Shift(String date) {
         this.date = date;
-    }
-
-    public Shift() {
-
     }
 
     public String getDate() {

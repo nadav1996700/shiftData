@@ -28,6 +28,7 @@ public class My_Firebase {
     private DatabaseReference database_reference = database.getReference();
     private String company;
     private Worker worker;
+    private String worker_id;
 
     private My_Firebase() {}
 
@@ -61,6 +62,14 @@ public class My_Firebase {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getWorker_id() {
+        return worker_id;
+    }
+
+    public void setWorker_id(String worker_id) {
+        this.worker_id = worker_id;
     }
 
     /* read single worker from firebase */

@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import src.Classes.Company;
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
@@ -168,8 +166,8 @@ public class Activity_SignIn extends AppCompatActivity {
 
     /* sign in as worker */
     private void userIsWorker(String id) {
+        My_Firebase.getInstance().setWorker_id(id);
         Intent intent = new Intent(Activity_SignIn.this, Activity_Shifts.class);
-        intent.putExtra(Activity_Shifts.EXTRA_ID, id);
         startActivity(intent);
     }
 
