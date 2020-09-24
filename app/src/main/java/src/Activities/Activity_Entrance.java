@@ -8,8 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.src.R;
-
-import src.Utils.My_Firebase;
 import src.Utils.My_images;
 
 public class Activity_Entrance extends AppCompatActivity {
