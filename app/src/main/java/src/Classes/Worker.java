@@ -10,10 +10,9 @@ public class Worker {
     private String phone;
     private String company;
     private int age;
-    private int photo;
 
     public Worker(String first_name, String last_name, String username, String password, String id,
-                  String phone, String company, int age, int photo) {
+                  String phone, String company, int age) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.username = username;
@@ -22,7 +21,6 @@ public class Worker {
         this.phone = phone;
         this.age = age;
         this.company = company;
-        this.photo = photo;
     }
 
     public Worker() {
@@ -89,34 +87,8 @@ public class Worker {
         return company;
     }
 
-    public int getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(int photo) {
-        this.photo = photo;
-    }
-
-    /*
     @Override
     public String toString() {
-        return first_name + " " + last_name;
-    }
-
-     */
-
-    @Override
-    public String toString() {
-        return "Worker{" +
-                "first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", id='" + id + '\'' +
-                ", phone='" + phone + '\'' +
-                ", company='" + company + '\'' +
-                ", age=" + age +
-                ", photo=" + photo +
-                '}';
+        return id + " " + first_name + " " + last_name;
     }
 }

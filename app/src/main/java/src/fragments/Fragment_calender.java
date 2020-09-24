@@ -11,10 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
 
-public class Fragment_calender extends Fragment implements CallBack_ShiftActivity {
+public class Fragment_calender extends Fragment implements CallBack_ShiftActivity, CallBack_RequestsActivity {
     protected View view;
     private CalendarView calendarView;
     private CallBack_ShiftActivity callBack_shiftActivity;
+    private CallBack_RequestsActivity callBack_requestsActivity;
 
     public Fragment_calender() {}
 
@@ -43,13 +44,20 @@ public class Fragment_calender extends Fragment implements CallBack_ShiftActivit
         this.callBack_shiftActivity = callBack_shiftActivity;
     }
 
+    public void setCallBack_RequestsActivity(CallBack_RequestsActivity callBack_requestsActivity) {
+        this.callBack_requestsActivity = callBack_requestsActivity;
+    }
+
     private void setListener() {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                String date = day + "/" + (month + 1) + "/" + year;
+                String date = day + "," + (month + 1) + "," + year;
                 if(callBack_shiftActivity != null) {
                     callBack_shiftActivity.setDate(date);
+                }
+                else if(callBack_requestsActivity != null) {
+                    callBack_requestsActivity.setDate(date);
                 }
             }
         });

@@ -1,9 +1,5 @@
 package src.Utils;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,10 +10,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-
-import src.Classes.Company;
 import src.Classes.Worker;
 
 public class My_Firebase {
@@ -87,39 +79,15 @@ public class My_Firebase {
                 String phone = snapshot.child("phone").getValue().toString();
                 String age = snapshot.child("age").getValue().toString();
                 String company = snapshot.child("company").getValue().toString();
-                String photo = snapshot.child("photo").getValue().toString();
                 // create Worker
                 worker = new Worker(first_name, last_name, username,
-                        password, id, phone, company, Integer.valueOf(age), Integer.valueOf(photo));
+                        password, id, phone, company, Integer.valueOf(age));
             }
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.d("pttt", "Error in loading worker data");
+                Log.d("ERROR_TAG", "Error in loading worker data");
             }
         });
         return worker;
-    }
-
-    /* add company details to firebase */
-    public void addCompany(Company company) {
-        // add company name to list of company names
-        database_reference.child("/company_names/" + company.getName()).setValue("");
-        // add company object to database
-        database_reference = database.getReference("/" + company.getName());
-        database_reference.child("/").setValue(company);
-    }
-
-    /* upload photo to firebase */
-    public void uploadImage(String path, int drawable, Resources resources) {
-        Bitmap bitmap = BitmapFactory.decodeResource(resources, drawable);
-        String encodedImage = Base64.encodeToString(getBytesFromBitmap(bitmap), Base64.DEFAULT);
-        database_reference.child(path).setValue(encodedImage);
-    }
-
-    /* convert from bitmap to byte array */
-    private byte[] getBytesFromBitmap(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
-        return stream.toByteArray();
     }
 }

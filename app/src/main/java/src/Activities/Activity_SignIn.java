@@ -193,10 +193,9 @@ public class Activity_SignIn extends AppCompatActivity {
                     String phone = child.child("phone").getValue().toString();
                     String age = child.child("age").getValue().toString();
                     String company = child.child("company").getValue().toString();
-                    String photo = child.child("photo").getValue().toString();
                     // create Worker
                     workers.add(new Worker(first_name, last_name, username,
-                            password, id, phone, company, Integer.parseInt(age), Integer.parseInt(photo)));
+                            password, id, phone, company, Integer.parseInt(age)));
                 }
                 checkWorker(workers);
             }

@@ -1,18 +1,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DFEAE9"
     android:orientation="vertical"
-    android:background="#F6F5F6"
     tools:context="src.fragments.Fragment_shifts">
 
-    <TextView
-        android:id="@+id/date"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/fragment_shifts_LAY_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EDEBEF"
+        app:tabSelectedTextColor="#073AF1"
+        app:tabTextColor="#0C0710">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/fragment_shifts_TAB_morning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_morning" />
+
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/fragment_shifts_TAB_evening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_evening" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/fragment_shifts_TAB_night"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_night" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:textColor="#ED1809"
-        android:text="" />
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ListView
+            android:id="@+id/fragment_shifts_LST_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>

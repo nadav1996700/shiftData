@@ -37,10 +37,8 @@ public class Activity_SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateData()) {
-                    Company company = new Company(company_name.getText().toString()
-                            , username.getText().toString(), password.getText().toString());
-                    // upload to firebase, and open login screen
-                    My_Firebase.getInstance().addCompany(company);
+                    // upload company to firebase, and open login screen
+                    uploadCompany();
                     startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
                 }
             }
@@ -53,6 +51,22 @@ public class Activity_SignUp extends AppCompatActivity {
                 startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
             }
         });
+    }
+
+    private void uploadCompany() {
+        Company company = new Company(company_name.getText().toString()
+                , username.getText().toString(), password.getText().toString());
+        addCompany(company);
+    }
+
+    /* add company details to firebase */
+    public void addCompany(Company company) {
+        My_Firebase firebase = My_Firebase.getInstance();
+        // add company name to list of company names
+        firebase.getReference().child("/company_names/" + company.getName()).setValue("");
+        // add company object to database
+        firebase.setReference("/" + company.getName());
+        firebase.getReference().child("/").setValue(company);
     }
 
     private void setValues() {
@@ -68,8 +82,7 @@ public class Activity_SignUp extends AppCompatActivity {
     }
 
     private void setImage() {
-        My_images images = My_images.getInstance();
-        images.setActivity(Activity_SignUp.this);
+        My_images images = My_images.initHelper(this);
         images.setPlaceholder(R.id.signUp_IMG_sign_up);
         images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
                 "register_icon.png");

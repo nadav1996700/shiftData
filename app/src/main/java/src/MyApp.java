@@ -3,6 +3,7 @@ package src;
 import android.app.Application;
 
 import src.Utils.My_Firebase;
+import src.Utils.My_images;
 
 public class MyApp extends Application {
     @Override

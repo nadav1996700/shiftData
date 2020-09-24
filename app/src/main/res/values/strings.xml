@@ -7,13 +7,25 @@
     <string name="password">password</string>
     <string name="Already_have_account">Already have an account?</string>
     <string name="select_business">select business</string>
+    <string name="select_Business">select Business!</string>
     <string name="welcome">welcome!</string>
     <string name="register">register</string>
-    <string name="enter_username">enter username</string>
-    <string name="enter_password">enter password</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_password">Enter password</string>
     <string name="error_message">wrong username or password</string>
-    <string name="select_Business">select Business!</string>
     <string name="shifts">sifts</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_morning">morning shift</string>
+    <string name="tab_evening">evening shift</string>
+    <string name="tab_night">night shift</string>
+    <string name="morning">Morning</string>
+    <string name="evening">Evening</string>
+    <string name="night">Night</string>
+    <string name="Requests">Requests</string>
+    <string name="select_shift">Select shift/s</string>
+    <string name="add_request">Add request</string>
+    <string name="watch_shifts">Watch shifts</string>
+    <string name="submit_shifts">Submit shifts</string>
+    <string name="My_profile">My profile</string>
+    <string name="Log_out">Log out</string>
+
 </resources>

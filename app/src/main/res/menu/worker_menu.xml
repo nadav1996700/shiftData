@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/watch_shifts"
+        android:icon="@drawable/ic_watch_shifts"
+        android:title="@string/watch_shifts"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/submit_shifts"
+        android:icon="@drawable/ic_submit_shifts"
+        android:title="@string/submit_shifts"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/My_profile"
+        android:title="@string/My_profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/more"
+        android:title="@string/My_profile"
+        app:showAsAction="never" />
+
+</menu>
