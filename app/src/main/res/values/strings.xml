@@ -26,6 +26,15 @@
     <string name="watch_shifts">Watch shifts</string>
     <string name="submit_shifts">Submit shifts</string>
     <string name="My_profile">My profile</string>
-    <string name="Log_out">Log out</string>
+    <string name="Log_out">Log_out</string>
+    <string name="select_photo">select photo</string>
+    <string name="EDIT">EDIT</string>
+    <string name="personal_data">personal data</string>
+    <string name="First_name">First name</string>
+    <string name="Last_name">Last name</string>
+    <string name="ID">ID</string>
+    <string name="Phone">Phone</string>
+    <string name="Age">Age</string>
+    <string name="Account">Account</string>
 
 </resources>

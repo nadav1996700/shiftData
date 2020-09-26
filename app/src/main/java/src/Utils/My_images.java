@@ -17,14 +17,14 @@ import java.io.ByteArrayOutputStream;
 public class My_images {
     private static My_images instance;
     private Activity activity;
-    private int placeholder;
+    private int download_placeholder;
 
     private My_images(Activity activity) {
         this.activity = activity;
     }
 
     public void setPlaceholder(int placeholder) {
-        this.placeholder = placeholder;
+        this.download_placeholder = placeholder;
     }
 
     public static My_images getInstance() {
@@ -51,7 +51,7 @@ public class My_images {
             public void onSuccess(byte[] bytes) {
                 Drawable drawable = new BitmapDrawable(activity.getResources(), BitmapFactory
                         .decodeByteArray(bytes, 0, bytes.length));
-                setImage(placeholder, drawable);
+                setImage(download_placeholder, drawable);
             }
         });
     }
