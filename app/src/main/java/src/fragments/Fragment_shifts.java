@@ -49,10 +49,14 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftActivity 
                              Bundle savedInstanceState) {
         if(view == null)
             view = inflater.inflate(R.layout.fragment_shifts, container, false);
-        tabLayout = view.findViewById(R.id.fragment_shifts_LAY_tabs);
-        workers_list = view.findViewById(R.id.fragment_shifts_LST_list);
+        setValues();
         setTabListener();
         return view;
+    }
+
+    private void setValues() {
+        tabLayout = view.findViewById(R.id.fragment_shifts_LAY_tabs);
+        workers_list = view.findViewById(R.id.fragment_shifts_LST_list);
     }
 
     private void setTabListener() {
@@ -71,7 +75,6 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftActivity 
                         chosen_shift = "morning";
                         break;
                 }
-                showListByShift();
             }
 
             @Override
@@ -82,16 +85,20 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftActivity 
     }
 
     private void showListByShift() {
-        Log.d("pttt", "show list by shift -> date = " + chosen_date);
-        firebase.setReference("/" + firebase.getCompany());
-        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+        String path2 = "/" + firebase.getCompany();
+        String path = "/" + firebase.getCompany() + "shifts/current_shifts/" +
+                chosen_date + "/" + chosen_shift;
+        firebase.setReference(path2);
+        firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                String path = "shifts/current_shifts/" + chosen_date + "/" + chosen_shift;
-                if (snapshot.hasChild(path)) {
+                //String string = snapshot.getKey();
+                if (snapshot.hasChildren()) {
                     Log.d("pttt", "path successes - date = " + chosen_date);
-                    setList(path);
+                    setList();
                 }
+                else
+                    Log.d("pttt", "path else - date = " + chosen_date);
             }
 
             @Override
@@ -99,8 +106,7 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftActivity 
         });
     }
 
-    public void setList(String path) {
-        firebase.setReference(path);
+    public void setList() {
         firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -51,9 +51,6 @@ public class Activity_Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        firebase.setWorker_id("207896781");
-        firebase.setCompany("benedict");
-
         /* initialize variables */
         setValues();
         /* present current data from firebase */

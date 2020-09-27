@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import src.Classes.Worker;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
 
@@ -55,7 +54,7 @@ public class Activity_SignIn extends AppCompatActivity {
                 if (validateData()) {
                     // set company on firebase attribute
                     firebase.setCompany(spinner.getText().toString());
-                    // check if user details correct
+                    // check first if user is Manager, else - check if he is Worker
                     checkDetails();
                 }
             }
@@ -90,7 +89,7 @@ public class Activity_SignIn extends AppCompatActivity {
     }
 
     private void setImage() {
-        My_images images = My_images.getInstance();
+        My_images images = My_images.initHelper(this);
         images.setActivity(Activity_SignIn.this);
         images.setPlaceholder(R.id.signIn_IMG_sign_in);
         images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
@@ -129,18 +128,15 @@ public class Activity_SignIn extends AppCompatActivity {
         });
     }
 
-    // check if the user is instance of Worker and return his id or 0 if it is not Worker
-    private void checkWorker(ArrayList<Worker> workers) {
-        for (Worker worker : workers) {
-            if (worker.getUsername().equals(username.getText().toString()) &&
-                    worker.getPassword().equals(password.getText().toString())) {
-                // sign in as worker
-                userIsWorker(worker.getId());
-                return;
-            }
+    /* check if username and password match */
+    private boolean checkWorker(String mUsername, String mPassword) {
+        if (mUsername.equals(username.getText().toString()) &&
+                mPassword.equals(password.getText().toString())) {
+            return true;
         }
         // failed to commit login
         setError_message();
+        return false;
     }
 
     /* read all company names from firebase to spinner */
@@ -166,7 +162,7 @@ public class Activity_SignIn extends AppCompatActivity {
 
     /* sign in as worker */
     private void userIsWorker(String id) {
-        My_Firebase.getInstance().setWorker_id(id);
+        firebase.setWorker_id(id);
         Intent intent = new Intent(Activity_SignIn.this, Activity_Shifts.class);
         startActivity(intent);
     }
@@ -176,29 +172,23 @@ public class Activity_SignIn extends AppCompatActivity {
         error_message.setText(R.string.error_message);
     }
 
-    /* read all workers from firebase */
+    /* read username and password until find match */
     public void checkIfUserIsWorker() {
-        String path = "/" + firebase.getCompany() + "/workers";
-        firebase.setReference(path);
+        firebase.setReference("/" + firebase.getCompany() + "/workers");
         firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Worker> workers = new ArrayList<>();
-                for(DataSnapshot child : dataSnapshot.getChildren()) {
-                    String first_name = child.child("first_name").getValue().toString();
-                    String last_name = child.child("last_name").getValue().toString();
-                    String username = child.child("username").getValue().toString();
-                    String password = child.child("password").getValue().toString();
-                    String id = child.child("id").getValue().toString();
-                    String phone = child.child("phone").getValue().toString();
-                    String age = child.child("age").getValue().toString();
-                    String company = child.child("company").getValue().toString();
-                    // create Worker
-                    workers.add(new Worker(first_name, last_name, username,
-                            password, id, phone, company, Integer.parseInt(age)));
+                String username, password, id;
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    id = child.child("id").getValue().toString();
+                    username = child.child("username").getValue().toString();
+                    password = child.child("password").getValue().toString();
+                    if (checkWorker(username, password))
+                        userIsWorker(id);
+                    break;
                 }
-                checkWorker(workers);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("ERROR_TAG", "Error in loading worker data");

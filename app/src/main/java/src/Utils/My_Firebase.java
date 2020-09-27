@@ -1,16 +1,9 @@
 package src.Utils;
 
-import android.util.Log;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import src.Classes.Worker;
 
 public class My_Firebase {
     private static My_Firebase instance;
@@ -19,7 +12,6 @@ public class My_Firebase {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference database_reference = database.getReference();
     private String company;
-    private Worker worker;
     private String worker_id;
 
     private My_Firebase() {}
@@ -62,32 +54,5 @@ public class My_Firebase {
 
     public void setWorker_id(String worker_id) {
         this.worker_id = worker_id;
-    }
-
-    /* read single worker from firebase */
-    public Worker readWorker(String id) {
-        String path = "/" + company + "/workers/" + id;
-        database_reference = database.getReference(path);
-        database_reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                String first_name = snapshot.child("first_name").getValue().toString();
-                String last_name = snapshot.child("last_name").getValue().toString();
-                String username = snapshot.child("username").getValue().toString();
-                String password = snapshot.child("password").getValue().toString();
-                String id = snapshot.child("id").getValue().toString();
-                String phone = snapshot.child("phone").getValue().toString();
-                String age = snapshot.child("age").getValue().toString();
-                String company = snapshot.child("company").getValue().toString();
-                // create Worker
-                worker = new Worker(first_name, last_name, username,
-                        password, id, phone, company, Integer.valueOf(age));
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
-            }
-        });
-        return worker;
     }
 }
