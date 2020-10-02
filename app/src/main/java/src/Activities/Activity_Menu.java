@@ -31,9 +31,9 @@ public class Activity_Menu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        //setContentView(R.layout.activity_menu);
 
-        setValues();
+        //setValues();
         My_Firebase firebase = My_Firebase.getInstance();
         firebase.setWorker_id("207896785");
         firebase.setCompany("benedict");
@@ -41,7 +41,7 @@ public class Activity_Menu extends AppCompatActivity {
         name.setText("Nadav Cohen");
         id.setText("345267865");
         fragment_requestss = new Fragment_Requestss();
-        initFragment(fragment_requestss, R.id.Menu_LAY_fragment);
+        //initFragment(fragment_requestss, R.id.Menu_LAY_fragment);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Activity_Menu extends AppCompatActivity {
             case R.id.Menu_My_profile:
                 Log.d("pttt", "inside my profile option");
                 Fragment_calender fragment_calender = new Fragment_calender();
-                initFragment(fragment_calender, R.id.Menu_LAY_fragment);
+                //initFragment(fragment_calender, R.id.Menu_LAY_fragment);
                 //startActivity(new Intent(Activity_Menu.this, Activity_Profile.class));
                 return true;
             case R.id.Menu_log_out:
@@ -67,7 +67,7 @@ public class Activity_Menu extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+/*
     private void setValues() {
         navigationView = findViewById(R.id.Menu_NAV_menu);
         header = navigationView.getHeaderView(0);
@@ -81,7 +81,7 @@ public class Activity_Menu extends AppCompatActivity {
         transaction.commit();
     }
 
-    /*
+
     private void setMenuListener() {
         NavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -90,5 +90,5 @@ public class Activity_Menu extends AppCompatActivity {
             }
         });
     }
-     */
+   */
 }

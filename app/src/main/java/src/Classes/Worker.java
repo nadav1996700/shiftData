@@ -8,19 +8,17 @@ public class Worker {
     private String password;
     private String id;
     private String phone;
-    private String company;
     private int age;
 
     public Worker(String first_name, String last_name, String username, String password, String id,
-                  String phone, String company, int age) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.username = username;
-        this.password = password;
-        this.id = id;
-        this.phone = phone;
-        this.age = age;
-        this.company = company;
+                  String phone, int age) {
+        setFirst_name(first_name);
+        setLast_name(last_name);
+        setUsername(username);
+        setPassword(password);
+        setId(id);
+        setPhone(phone);
+        setAge(age);
     }
 
     public Worker() {
@@ -83,12 +81,8 @@ public class Worker {
         this.age = age;
     }
 
-    public String getCompany() {
-        return company;
-    }
-
     @Override
     public String toString() {
-        return id + " " + first_name + " " + last_name;
+        return first_name + " " + last_name;
     }
 }

@@ -13,13 +13,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name="src.Activities.Activity_Worker"
+            android:label="@string/title_activity__worker"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="src.Activities.Activity_NewWorker">
+
+        </activity>
+        <activity
+            android:name="src.Activities.Activity_WorkersList"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="src.Activities.Activity_Profile"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"></activity>
-
-        <activity android:name="src.Activities.Activity_Menu"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name="src.Activities.Activity_Menu" />
         <activity
             android:name="src.Activities.Activity_Entrance"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -31,18 +46,11 @@
         <activity
             android:name="src.Activities.Activity_SignIn"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="src.Activities.Activity_Shifts"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="src.Activities.Activity_Requests"
             android:configChanges="orientation|keyboardHidden|screenSize"

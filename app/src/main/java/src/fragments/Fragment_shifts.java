@@ -84,29 +84,12 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftActivity 
         });
     }
 
-    private void showListByShift() {
-        String path2 = "/" + firebase.getCompany();
+    public void showListByShift() {
+        // set reference
         String path = "/" + firebase.getCompany() + "shifts/current_shifts/" +
                 chosen_date + "/" + chosen_shift;
-        firebase.setReference(path2);
-        firebase.getReference().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                //String string = snapshot.getKey();
-                if (snapshot.hasChildren()) {
-                    Log.d("pttt", "path successes - date = " + chosen_date);
-                    setList();
-                }
-                else
-                    Log.d("pttt", "path else - date = " + chosen_date);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-    }
-
-    public void setList() {
+        firebase.setReference(path);
+        // get data
         firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -119,10 +102,9 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftActivity 
                     String id = child.child("id").getValue().toString();
                     String phone = child.child("phone").getValue().toString();
                     String age = child.child("age").getValue().toString();
-                    String company = child.child("company").getValue().toString();
                     // create Worker
                     workers.add(new Worker(first_name, last_name, username,
-                            password, id, phone, company, Integer.parseInt(age)));
+                            password, id, phone, Integer.parseInt(age)));
                     Log.d("pttt", "created worker " + workers.toString());
                 }
                 showDataOnList(workers);

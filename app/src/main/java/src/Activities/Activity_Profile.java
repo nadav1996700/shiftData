@@ -176,10 +176,9 @@ public class Activity_Profile extends AppCompatActivity {
                 String id = snapshot.child("id").getValue().toString();
                 String phone = snapshot.child("phone").getValue().toString();
                 String age = snapshot.child("age").getValue().toString();
-                String company = snapshot.child("company").getValue().toString();
                 // create Worker
                 Worker worker = new Worker(first_name, last_name, username,
-                        password, id, phone, company, Integer.valueOf(age));
+                        password, id, phone, Integer.valueOf(age));
                 // show data
                 showData(worker);
             }

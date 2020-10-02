@@ -36,5 +36,17 @@
     <string name="Phone">Phone</string>
     <string name="Age">Age</string>
     <string name="Account">Account</string>
+    <string name="Details">Details</string>
+    <string name="Delete">Delete</string>
+    <string name="Add">Add</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="enter_phone">Enter phone</string>
+    <string name="enter_age">Enter age</string>
+    <string name="enter_id">Enter id</string>
+    <string name="title_activity__worker">shiftData</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 
 </resources>
