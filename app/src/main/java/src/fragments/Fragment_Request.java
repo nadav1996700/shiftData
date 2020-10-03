@@ -11,15 +11,15 @@ import android.view.ViewGroup;
 
 import com.example.src.R;
 
-public class Fragment_Requestss extends Fragment implements CallBack_RequestsActivity {
+public class Fragment_Request extends Fragment implements CallBack_RequestsActivity {
     protected View view;
-    private Fragment_requests fragment_requests;
+    private Fragment_select_requests fragment_select_requests;
     private Fragment_calender fragment_calender;
 
-    public Fragment_Requestss() {}
+    public Fragment_Request() {}
 
-    public static Fragment_Requestss newInstance() {
-        Fragment_Requestss fragment = new Fragment_Requestss();
+    public static Fragment_Request newInstance() {
+        Fragment_Request fragment = new Fragment_Request();
         return fragment;
     }
 
@@ -29,16 +29,16 @@ public class Fragment_Requestss extends Fragment implements CallBack_RequestsAct
 
         fragment_calender = Fragment_calender.newInstance();
         fragment_calender.setCallBack_RequestsActivity(this);
-        fragment_requests = Fragment_requests.newInstance();
+        fragment_select_requests = Fragment_select_requests.newInstance();
         initFragments(fragment_calender, R.id.Requests_LAY_calender);
-        initFragments(fragment_requests, R.id.Requests_LAY_request);
+        initFragments(fragment_select_requests, R.id.Requests_LAY_request);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(view == null)
-            view = inflater.inflate(R.layout.fragment_requestss, container, false);
+            view = inflater.inflate(R.layout.fragment_requests, container, false);
         return view;
     }
 
@@ -50,6 +50,6 @@ public class Fragment_Requestss extends Fragment implements CallBack_RequestsAct
 
     @Override
     public void setDate(String date) {
-        fragment_requests.setDate(date);
+        fragment_select_requests.setDate(date);
     }
 }

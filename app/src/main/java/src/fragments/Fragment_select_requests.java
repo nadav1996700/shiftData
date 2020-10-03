@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import src.Utils.My_Firebase;
 
-public class Fragment_requests extends Fragment implements CallBack_RequestsActivity {
+public class Fragment_select_requests extends Fragment implements CallBack_RequestsActivity {
     protected View view;
     private String chosen_date;
     private ArrayList<Chip> chips;
@@ -26,10 +26,10 @@ public class Fragment_requests extends Fragment implements CallBack_RequestsActi
     private Button add_request;
     My_Firebase firebase = My_Firebase.getInstance();
 
-    public Fragment_requests() {}
+    public Fragment_select_requests() {}
 
-    public static Fragment_requests newInstance() {
-        Fragment_requests fragment = new Fragment_requests();
+    public static Fragment_select_requests newInstance() {
+        Fragment_select_requests fragment = new Fragment_select_requests();
         return fragment;
     }
 
@@ -42,7 +42,7 @@ public class Fragment_requests extends Fragment implements CallBack_RequestsActi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(view == null)
-            view = inflater.inflate(R.layout.fragment_requests, container, false);
+            view = inflater.inflate(R.layout.fragment_select_requests, container, false);
         // initialize variables
         setValues();
         // set on click listener

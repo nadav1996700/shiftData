@@ -46,14 +46,6 @@
             android:name="src.Activities.Activity_SignIn"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="src.Activities.Activity_Shifts"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="src.Activities.Activity_Requests"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,75 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="#E4E6E6"
-    android:gravity="center"
-    tools:context="src.fragments.Fragment_requests">
+    android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="@string/select_shift"
-        android:textSize="30sp"
-        android:textColor="#655D41"/>
-
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/Requests_LAY_calender"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_margin="10dp">
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/Requests_CHIP_morning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:textColor="#0E0E0E"
-            app:chipBackgroundColor="#D2D0D5"
-            android:checkable="true"
-            android:text="@string/morning"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/Requests_CHIP_evening"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:textColor="#0E0E0E"
-            app:chipBackgroundColor="#D2D0D5"
-            android:checkable="true"
-            android:text="@string/evening"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/Requests_CHIP_night"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#0E0E0E"
-            app:chipBackgroundColor="#D2D0D5"
-            android:checkable="true"
-            android:text="@string/night"/>
-
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/Requests_BTN_addRequest"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    <FrameLayout
+        android:id="@+id/Requests_LAY_request"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/add_request"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="15sp"
-        app:cornerRadius="30dp"
-        app:strokeColor="@color/colorPrimaryDark"
-        app:strokeWidth="2dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 
 </LinearLayout>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorTopBackground"
+    tools:context="src.fragments.Fragment_Profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            app:cardCornerRadius="90dp">
+
+            <ImageView
+                android:id="@+id/Profile_IV_photo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_user_round" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Profile_BTN_editPhoto"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="@string/select_photo"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/colorPrimaryDark"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Profile_BTN_edit"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/EDIT"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            app:strokeColor="@color/colorPrimaryDark"
+            app:strokeWidth="1dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/personal_data"
+            android:textColor="#86818E"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/Profile_EDT_firstName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_edit_text"
+            android:enabled="false"
+            android:hint="@string/First_name"
+            android:padding="10dp"
+            android:textColor="#86818E"
+            android:textColorHint="#86818E"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/Profile_EDT_lastName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_edit_text"
+            android:enabled="false"
+            android:hint="@string/Last_name"
+            android:padding="10dp"
+            android:textColor="#86818E"
+            android:textColorHint="#86818E"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/Profile_EDT_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_edit_text"
+            android:enabled="false"
+            android:hint="@string/ID"
+            android:padding="10dp"
+            android:textColor="#86818E"
+            android:textColorHint="#86818E"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/Profile_EDT_phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_edit_text"
+            android:enabled="false"
+            android:hint="@string/Phone"
+            android:padding="10dp"
+            android:textColor="#0B0B0C"
+            android:textColorHint="#86818E"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/Profile_EDT_age"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_edit_text"
+            android:enabled="false"
+            android:hint="@string/Age"
+            android:padding="10dp"
+            android:textColor="#0B0B0C"
+            android:textColorHint="#86818E"
+            android:inputType="text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/Account"
+            android:textColor="#86818E"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/Profile_EDT_username"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_edit_text"
+            android:enabled="false"
+            android:hint="@string/username"
+            android:padding="10dp"
+            android:textColor="#0B0B0C"
+            android:textColorHint="#86818E"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/Profile_EDT_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_edit_text"
+            android:enabled="false"
+            android:hint="@string/password"
+            android:padding="10dp"
+            android:textColor="#0B0B0C"
+            android:textColorHint="#86818E"
+            android:inputType="text"/>
+
+    </LinearLayout>
+
+</ScrollView>

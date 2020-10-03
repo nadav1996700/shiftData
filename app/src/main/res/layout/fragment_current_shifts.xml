@@ -6,13 +6,13 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/Requests_LAY_calender"
+        android:id="@+id/current_shifts_LAY_calender"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <FrameLayout
-        android:id="@+id/Requests_LAY_request"
+        android:id="@+id/current_shifts_LAY_shifts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

@@ -116,8 +116,8 @@ public class Activity_SignIn extends AppCompatActivity {
                     if (!db_password.equals(password.getText().toString()))
                         checkIfUserIsWorker();
                     else {
-                        // get in to main screen of manager
-                        startActivity(new Intent(Activity_SignIn.this, Activity_Shifts.class));
+                        // get in to main screen of manager - Activity Manager
+                        startActivity(new Intent(Activity_SignIn.this, Activity_Worker.class));
                     }
                 }
             }
@@ -163,7 +163,7 @@ public class Activity_SignIn extends AppCompatActivity {
     /* sign in as worker */
     private void userIsWorker(String id) {
         firebase.setWorker_id(id);
-        Intent intent = new Intent(Activity_SignIn.this, Activity_Shifts.class);
+        Intent intent = new Intent(Activity_SignIn.this, Activity_Worker.class);
         startActivity(intent);
     }
 

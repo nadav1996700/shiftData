@@ -1,5 +1,6 @@
 package src.Activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,10 +23,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
-import src.fragments.Fragment_Requestss;
+import src.fragments.Fragment_Profile;
+import src.fragments.Fragment_Request;
 import src.fragments.Fragment_calender;
-import src.fragments.Fragment_requests;
-import src.fragments.Fragment_shifts;
+import src.fragments.Fragment_currentShifts;
+import src.fragments.Fragment_select_requests;
 
 public class Activity_Worker extends AppCompatActivity {
 
@@ -36,6 +38,8 @@ public class Activity_Worker extends AppCompatActivity {
     private View header;
     private TextView name;
     private TextView id;
+    // need to be deleted
+    My_images images = My_images.initHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +52,9 @@ public class Activity_Worker extends AppCompatActivity {
 
         setValues();
 
-        title.setText("Watch shifts");
+        //initFragment(new Fragment_Request());
 
-        initFragment(new Fragment_Requestss());
-
-        navigationView.setCheckedItem(R.id.Menu_My_profile);
+        navigationView.setCheckedItem(R.id.Menu_watch_shifts);
 
         menu_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,19 +68,21 @@ public class Activity_Worker extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.Menu_watch_shifts:
-                        initFragment(new Fragment_calender());
+                        title.setText("shifts calender");
+                        initFragment(new Fragment_currentShifts());
                         drawer.close();
                         return true;
                     case R.id.Menu_submit_shifts:
-                        initFragment(new Fragment_requests());
+                        title.setText("shifts request");
+                        initFragment(new Fragment_Request());
                         drawer.close();
                         return true;
                     case R.id.Menu_My_profile:
-                        initFragment(new Fragment_Requestss());
+                        title.setText("Profile");
+                        initFragment(new Fragment_Profile());
                         return true;
                     case R.id.Menu_log_out:
-                        initFragment(new Fragment_shifts());
-                        drawer.close();
+                        finish();
                         return true;
                     default:
                         return false;
