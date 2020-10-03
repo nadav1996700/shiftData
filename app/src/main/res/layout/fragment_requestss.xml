@@ -5,33 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:background="@color/colorTopBackground"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Requests"
-            android:textSize="25sp" />
-
-    </LinearLayout>
-
     <FrameLayout
         android:id="@+id/Requests_LAY_calender"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4" />
+        android:layout_weight="1" />
 
     <FrameLayout
         android:id="@+id/Requests_LAY_request"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3" />
+        android:layout_weight="1" />
 
 
 </LinearLayout>
