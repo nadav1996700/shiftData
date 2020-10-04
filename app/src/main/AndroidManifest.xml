@@ -31,10 +31,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name="src.Activities.Activity_Profile"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="src.Activities.Activity_Entrance"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />

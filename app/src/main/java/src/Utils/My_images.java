@@ -1,10 +1,12 @@
 package src.Utils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +15,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class My_images {
     private static My_images instance;
@@ -77,5 +81,19 @@ public class My_images {
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView);
+    }
+
+    /* convert intent data (from gallery) into drawable */
+    public Drawable convertDataToDrawable(Intent data) {
+        try {
+            final Uri imageUri = data.getData();
+            final InputStream imageStream = activity.getContentResolver().openInputStream(imageUri);
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            Drawable drawable = new BitmapDrawable(activity.getResources(), selectedImage);
+            return drawable;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

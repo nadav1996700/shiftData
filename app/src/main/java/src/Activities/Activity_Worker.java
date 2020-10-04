@@ -1,6 +1,7 @@
 package src.Activities;
 
-import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -25,12 +26,11 @@ import src.Utils.My_Firebase;
 import src.Utils.My_images;
 import src.fragments.Fragment_Profile;
 import src.fragments.Fragment_Request;
-import src.fragments.Fragment_calender;
 import src.fragments.Fragment_currentShifts;
-import src.fragments.Fragment_select_requests;
+
+import static src.fragments.Fragment_Profile.PICK_PROFILE_IMAGE;
 
 public class Activity_Worker extends AppCompatActivity {
-
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private ImageButton menu_BTN;
@@ -52,8 +52,9 @@ public class Activity_Worker extends AppCompatActivity {
 
         setValues();
 
-        //initFragment(new Fragment_Request());
-
+        /* set first screen - shifts screen */
+        title.setText("shifts calender");
+        initFragment(new Fragment_currentShifts());
         navigationView.setCheckedItem(R.id.Menu_watch_shifts);
 
         menu_BTN.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +81,7 @@ public class Activity_Worker extends AppCompatActivity {
                     case R.id.Menu_My_profile:
                         title.setText("Profile");
                         initFragment(new Fragment_Profile());
+                        drawer.close();
                         return true;
                     case R.id.Menu_log_out:
                         finish();
@@ -91,12 +93,14 @@ public class Activity_Worker extends AppCompatActivity {
         });
     }
 
+    /* start new fragment */
     private void initFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.worker_fragmentContainer, fragment);
         transaction.commit();
     }
 
+    /* initialize variables */
     private void setValues() {
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.worker_nav_view);
@@ -139,6 +143,18 @@ public class Activity_Worker extends AppCompatActivity {
                     id.getText().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+
+    /* handle images from gallery */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_PROFILE_IMAGE) {
+            Drawable photo = images.convertDataToDrawable(data);
+            if (photo != null)
+                images.setImage(R.id.Profile_IV_photo, photo);
         }
     }
 }
