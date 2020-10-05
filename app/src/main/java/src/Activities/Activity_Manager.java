@@ -1,11 +1,8 @@
 package src.Activities;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,11 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.src.R;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
@@ -32,9 +24,7 @@ import src.fragments.Fragment_Profile;
 import src.fragments.Fragment_Request;
 import src.fragments.Fragment_currentShifts;
 
-import static src.fragments.Fragment_Profile.PICK_PROFILE_IMAGE;
-
-public class Activity_Worker extends AppCompatActivity {
+public class Activity_Manager extends AppCompatActivity {
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private ImageButton menu_BTN;
@@ -48,10 +38,9 @@ public class Activity_Worker extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_worker);
+        setContentView(R.layout.activity_manager);
 
         My_Firebase firebase = My_Firebase.getInstance();
-        firebase.setWorker_id("207896781");
         firebase.setCompany("benedict");
 
         setValues();
@@ -77,14 +66,14 @@ public class Activity_Worker extends AppCompatActivity {
                         initFragment(new Fragment_currentShifts());
                         drawer.close();
                         return true;
-                    case R.id.Menu_submit_shifts:
-                        title.setText(R.string.shifts_request);
+                    case R.id.Menu_set_shifts:
+                        title.setText(R.string.set_shifts);
                         initFragment(new Fragment_Request());
                         drawer.close();
                         return true;
-                    case R.id.Menu_My_profile:
-                        title.setText(R.string.Profile);
-                        initFragment(new Fragment_Profile());
+                    case R.id.Menu_employees:
+                        title.setText(R.string.company_employees);
+                        initFragment(new Fragment_Request());
                         drawer.close();
                         return true;
                     case R.id.Menu_log_out:
@@ -100,43 +89,26 @@ public class Activity_Worker extends AppCompatActivity {
     /* start new fragment */
     private void initFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.worker_fragmentContainer, fragment);
+        transaction.replace(R.id.Manager_fragmentContainer, fragment);
         transaction.commit();
     }
 
     /* initialize variables */
     private void setValues() {
-        drawer = findViewById(R.id.Worker_drawer_layout);
-        navigationView = findViewById(R.id.worker_nav_view);
-        menu_BTN = findViewById(R.id.Worker_BTN_menu);
-        title = findViewById(R.id.Worker_LBL_title);
+        drawer = findViewById(R.id.Manager_drawer_layout);
+        navigationView = findViewById(R.id.Manager_nav_view);
+        menu_BTN = findViewById(R.id.Manager_BTN_menu);
+        title = findViewById(R.id.Manager_LBL_title);
 
         // header
         header = navigationView.getHeaderView(0);
-        name = header.findViewById(R.id.WorkerHeader_LBL_name);
-        id = header.findViewById(R.id.WorkerHeader_LBL_id);
+        name = header.findViewById(R.id.ManagerHeader_LBL_name);
         setHeader();
     }
 
-    /* set name and id of worker */
+    /* set name as the name of the company */
     private void setHeader() {
-        setWorkerImage();
-        My_Firebase firebase = My_Firebase.getInstance();
-        firebase.setReference("/" + firebase.getCompany() + "/workers/" + firebase.getWorker_id());
-        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                name.setText(String.format("%s %s",
-                        Objects.requireNonNull(snapshot.child("first_name").getValue()).toString(),
-                        Objects.requireNonNull(snapshot.child("last_name").getValue()).toString()));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
-            }
-        });
-        id.setText(firebase.getWorker_id());
+        name.setText(My_Firebase.getInstance().getCompany());
         setTitle();
         setBackgroundImage();
     }
@@ -154,27 +126,8 @@ public class Activity_Worker extends AppCompatActivity {
     /* set background image on header */
     private void setBackgroundImage() {
         /* header background image */
-        images.setPlaceholder(R.id.WorkerHeader_IV_background);
+        images.setPlaceholder(R.id.ManagerHeader_IV_background);
         images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
-                "worker_background.jpg");
-    }
-
-    /* set worker image on header */
-    private void setWorkerImage() {
-        /* worker image */
-        images.setPlaceholder(R.id.WorkerHeader_IV_workerPhoto);
-        images.downloadImage("gs://shiftdata-a19a0.appspot.com/workers_images/" +
-                id.getText().toString());
-    }
-
-    /* handle images from gallery */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_PROFILE_IMAGE) {
-            Drawable photo = images.convertDataToDrawable(data);
-            if (photo != null)
-                images.setImage(R.id.Profile_IV_photo, photo);
-        }
+                "manager_background.jpg");
     }
 }

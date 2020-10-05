@@ -2,11 +2,11 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/Worker_drawer_layout"
+    android:id="@+id/Manager_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="src.Activities.Activity_Worker">
+    tools:context="src.Activities.Activity_Manager">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:paddingStart="20dp">
 
             <ImageButton
-                android:id="@+id/Worker_BTN_menu"
+                android:id="@+id/Manager_BTN_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
@@ -32,7 +32,7 @@
                 android:src="@drawable/ic_menu" />
 
             <TextView
-                android:id="@+id/Worker_LBL_title"
+                android:id="@+id/Manager_LBL_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -44,21 +44,21 @@
         </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/worker_fragmentContainer"
+            android:id="@+id/Manager_fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/worker_nav_view"
+        android:id="@+id/Manager_nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#EFEEF1"
-        app:headerLayout="@layout/header_worker"
+        app:headerLayout="@layout/header_manager"
         app:itemIconTint="@drawable/drawer_item_color"
         app:itemTextColor="@drawable/drawer_item_color"
-        app:menu="@menu/worker_menu" />
+        app:menu="@menu/manager_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

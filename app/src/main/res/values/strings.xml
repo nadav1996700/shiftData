@@ -43,11 +43,16 @@
     <string name="enter_phone">Enter phone</string>
     <string name="enter_age">Enter age</string>
     <string name="enter_id">Enter id</string>
-    <string name="title_activity__worker">shiftData</string>
+    <string name="title_activity_menu">shiftData</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="Done">Done</string>
     <string name="Edit">Edit</string>
+    <string name="company_employees">Employees</string>
+    <string name="set_shifts">Set shifts</string>
+    <string name="shifts_calender">Shifts calender</string>
+    <string name="shifts_request">Shifts request</string>
+    <string name="Profile">Profile</string>
 
 
 </resources>
