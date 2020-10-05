@@ -19,7 +19,8 @@
             android:title="@string/submit_shifts" />
     </group>
 
-    <item android:title="account">
+    <item android:title="account"
+        android:id="@+id/WorkerMenu_account">
         <menu>
             <item
                 android:id="@+id/Menu_log_out"

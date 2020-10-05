@@ -144,8 +144,8 @@ public class Activity_WorkersList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 firebase.setWorker_id(id_list.get(position));
-                startActivity(new Intent(Activity_WorkersList.this,
-                        Activity_Profile.class));
+                //startActivity(new Intent(Activity_WorkersList.this,
+                //        Activity_Profile.class));
                 finish();
             }
         });

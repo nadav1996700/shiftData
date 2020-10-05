@@ -3,6 +3,9 @@ package src.Activities;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
@@ -109,20 +114,22 @@ public class Activity_Worker extends AppCompatActivity {
 
         // header
         header = navigationView.getHeaderView(0);
-        name = header.findViewById(R.id.Header_LBL_name);
-        id = header.findViewById(R.id.Header_LBL_id);
+        name = header.findViewById(R.id.WorkerHeader_LBL_name);
+        id = header.findViewById(R.id.WorkerHeader_LBL_id);
         setHeader();
     }
 
     /* set name and id of worker */
     private void setHeader() {
+        setWorkerImage();
         My_Firebase firebase = My_Firebase.getInstance();
         firebase.setReference("/" + firebase.getCompany() + "/workers/" + firebase.getWorker_id());
         firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                name.setText(String.format("%s %s", snapshot.child("first_name").getValue().toString(),
-                        snapshot.child("last_name").getValue().toString()));
+                name.setText(String.format("%s %s",
+                        Objects.requireNonNull(snapshot.child("first_name").getValue()).toString(),
+                        Objects.requireNonNull(snapshot.child("last_name").getValue()).toString()));
             }
 
             @Override
@@ -131,21 +138,35 @@ public class Activity_Worker extends AppCompatActivity {
             }
         });
         id.setText(firebase.getWorker_id());
-        // set worker image
-        setHeaderImage();
+        setTitle();
+        setBackgroundImage();
+    }
+
+    /* set item "account" title style on header */
+    private void setTitle() {
+        //title - account
+        MenuItem account = navigationView.getMenu().findItem(R.id.WorkerMenu_account);
+        SpannableString s = new SpannableString(account.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_title),
+                0, s.length(), 0);
+        account.setTitle(s);
+    }
+
+    /* set background image on header */
+    private void setBackgroundImage() {
+        /* header background image */
+        images.setPlaceholder(R.id.WorkerHeader_IV_background);
+        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
+                "worker_background.jpg");
     }
 
     /* set worker image on header */
-    private void setHeaderImage() {
-        My_images.initHelper(this).setPlaceholder(R.id.Header_IV_workerPhoto);
-        try {
-            My_images.getInstance().downloadImage("gs://shiftdata-a19a0.appspot.com/workers_images/" +
-                    id.getText().toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    private void setWorkerImage() {
+        /* worker image */
+        images.setPlaceholder(R.id.WorkerHeader_IV_workerPhoto);
+        images.downloadImage("gs://shiftdata-a19a0.appspot.com/workers_images/" +
+                id.getText().toString());
     }
-
 
     /* handle images from gallery */
     @Override

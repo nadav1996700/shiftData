@@ -45,6 +45,7 @@ public class My_images {
         this.activity = activity;
     }
 
+    /* download image from firebase reference into placeholder */
     public void downloadImage(String ref) {
         // set storage reference
         My_Firebase.getInstance().setStorage_reference(ref);
@@ -60,6 +61,7 @@ public class My_images {
         });
     }
 
+    /* upload image from imageView to firebase storage */
     public void uploadImage(ImageView imageView, String ref) {
         // set storage reference
         My_Firebase.getInstance().setStorage_reference(ref);
@@ -76,7 +78,7 @@ public class My_images {
 
     /* set images using glide library*/
     public void setImage(int placeholder, Drawable photo) {
-        ImageView imageView = this.activity.findViewById(placeholder);
+        ImageView imageView = activity.findViewById(placeholder);
         Glide.with(activity)
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

@@ -29,7 +29,9 @@
         <activity
             android:name="src.Activities.Activity_WorkersList"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name="src.Activities.Activity_Entrance"
             android:configChanges="orientation|keyboardHidden|screenSize"
