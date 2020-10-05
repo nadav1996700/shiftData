@@ -27,16 +27,6 @@
             android:name="src.Activities.Activity_Worker"
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name="src.Activities.Activity_NewWorker">
-
-        </activity>
-        <activity
-            android:name="src.Activities.Activity_WorkersList"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-
         </activity>
         <activity
             android:name="src.Activities.Activity_Entrance"

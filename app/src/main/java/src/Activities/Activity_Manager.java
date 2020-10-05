@@ -1,5 +1,7 @@
 package src.Activities;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
@@ -20,9 +22,12 @@ import com.google.android.material.navigation.NavigationView;
 
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
-import src.fragments.Fragment_Profile;
 import src.fragments.Fragment_Request;
+import src.fragments.Fragment_addWorker;
 import src.fragments.Fragment_currentShifts;
+import src.fragments.Fragment_employees;
+
+import static src.fragments.Fragment_addWorker.Add_Worker_IMAGE;
 
 public class Activity_Manager extends AppCompatActivity {
     private DrawerLayout drawer;
@@ -31,7 +36,6 @@ public class Activity_Manager extends AppCompatActivity {
     private TextView title;
     private View header;
     private TextView name;
-    private TextView id;
     // need to be deleted
     My_images images = My_images.initHelper(this);
 
@@ -73,7 +77,12 @@ public class Activity_Manager extends AppCompatActivity {
                         return true;
                     case R.id.Menu_employees:
                         title.setText(R.string.company_employees);
-                        initFragment(new Fragment_Request());
+                        initFragment(new Fragment_employees());
+                        drawer.close();
+                        return true;
+                    case R.id.Menu_addWorker:
+                        title.setText(R.string.newWorker);
+                        initFragment(new Fragment_addWorker());
                         drawer.close();
                         return true;
                     case R.id.Menu_log_out:
@@ -129,5 +138,16 @@ public class Activity_Manager extends AppCompatActivity {
         images.setPlaceholder(R.id.ManagerHeader_IV_background);
         images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
                 "manager_background.jpg");
+    }
+
+    /* handle images from gallery */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Add_Worker_IMAGE) {
+            Drawable photo = images.convertDataToDrawable(data);
+            if (photo != null)
+                images.setImage(R.id.addWorker_IV_photo, photo);
+        }
     }
 }

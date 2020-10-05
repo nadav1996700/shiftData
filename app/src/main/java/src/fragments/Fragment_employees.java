@@ -1,18 +1,18 @@
-package src.Activities;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package src.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
 import com.google.firebase.database.DataSnapshot;
@@ -22,9 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import src.Utils.My_Firebase;
-import src.Utils.My_images;
 
-public class Activity_WorkersList extends AppCompatActivity {
+public class Fragment_employees extends Fragment {
+    protected View view;
     private ListView workers_list;
     private TextView userDetails;
     private Button detailsBTN;
@@ -34,20 +34,35 @@ public class Activity_WorkersList extends AppCompatActivity {
     private ArrayList<String> id_list;
     My_Firebase firebase = My_Firebase.getInstance();
 
+    public Fragment_employees() {
+    }
+
+    public static Fragment_employees newInstance() {
+        Fragment_employees fragment = new Fragment_employees();
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_workers_list);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        if (view == null)
+            view = inflater.inflate(R.layout.fragment_employees, container, false);
 
         firebase.setCompany("benedict");
 
         // download workers data to lists
         initLists();
 
-        workers_list = new ListView(this);
-        workers_list = findViewById(R.id.Workers_list_LST_list);
-        addWorker = findViewById(R.id.Workers_list_BTN_addWorker);
-        workers_list.setAdapter(new CustomAdapter(this, R.layout.custom_raw));
+       // workers_list = new ListView();
+        workers_list = view.findViewById(R.id.Workers_list_LST_list);
+        addWorker = view.findViewById(R.id.Workers_list_BTN_addWorker);
+        //workers_list.setAdapter(new Fragment_employees().CustomAdapter(this, R.layout.custom_raw));
+        return view;
     }
 
     class CustomAdapter extends ArrayAdapter<String> {
@@ -132,9 +147,9 @@ public class Activity_WorkersList extends AppCompatActivity {
     private void setUserImage(int position) {
         String id = id_list.get(position);
         String path = "gs://shiftdata-a19a0.appspot.com/workers_images/" + id;
-        My_images images = My_images.initHelper(this);
-        images.setPlaceholder(R.id.raw_IMG_photo);
-        images.downloadImage(path);
+        //My_images images = My_images.initHelper(this);
+        //images.setPlaceholder(R.id.raw_IMG_photo);
+        //images.downloadImage(path);
         Log.d("pttt", "done with image");
     }
 
@@ -146,7 +161,7 @@ public class Activity_WorkersList extends AppCompatActivity {
                 firebase.setWorker_id(id_list.get(position));
                 //startActivity(new Intent(Activity_WorkersList.this,
                 //        Activity_Profile.class));
-                finish();
+                //finish();
             }
         });
         deleteBTN.setOnClickListener(new View.OnClickListener() {

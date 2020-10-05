@@ -53,6 +53,7 @@
     <string name="shifts_calender">Shifts calender</string>
     <string name="shifts_request">Shifts request</string>
     <string name="Profile">Profile</string>
+    <string name="newWorker">New Worker</string>
 
 
 </resources>

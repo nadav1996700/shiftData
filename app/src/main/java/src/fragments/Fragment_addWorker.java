@@ -1,32 +1,27 @@
-package src.Activities;
-
-import androidx.appcompat.app.AppCompatActivity;
+package src.fragments;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.src.R;
+import androidx.fragment.app.Fragment;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import com.example.src.R;
 
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
 
-public class Activity_NewWorker extends AppCompatActivity {
-    public static final int PICK_IMAGE = 1;
-    private ImageButton image;
+public class Fragment_addWorker extends Fragment {
+    public static final int Add_Worker_IMAGE = 2;
+    protected View view;
+    private ImageView image;
     private EditText first_name;
     private EditText last_name;
     private EditText phone;
@@ -34,16 +29,30 @@ public class Activity_NewWorker extends AppCompatActivity {
     private EditText id;
     private TextView error_message;
     private Button add;
-    My_images images = My_images.initHelper(this);
+    private Button select_photo;
+    My_images images = My_images.getInstance();
+
+    public Fragment_addWorker() {}
+
+    public static Fragment_addWorker newInstance() {
+        Fragment_addWorker fragment = new Fragment_addWorker();
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_worker);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        if (view == null)
+            view = inflater.inflate(R.layout.fragment_add_worker, container, false);
 
         My_Firebase.getInstance().setCompany("benedict");
 
-        setValues();
+        setValues(view);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,13 +64,13 @@ public class Activity_NewWorker extends AppCompatActivity {
             }
         });
 
-        image.setOnClickListener(new View.OnClickListener() {
+        select_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getImageFromGallery();
             }
         });
-
+        return view;
     }
 
     /* upload new worker to firebase database and firebase storage*/
@@ -113,40 +122,23 @@ public class Activity_NewWorker extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE) {
-            try {
-                // convert data to drawable
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                Drawable photo = new BitmapDrawable(getResources(), selectedImage);
-                // set image
-                images.setImage(R.id.newWorker_IV_photo, photo);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private void getImageFromGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+        getActivity().startActivityForResult(intent, Add_Worker_IMAGE);
     }
 
     /* initialize variables */
-    private void setValues() {
-        first_name = findViewById(R.id.newWorker_EDT_firstName);
-        last_name = findViewById(R.id.newWorker_EDT_lastName);
-        phone = findViewById(R.id.newWorker_EDT_phone);
-        age = findViewById(R.id.newWorker_EDT_age);
-        id = findViewById(R.id.newWorker_EDT_id);
-        add = findViewById(R.id.newWorker_BTN_add);
-        error_message = findViewById(R.id.newWorker_LBL_error);
-        image = findViewById(R.id.newWorker_IV_photo);
+    private void setValues(View view) {
+        first_name = view.findViewById(R.id.addWorker_EDT_firstName);
+        last_name = view.findViewById(R.id.addWorker_EDT_lastName);
+        phone = view.findViewById(R.id.addWorker_EDT_phone);
+        age = view.findViewById(R.id.addWorker_EDT_age);
+        id = view.findViewById(R.id.addWorker_EDT_id);
+        add = view.findViewById(R.id.addWorker_BTN_add);
+        error_message = view.findViewById(R.id.addWorker_LBL_error);
+        image = view.findViewById(R.id.addWorker_IV_photo);
+        select_photo = view.findViewById(R.id.addWorker_BTN_editPhoto);
     }
 }

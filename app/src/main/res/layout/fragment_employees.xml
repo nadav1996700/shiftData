@@ -8,7 +8,7 @@
     android:padding="10dp"
     android:background="#7E14E8"
     android:orientation="horizontal"
-    tools:context="src.Activities.Activity_WorkersList">
+    tools:context="src.fragments.Fragment_employees">
     
     <ListView
         android:id="@+id/Workers_list_LST_list"

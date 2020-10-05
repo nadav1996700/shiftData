@@ -18,6 +18,11 @@
             android:id="@+id/Menu_employees"
             android:icon="@drawable/ic_company_employees"
             android:title="@string/company_employees" />
+
+        <item
+            android:id="@+id/Menu_addWorker"
+            android:icon="@drawable/ic_new_worker"
+            android:title="@string/newWorker" />
     </group>
 
     <item android:title="account"
