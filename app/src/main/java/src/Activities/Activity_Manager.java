@@ -22,20 +22,22 @@ import com.google.android.material.navigation.NavigationView;
 
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
-import src.fragments.Fragment_Request;
+import src.fragments.CallBack_employeesFragment;
 import src.fragments.Fragment_addWorker;
 import src.fragments.Fragment_currentShifts;
 import src.fragments.Fragment_employees;
+import src.fragments.Fragment_setShifts;
 
 import static src.fragments.Fragment_addWorker.Add_Worker_IMAGE;
 
-public class Activity_Manager extends AppCompatActivity {
+public class Activity_Manager extends AppCompatActivity implements CallBack_employeesFragment {
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private ImageButton menu_BTN;
     private TextView title;
     private View header;
     private TextView name;
+    private Fragment_employees fragment_employees;
     // need to be deleted
     My_images images = My_images.initHelper(this);
 
@@ -53,6 +55,8 @@ public class Activity_Manager extends AppCompatActivity {
         title.setText("shifts calender");
         initFragment(new Fragment_currentShifts());
         navigationView.setCheckedItem(R.id.Menu_watch_shifts);
+        fragment_employees = new Fragment_employees(this);
+        fragment_employees.setCallBack(this);
 
         menu_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +76,12 @@ public class Activity_Manager extends AppCompatActivity {
                         return true;
                     case R.id.Menu_set_shifts:
                         title.setText(R.string.set_shifts);
-                        initFragment(new Fragment_Request());
+                        initFragment(new Fragment_setShifts());
                         drawer.close();
                         return true;
                     case R.id.Menu_employees:
                         title.setText(R.string.company_employees);
-                        initFragment(new Fragment_employees());
+                        initFragment(fragment_employees);
                         drawer.close();
                         return true;
                     case R.id.Menu_addWorker:
@@ -149,5 +153,10 @@ public class Activity_Manager extends AppCompatActivity {
             if (photo != null)
                 images.setImage(R.id.addWorker_IV_photo, photo);
         }
+    }
+
+    @Override
+    public void changeFragment(Fragment fragment) {
+        initFragment(fragment);
     }
 }

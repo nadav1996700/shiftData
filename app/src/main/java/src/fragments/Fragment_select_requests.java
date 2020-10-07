@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import src.Utils.My_Firebase;
 
-public class Fragment_select_requests extends Fragment implements CallBack_RequestsActivity {
+public class Fragment_select_requests extends Fragment implements CallBack_RequestsFragment {
     protected View view;
     private String chosen_date;
     private ArrayList<Chip> chips;

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.src.R;
 
-public class Fragment_Request extends Fragment implements CallBack_RequestsActivity {
+public class Fragment_Request extends Fragment implements CallBack_RequestsFragment {
     protected View view;
     private Fragment_select_requests fragment_select_requests;
     private Fragment_calender fragment_calender;
@@ -28,7 +28,7 @@ public class Fragment_Request extends Fragment implements CallBack_RequestsActiv
         super.onCreate(savedInstanceState);
 
         fragment_calender = Fragment_calender.newInstance();
-        fragment_calender.setCallBack_RequestsActivity(this);
+        fragment_calender.setCallBack_RequestsFragment(this);
         fragment_select_requests = Fragment_select_requests.newInstance();
         initFragments(fragment_calender, R.id.Requests_LAY_calender);
         initFragments(fragment_select_requests, R.id.Requests_LAY_request);

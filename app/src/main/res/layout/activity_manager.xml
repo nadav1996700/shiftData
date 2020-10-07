@@ -56,6 +56,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#EFEEF1"
+        android:theme="@style/menuLineStyle"
         app:headerLayout="@layout/header_manager"
         app:itemIconTint="@drawable/drawer_item_color"
         app:itemTextColor="@drawable/drawer_item_color"

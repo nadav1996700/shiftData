@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.src.R;
 
-public class Fragment_currentShifts extends Fragment implements CallBack_RequestsActivity  {
+public class Fragment_currentShifts extends Fragment implements CallBack_RequestsFragment {
     protected View view;
     private Fragment_shifts fragment_shifts;
     private Fragment_calender fragment_calender;
@@ -28,7 +28,7 @@ public class Fragment_currentShifts extends Fragment implements CallBack_Request
         super.onCreate(savedInstanceState);
 
         fragment_calender = Fragment_calender.newInstance();
-        fragment_calender.setCallBack_RequestsActivity(this);
+        fragment_calender.setCallBack_RequestsFragment(this);
         fragment_shifts = fragment_shifts.newInstance();
         initFragments(fragment_calender, R.id.current_shifts_LAY_calender);
         initFragments(fragment_shifts, R.id.current_shifts_LAY_shifts);

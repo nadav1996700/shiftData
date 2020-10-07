@@ -24,7 +24,7 @@ import java.util.Arrays;
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
 
-public class Fragment_shifts extends Fragment implements CallBack_ShiftActivity {
+public class Fragment_shifts extends Fragment implements CallBack_ShiftFragment {
     protected View view;
     private String chosen_date;
     private String chosen_shift;

@@ -1,5 +1,5 @@
 package src.fragments;
 
-public interface CallBack_ShiftActivity {
+public interface CallBack_RequestsFragment {
     void setDate(String date);
 }
