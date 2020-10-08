@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
@@ -108,11 +109,13 @@ public class Activity_SignIn extends AppCompatActivity {
         firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String db_username = snapshot.child("username").getValue().toString();
+                String db_username = Objects.requireNonNull(snapshot.child("username").
+                        getValue()).toString();
                 if (!db_username.equals(username.getText().toString()))
                     checkIfUserIsWorker();
                 else {
-                    String db_password = snapshot.child("password").getValue().toString();
+                    String db_password = Objects.requireNonNull(snapshot.child("password").
+                            getValue()).toString();
                     if (!db_password.equals(password.getText().toString()))
                         checkIfUserIsWorker();
                     else {
@@ -154,7 +157,7 @@ public class Activity_SignIn extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("ERROR_TAG", "Error in loading worker data");
             }
         });
@@ -175,17 +178,18 @@ public class Activity_SignIn extends AppCompatActivity {
     /* read username and password until find match */
     public void checkIfUserIsWorker() {
         firebase.setReference("/" + firebase.getCompany() + "/workers");
-        firebase.getReference().addValueEventListener(new ValueEventListener() {
+        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String username, password, id;
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    id = child.child("id").getValue().toString();
-                    username = child.child("username").getValue().toString();
-                    password = child.child("password").getValue().toString();
-                    if (checkWorker(username, password))
+                    id = Objects.requireNonNull(child.child("id").getValue()).toString();
+                    username = Objects.requireNonNull(child.child("username").getValue()).toString();
+                    password = Objects.requireNonNull(child.child("password").getValue()).toString();
+                    if (checkWorker(username, password)) {
                         userIsWorker(id);
-                    break;
+                        break;
+                    }
                 }
             }
 

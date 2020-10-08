@@ -6,13 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.src.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,19 +19,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+import javax.security.auth.callback.Callback;
+
+import src.Classes.dataItem;
+import src.Classes.employeeAdapter;
 import src.Utils.My_Firebase;
-import src.Utils.My_images;
 
 public class Fragment_employees extends Fragment {
     protected View view;
-    private ListView workers_list;
-    private TextView name;
-    private Button detailsBTN;
-    private Button deleteBTN;
+    private employeeAdapter adapter;
+    private RecyclerView recyclerView;
+    private ArrayList<dataItem> dataItems = new ArrayList<>();
     private FloatingActionButton addWorker;
-    private ArrayList<String> names;
-    private ArrayList<String> id_list;
     private Context context;
     private CallBack_employeesFragment callBack_employeesFragment;
     My_Firebase firebase = My_Firebase.getInstance();
@@ -47,28 +46,56 @@ public class Fragment_employees extends Fragment {
         return fragment;
     }
 
-    public void setCallBack(CallBack_employeesFragment callBack) {
-        this.callBack_employeesFragment = callBack;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null)
             view = inflater.inflate(R.layout.fragment_employees, container, false);
-        firebase.setCompany("benedict");
-        // download workers data to lists
-        initLists();
-        // initialize variables
-        initValues();
-        // set floating Button listener
+        // set AddWorker button
+        addWorker = view.findViewById(R.id.employees_BTN_addWorker);
         floatingButtonListener();
+        // set up the RecyclerView
+        recyclerView = view.findViewById(R.id.employees_LST_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        // fill ArrayList with data
+        getData();
         return view;
+    }
+
+    private void getData() {
+        // get path
+        firebase.setReference("/" + firebase.getCompany() + "/workers");
+        firebase.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataItems.clear();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    String first_name = Objects.requireNonNull(child.child("first_name").
+                            getValue()).toString();
+                    String last_name = Objects.requireNonNull(child.child("last_name").
+                            getValue()).toString();
+                    String id = Objects.requireNonNull(child.child("id").getValue()).toString();
+                    dataItems.add(new dataItem(id, first_name, last_name));
+                }
+                updateAdapter();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR_TAG", "Error in loading worker data");
+            }
+        });
+    }
+
+    private void updateAdapter() {
+        Log.d("pttt", "updateAdapter = " + dataItems.toString());
+        adapter = new employeeAdapter(context, dataItems);
+        recyclerView.setAdapter(adapter);
     }
 
     private void floatingButtonListener() {
@@ -80,126 +107,7 @@ public class Fragment_employees extends Fragment {
         });
     }
 
-    private void initValues() {
-        workers_list = view.findViewById(R.id.Workers_list_LST_list);
-        addWorker = view.findViewById(R.id.Workers_list_BTN_addWorker);
-        workers_list.setAdapter(new CustomAdapter());
-    }
-
-    class CustomAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return names.size();
-        }
-
-        @Override
-        public String getItem(int i) {
-            return names.get(i) + " " + id_list.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int position, View view, ViewGroup parent) {
-            View view1 = getLayoutInflater().inflate(R.layout.custom_raw, null);
-
-            Log.d("pttt", "inside getView");
-            // initialize variables
-            setValues(view1);
-            // buttons listeners
-            setListeners(position);
-            Log.d("pttt", "after setListeners");
-            // set worker image
-            setUserImage(position);
-            Log.d("pttt", "after setImage");
-            // set details TextView
-            setDetails(position);
-            Log.d("pttt", "after setDetails");
-
-            return view1;
-        }
-    }
-
-    private void initLists() {
-        // initialize lists
-        names = new ArrayList<>();
-        id_list = new ArrayList<>();
-        // insert data
-        firebase.setReference("/" + firebase.getCompany() + "/workers");
-        firebase.getReference().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                id_list.clear();
-                names.clear();
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String first_name = child.child("first_name").getValue().toString();
-                    String last_name = child.child("last_name").getValue().toString();
-                    String id = child.child("id").getValue().toString();
-                    names.add(first_name + " " + last_name);
-                    id_list.add(id);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
-            }
-        });
-    }
-
-    /* set name and family of worker in TextView */
-    private void setDetails(int position) {
-        String details = names.get(position);
-        name.setText(details);
-    }
-
-    /* set user image at ImageView */
-    private void setUserImage(int position) {
-        String id = id_list.get(position);
-        String path = "gs://shiftdata-a19a0.appspot.com/workers_images/" + id;
-        My_images images = My_images.getInstance();
-        images.setPlaceholder(R.id.raw_IMG_photo);
-        images.downloadImage(path);
-        Log.d("pttt", "done with image");
-    }
-
-    /* set buttons listeners */
-    private void setListeners(int position) {
-        firebase.setWorker_id(id_list.get(position));
-        detailsBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (callBack_employeesFragment != null) {
-                    callBack_employeesFragment.changeFragment(new Fragment_Profile());
-                }
-            }
-        });
-        deleteBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // remove worker from firebase
-                firebase.setReference("/" + firebase.getCompany() + "/workers/" +
-                        firebase.getWorker_id());
-                firebase.getReference().removeValue();
-                // remove from lists
-                for (int i = 0; i < names.size(); i++) {
-                    if (id_list.get(i).equals(firebase.getWorker_id())) {
-                        names.remove(i);
-                        id_list.remove(i);
-                    }
-                }
-            }
-        });
-    }
-
-    /* initialize values */
-    private void setValues(View view) {
-        name = view.findViewById(R.id.raw_LBL_details);
-        detailsBTN = view.findViewById(R.id.raw_BTN_details);
-        deleteBTN = view.findViewById(R.id.raw_BTN_delete);
+    public void setCallBack(CallBack_employeesFragment callBack_employeesFragment) {
+        this.callBack_employeesFragment = callBack_employeesFragment;
     }
 }

@@ -57,7 +57,7 @@ public class Activity_Worker extends AppCompatActivity {
         setValues();
 
         /* set first screen - shifts screen */
-        title.setText("shifts calender");
+        title.setText(R.string.shifts_calender);
         initFragment(new Fragment_currentShifts());
         navigationView.setCheckedItem(R.id.Menu_watch_shifts);
 
@@ -173,8 +173,10 @@ public class Activity_Worker extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PROFILE_IMAGE) {
             Drawable photo = images.convertDataToDrawable(data);
-            if (photo != null)
-                images.setImage(R.id.Profile_IV_photo, photo);
+            if (photo != null) {
+                images.setPlaceholder(R.id.Profile_IV_photo);
+                images.setImage(photo);
+            }
         }
     }
 }

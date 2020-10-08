@@ -26,8 +26,7 @@
         <activity
             android:name="src.Activities.Activity_Worker"
             android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="src.Activities.Activity_Entrance"
             android:configChanges="orientation|keyboardHidden|screenSize"
