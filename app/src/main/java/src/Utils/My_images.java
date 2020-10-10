@@ -10,10 +10,12 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
@@ -24,7 +26,6 @@ public class My_images {
     private static My_images instance;
     private Activity activity;
     private int download_placeholder;
-    private ShapeableImageView imageView_placeholder;
 
     private My_images(Activity activity) {
         this.activity = activity;
@@ -32,10 +33,6 @@ public class My_images {
 
     public void setPlaceholder(int placeholder) {
         this.download_placeholder = placeholder;
-    }
-
-    public void setImageView_placeholder(ShapeableImageView imageView_placeholder) {
-        this.imageView_placeholder = imageView_placeholder;
     }
 
     public static My_images getInstance() {
@@ -53,23 +50,20 @@ public class My_images {
     }
 
     /* download image from firebase reference into placeholder */
-    public void downloadImage(String ref) {
-        // set storage reference
-        try {
-            My_Firebase.getInstance().setStorage_reference(ref);
-            StorageReference reference = My_Firebase.getInstance().getStorage_reference();
-            final long ONE_MEGABYTE = 1024 * 1024;
-            reference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    Drawable drawable = new BitmapDrawable(activity.getResources(), BitmapFactory
-                            .decodeByteArray(bytes, 0, bytes.length));
-                    setImage(drawable);
-                }
-            });
-        } catch (Exception e) {
-            Log.d("ERROR_TAG", "Error in downloading image");
-        }
+    public void downloadImageUrl(String ref, final ImageView imageView) {
+        My_Firebase.getInstance().setStorage_reference(ref);
+        StorageReference reference = My_Firebase.getInstance().getStorage_reference();
+        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                setImageByUri(uri, imageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("ERROR_TAG", "Error in downloading image");
+            }
+        });
     }
 
     /* upload image from imageView to firebase storage */
@@ -87,14 +81,16 @@ public class My_images {
         reference.putBytes(data);
     }
 
-    /* set images using glide library */
-    public void setImage(Drawable photo) {
-        ImageView imageView;
-        if (imageView_placeholder == null)
-            imageView = activity.findViewById(download_placeholder);
-        else
-            imageView = imageView_placeholder;
+    private void setImageByUri(Uri uri, ImageView imageView) {
+        Glide.with(activity)
+                .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView);
+    }
 
+    /* set images using glide library (by drawable) */
+    public void setImage(Drawable photo) {
+        ImageView imageView = activity.findViewById(download_placeholder);
         Glide.with(activity)
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -107,8 +103,7 @@ public class My_images {
             final Uri imageUri = data.getData();
             final InputStream imageStream = activity.getContentResolver().openInputStream(imageUri);
             final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-            Drawable drawable = new BitmapDrawable(activity.getResources(), selectedImage);
-            return drawable;
+            return new BitmapDrawable(activity.getResources(), selectedImage);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;

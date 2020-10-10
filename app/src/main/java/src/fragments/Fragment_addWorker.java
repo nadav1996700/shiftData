@@ -10,9 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
+
+import java.util.Objects;
 
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
@@ -35,8 +38,7 @@ public class Fragment_addWorker extends Fragment {
     public Fragment_addWorker() {}
 
     public static Fragment_addWorker newInstance() {
-        Fragment_addWorker fragment = new Fragment_addWorker();
-        return fragment;
+        return new Fragment_addWorker();
     }
 
     @Override
@@ -45,12 +47,10 @@ public class Fragment_addWorker extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null)
             view = inflater.inflate(R.layout.fragment_add_worker, container, false);
-
-        My_Firebase.getInstance().setCompany("benedict");
 
         setValues(view);
 
@@ -91,10 +91,8 @@ public class Fragment_addWorker extends Fragment {
         String mphone = phone.getText().toString();
         String uid = id.getText().toString();
         String username = fname + "." + lname;
-        String password = uid;
 
-        Worker worker = new Worker(fname, lname, username, password, uid, mphone, mage);
-        return worker;
+        return new Worker(fname, lname, username, uid, uid, mphone, mage);
     }
 
     /* check that all fields are correctly filled */
@@ -126,7 +124,7 @@ public class Fragment_addWorker extends Fragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        getActivity().startActivityForResult(intent, Add_Worker_IMAGE);
+        requireActivity().startActivityForResult(intent, Add_Worker_IMAGE);
     }
 
     /* initialize variables */

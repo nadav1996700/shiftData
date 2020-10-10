@@ -22,21 +22,14 @@
             android:text="@string/sign_in"
             android:textSize="40sp" />
 
-        <ImageView
-            android:id="@+id/signIn_IMG_sign_in"
-            android:layout_width="80dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp" />
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="80dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_marginTop="80dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -49,12 +42,12 @@
                 android:id="@+id/signIn_SPN_business"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:cursorVisible="false"
                 android:background="#40B1E4"
-                android:hint="@string/select_business"/>
+                android:cursorVisible="false"
+                android:gravity="center"
+                android:hint="@string/select_business"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,7 +74,7 @@
             android:layout_weight="1"
             android:background="#F2F4F4"
             android:hint="@string/password"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             android:padding="10dp"
             android:textColor="#040709"
             android:textColorHint="#8A9298"
@@ -141,6 +134,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

@@ -1,7 +1,6 @@
 package src.Classes;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.src.R;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.Shapeable;
 
 import java.util.ArrayList;
 
@@ -22,12 +20,14 @@ public class employeeAdapter extends RecyclerView.Adapter<employeeAdapter.ViewHo
 
     private ArrayList<dataItem> data;
     private LayoutInflater mInflater;
+    private Context context;
     My_images images = My_images.getInstance();
 
     // data is passed into the constructor
     public employeeAdapter(Context context, ArrayList<dataItem> data) {
         this.mInflater = LayoutInflater.from(context);
         this.data = data;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -47,8 +47,8 @@ public class employeeAdapter extends RecyclerView.Adapter<employeeAdapter.ViewHo
         holder.TV_name.setText(name);
         // set image
         String path = "gs://shiftdata-a19a0.appspot.com/workers_images/" + dataItem.getId();
-        images.setImageView_placeholder(holder.imageView);
-        images.downloadImage(path);
+        ShapeableImageView imageView = holder.imageView;
+        images.downloadImageUrl(path, imageView);
     }
 
     // total number of rows
@@ -61,11 +61,13 @@ public class employeeAdapter extends RecyclerView.Adapter<employeeAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView TV_name;
         ShapeableImageView imageView;
+        int place_holder;
 
         ViewHolder(View itemView) {
             super(itemView);
             TV_name = itemView.findViewById(R.id.raw_LBL_details);
             imageView = itemView.findViewById(R.id.raw_IMG_photo);
+            place_holder = R.id.raw_IMG_photo;
         }
     }
 }

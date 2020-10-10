@@ -8,6 +8,7 @@ import android.text.style.TextAppearanceSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,23 +35,19 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private ImageButton menu_BTN;
+    private ImageView headerImage;
     private TextView title;
     private View header;
     private TextView name;
     private Fragment_employees fragment_employees;
-    // need to be deleted
-    My_images images = My_images.initHelper(this);
+    My_images images = My_images.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
-
-        My_Firebase firebase = My_Firebase.getInstance();
-        firebase.setCompany("benedict");
-
+        /* init variables */
         setValues();
-
         /* set first screen - shifts screen */
         title.setText(R.string.shifts_calender);
         initFragment(new Fragment_currentShifts());
@@ -116,6 +113,7 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
         // header
         header = navigationView.getHeaderView(0);
         name = header.findViewById(R.id.ManagerHeader_LBL_name);
+        headerImage = header.findViewById(R.id.ManagerHeader_IV_background);
         setHeader();
     }
 
@@ -123,7 +121,7 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     private void setHeader() {
         name.setText(My_Firebase.getInstance().getCompany());
         setTitle();
-        setBackgroundImage();
+        setHeaderImage();
     }
 
     /* set item "account" title style on header */
@@ -137,11 +135,12 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     }
 
     /* set background image on header */
-    private void setBackgroundImage() {
+    private void setHeaderImage() {
         /* header background image */
-        images.setPlaceholder(R.id.ManagerHeader_IV_background);
-        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
-                "manager_background.jpg");
+        images.setActivity(this);
+        String path = "gs://shiftdata-a19a0.appspot.com/general_images/" +
+                "manager_background.jpg";
+        images.downloadImageUrl(path, headerImage);
     }
 
     /* handle images from gallery */
@@ -160,5 +159,11 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     @Override
     public void changeFragment(Fragment fragment) {
         initFragment(fragment);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        finish();
     }
 }

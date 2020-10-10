@@ -14,11 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
@@ -36,7 +38,7 @@ public class Fragment_Profile extends Fragment {
     private EditText age;
     private EditText username;
     private EditText password;
-    private ImageView profile_photo;
+    private ShapeableImageView profile_photo;
     private ArrayList<EditText> list;
     My_Firebase firebase = My_Firebase.getInstance();
     My_images images = My_images.getInstance();
@@ -45,8 +47,7 @@ public class Fragment_Profile extends Fragment {
     }
 
     public static Fragment_Profile newInstance() {
-        Fragment_Profile fragment = new Fragment_Profile();
-        return fragment;
+        return new Fragment_Profile();
     }
 
     @Override
@@ -55,7 +56,7 @@ public class Fragment_Profile extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null)
             view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -95,7 +96,7 @@ public class Fragment_Profile extends Fragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        getActivity().startActivityForResult(intent, PICK_PROFILE_IMAGE);
+        requireActivity().startActivityForResult(intent, PICK_PROFILE_IMAGE);
     }
 
     /* initialize data of edit texts */
@@ -105,10 +106,9 @@ public class Fragment_Profile extends Fragment {
         firebase.setReference(path);
         // read worker from firebase and present data
         setData();
-        // read image
-        images.setPlaceholder(R.id.Profile_IV_photo);
+        // load image
         path = "gs://shiftdata-a19a0.appspot.com/workers_images/" + firebase.getWorker_id();
-        images.downloadImage(path);
+        images.downloadImageUrl(path, profile_photo);
     }
 
     /* save data after user done to editing */
@@ -160,16 +160,20 @@ public class Fragment_Profile extends Fragment {
         firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String first_name = snapshot.child("first_name").getValue().toString();
-                String last_name = snapshot.child("last_name").getValue().toString();
-                String username = snapshot.child("username").getValue().toString();
-                String password = snapshot.child("password").getValue().toString();
-                String id = snapshot.child("id").getValue().toString();
-                String phone = snapshot.child("phone").getValue().toString();
-                String age = snapshot.child("age").getValue().toString();
+                String first_name = Objects.requireNonNull(snapshot.child("first_name").
+                        getValue()).toString();
+                String last_name = Objects.requireNonNull(snapshot.child("last_name").
+                        getValue()).toString();
+                String username = Objects.requireNonNull(snapshot.child("username").
+                        getValue()).toString();
+                String password = Objects.requireNonNull(snapshot.child("password").
+                        getValue()).toString();
+                String id = Objects.requireNonNull(snapshot.child("id").getValue()).toString();
+                String phone = Objects.requireNonNull(snapshot.child("phone").getValue()).toString();
+                String age = Objects.requireNonNull(snapshot.child("age").getValue()).toString();
                 // create Worker
                 Worker worker = new Worker(first_name, last_name, username,
-                        password, id, phone, Integer.valueOf(age));
+                        password, id, phone, Integer.parseInt(age));
                 // show data
                 showData(worker);
             }

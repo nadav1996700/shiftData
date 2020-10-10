@@ -30,8 +30,6 @@ public class Activity_SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         setValues();
-
-
         sign_up.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -40,6 +38,8 @@ public class Activity_SignUp extends AppCompatActivity {
                     // upload company to firebase, and open login screen
                     uploadCompany();
                     startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
+                    overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+                    finish();
                 }
             }
         });
@@ -49,6 +49,8 @@ public class Activity_SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
+                overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+                finish();
             }
         });
     }
@@ -76,16 +78,6 @@ public class Activity_SignUp extends AppCompatActivity {
         sign_in = findViewById(R.id.signUp_LBL_sign_in);
         sign_up = findViewById(R.id.signUp_BTN_signUp);
         error_message = findViewById(R.id.signUp_LBL_error);
-
-        // set icon
-        setImage();
-    }
-
-    private void setImage() {
-        My_images images = My_images.initHelper(this);
-        images.setPlaceholder(R.id.signUp_IMG_sign_up);
-        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
-                "register_icon.png");
     }
 
     /* check the fields data and raise error message if necessary */

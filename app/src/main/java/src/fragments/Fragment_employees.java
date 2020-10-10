@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.src.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -26,6 +28,7 @@ import javax.security.auth.callback.Callback;
 import src.Classes.dataItem;
 import src.Classes.employeeAdapter;
 import src.Utils.My_Firebase;
+import src.Utils.My_images;
 
 public class Fragment_employees extends Fragment {
     protected View view;
@@ -42,8 +45,7 @@ public class Fragment_employees extends Fragment {
     }
 
     public static Fragment_employees newInstance(Context context) {
-        Fragment_employees fragment = new Fragment_employees(context);
-        return fragment;
+        return new Fragment_employees(context);
     }
 
     @Override
@@ -60,11 +62,17 @@ public class Fragment_employees extends Fragment {
         addWorker = view.findViewById(R.id.employees_BTN_addWorker);
         floatingButtonListener();
         // set up the RecyclerView
-        recyclerView = view.findViewById(R.id.employees_LST_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        setRecyclerView();
         // fill ArrayList with data
         getData();
         return view;
+    }
+
+    private void setRecyclerView() {
+        recyclerView = view.findViewById(R.id.employees_LST_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL));
     }
 
     private void getData() {

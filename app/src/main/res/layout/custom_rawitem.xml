@@ -15,6 +15,7 @@
             android:id="@+id/raw_IMG_photo"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/circleImageView"
             android:src="@mipmap/ic_user_round" />
 

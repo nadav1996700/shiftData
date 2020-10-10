@@ -22,12 +22,6 @@
             android:text="@string/Sign_Up"
             android:textSize="40sp"/>
 
-        <ImageView
-            android:id="@+id/signUp_IMG_sign_up"
-            android:layout_width="80dp"
-            android:layout_height="120dp"
-            android:paddingStart="10dp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -67,7 +61,7 @@
             android:layout_width="270dp"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:textSize="20sp"
             android:textColor="#040709"
             android:hint="@string/password"

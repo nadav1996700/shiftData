@@ -45,6 +45,7 @@ public class Activity_SignIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Activity_SignIn.this, Activity_SignUp.class));
+                overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                 finish();
             }
         });
@@ -85,16 +86,6 @@ public class Activity_SignIn extends AppCompatActivity {
 
         // set spinner data
         setSpinnerData();
-        // set icon
-        setImage();
-    }
-
-    private void setImage() {
-        My_images images = My_images.initHelper(this);
-        images.setActivity(Activity_SignIn.this);
-        images.setPlaceholder(R.id.signIn_IMG_sign_in);
-        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
-                "login_icon.png");
     }
 
     /* set spinner data */
@@ -120,7 +111,8 @@ public class Activity_SignIn extends AppCompatActivity {
                         checkIfUserIsWorker();
                     else {
                         // get in to main screen of manager - Activity Manager
-                        startActivity(new Intent(Activity_SignIn.this, Activity_Worker.class));
+                        startActivity(new Intent(Activity_SignIn.this, Activity_Manager.class));
+                        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
                     }
                 }
             }
@@ -133,13 +125,8 @@ public class Activity_SignIn extends AppCompatActivity {
 
     /* check if username and password match */
     private boolean checkWorker(String mUsername, String mPassword) {
-        if (mUsername.equals(username.getText().toString()) &&
-                mPassword.equals(password.getText().toString())) {
-            return true;
-        }
-        // failed to commit login
-        setError_message();
-        return false;
+        return mUsername.equals(username.getText().toString()) &&
+                mPassword.equals(password.getText().toString());
     }
 
     /* read all company names from firebase to spinner */
@@ -166,8 +153,8 @@ public class Activity_SignIn extends AppCompatActivity {
     /* sign in as worker */
     private void userIsWorker(String id) {
         firebase.setWorker_id(id);
-        Intent intent = new Intent(Activity_SignIn.this, Activity_Worker.class);
-        startActivity(intent);
+        startActivity(new Intent(Activity_SignIn.this, Activity_Worker.class));
+        overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
     }
 
     /* set error message if login fail */
@@ -181,6 +168,7 @@ public class Activity_SignIn extends AppCompatActivity {
         firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int flag = 0; // set flag in order to know if the user succeeded to sign in
                 String username, password, id;
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     id = Objects.requireNonNull(child.child("id").getValue()).toString();
@@ -188,9 +176,13 @@ public class Activity_SignIn extends AppCompatActivity {
                     password = Objects.requireNonNull(child.child("password").getValue()).toString();
                     if (checkWorker(username, password)) {
                         userIsWorker(id);
+                        flag = 1;
                         break;
                     }
                 }
+                if(flag == 0)
+                    // failed to commit login
+                    setError_message();
             }
 
             @Override

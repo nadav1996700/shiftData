@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.src.R;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,20 +44,16 @@ public class Activity_Worker extends AppCompatActivity {
     private View header;
     private TextView name;
     private TextView id;
-    // need to be deleted
-    My_images images = My_images.initHelper(this);
+    private ImageView header_background;
+    private ShapeableImageView worker_image;
+    My_images images = My_images.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker);
-
-        My_Firebase firebase = My_Firebase.getInstance();
-        firebase.setWorker_id("207896781");
-        firebase.setCompany("benedict");
-
+        /* initialize variables */
         setValues();
-
         /* set first screen - shifts screen */
         title.setText(R.string.shifts_calender);
         initFragment(new Fragment_currentShifts());
@@ -115,12 +113,13 @@ public class Activity_Worker extends AppCompatActivity {
         header = navigationView.getHeaderView(0);
         name = header.findViewById(R.id.WorkerHeader_LBL_name);
         id = header.findViewById(R.id.WorkerHeader_LBL_id);
+        header_background = header.findViewById(R.id.WorkerHeader_IV_background);
+        worker_image = header.findViewById(R.id.WorkerHeader_IV_workerPhoto);
         setHeader();
     }
 
     /* set name and id of worker */
     private void setHeader() {
-        setWorkerImage();
         My_Firebase firebase = My_Firebase.getInstance();
         firebase.setReference("/" + firebase.getCompany() + "/workers/" + firebase.getWorker_id());
         firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -138,7 +137,7 @@ public class Activity_Worker extends AppCompatActivity {
         });
         id.setText(firebase.getWorker_id());
         setTitle();
-        setBackgroundImage();
+        setImages();
     }
 
     /* set item "account" title style on header */
@@ -151,20 +150,17 @@ public class Activity_Worker extends AppCompatActivity {
         account.setTitle(s);
     }
 
-    /* set background image on header */
-    private void setBackgroundImage() {
-        /* header background image */
-        images.setPlaceholder(R.id.WorkerHeader_IV_background);
-        images.downloadImage("gs://shiftdata-a19a0.appspot.com/general_images/" +
-                "worker_background.jpg");
-    }
-
-    /* set worker image on header */
-    private void setWorkerImage() {
+    /* set worker image and background image on header */
+    private void setImages() {
         /* worker image */
-        images.setPlaceholder(R.id.WorkerHeader_IV_workerPhoto);
-        images.downloadImage("gs://shiftdata-a19a0.appspot.com/workers_images/" +
-                id.getText().toString());
+        images.setActivity(this);
+        String path = "gs://shiftdata-a19a0.appspot.com/workers_images/" +
+                        id.getText().toString();
+        images.downloadImageUrl(path, worker_image);
+        /* header background image */
+        path = "gs://shiftdata-a19a0.appspot.com/general_images/" +
+                "worker_background.jpg";
+        images.downloadImageUrl(path, header_background);
     }
 
     /* handle images from gallery */
