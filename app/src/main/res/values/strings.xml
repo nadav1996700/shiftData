@@ -54,5 +54,8 @@
     <string name="shifts_request">Shifts request</string>
     <string name="Profile">Profile</string>
     <string name="newWorker">New Worker</string>
+    <string name="internet_dialog_title">No Connection</string>
+    <string name="internet_supporting_text">please connect to the internet and play again</string>
+    <string name="ok">OK</string>
 
 </resources>
