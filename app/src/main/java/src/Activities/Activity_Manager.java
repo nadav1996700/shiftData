@@ -1,5 +1,6 @@
 package src.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -39,6 +40,8 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     private TextView title;
     private View header;
     private TextView name;
+    private Activity activity = this;
+    private CallBack_employeesFragment callBack_employeesFragment = this;
     private Fragment_employees fragment_employees;
     My_images images = My_images.getInstance();
 
@@ -73,12 +76,15 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
                         return true;
                     case R.id.Menu_set_shifts:
                         title.setText(R.string.set_shifts);
-                        initFragment(new Fragment_setShifts());
+                        Fragment_setShifts setShifts = new Fragment_setShifts(activity);
+                        initFragment(setShifts);
                         drawer.close();
                         return true;
                     case R.id.Menu_employees:
                         title.setText(R.string.company_employees);
-                        initFragment(fragment_employees);
+                        Fragment_employees employees = new Fragment_employees(activity);
+                        employees.setCallBack(callBack_employeesFragment);
+                        initFragment(employees);
                         drawer.close();
                         return true;
                     case R.id.Menu_addWorker:

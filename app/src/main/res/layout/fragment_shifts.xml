@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EDEBEF"
+        app:tabIconTint="#E6D21E"
         app:tabSelectedTextColor="#073AF1"
         app:tabTextColor="#0C0710">
 
@@ -19,20 +20,23 @@
             android:id="@+id/fragment_shifts_TAB_morning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_morning" />
+            android:icon="@drawable/ic_morning"
+            android:text="@string/morning" />
 
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/fragment_shifts_TAB_evening"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_evening" />
+            android:icon="@drawable/ic_evening"
+            android:text="@string/evening" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/fragment_shifts_TAB_night"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_night" />
+            android:icon="@drawable/ic_night"
+            android:text="@string/night" />
 
     </com.google.android.material.tabs.TabLayout>
 

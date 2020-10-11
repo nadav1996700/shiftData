@@ -1,5 +1,6 @@
 package src.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,16 +37,16 @@ public class Fragment_employees extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<dataItem> dataItems = new ArrayList<>();
     private FloatingActionButton addWorker;
-    private Context context;
+    private Activity activity;
     private CallBack_employeesFragment callBack_employeesFragment;
     My_Firebase firebase = My_Firebase.getInstance();
 
-    public Fragment_employees(Context context) {
-        this.context = context;
+    public Fragment_employees(Activity activity) {
+        this.activity = activity;
     }
 
-    public static Fragment_employees newInstance(Context context) {
-        return new Fragment_employees(context);
+    public static Fragment_employees newInstance(Activity activity) {
+        return new Fragment_employees(activity);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class Fragment_employees extends Fragment {
 
     private void setRecyclerView() {
         recyclerView = view.findViewById(R.id.employees_LST_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
     }
@@ -102,7 +103,7 @@ public class Fragment_employees extends Fragment {
 
     private void updateAdapter() {
         Log.d("pttt", "updateAdapter = " + dataItems.toString());
-        adapter = new employeeAdapter(context, dataItems);
+        adapter = new employeeAdapter(activity, dataItems);
         recyclerView.setAdapter(adapter);
     }
 

@@ -55,7 +55,17 @@
     <string name="Profile">Profile</string>
     <string name="newWorker">New Worker</string>
     <string name="internet_dialog_title">No Connection</string>
-    <string name="internet_supporting_text">please connect to the internet and play again</string>
+    <string name="internet_supporting_text">please connect to the internet and try again</string>
     <string name="ok">OK</string>
+    <string name="pick_date">pick date</string>
+    <string name="Select_shift">select shift</string>
+    <string name="Select_Worker_from">Select Worker from: </string>
+    <string name="All_workers">All workers</string>
+    <string name="only_submitted">only submitted</string>
+    <string name="Select_Worker">Select Worker</string>
+    <string name="Add_to_shift">Add to shift</string>
+    <string name="Remove_from_shift">Remove from shift</string>
+    <string name="setShifts_error">please select date and shift!</string>
+    <string name="select_worker">select worker!</string>
 
 </resources>
