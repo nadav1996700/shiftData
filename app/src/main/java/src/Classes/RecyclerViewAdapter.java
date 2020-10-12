@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import src.Utils.My_images;
 
-public class employeeAdapter extends RecyclerView.Adapter<employeeAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<dataItem> data;
     private LayoutInflater mInflater;
@@ -24,7 +24,7 @@ public class employeeAdapter extends RecyclerView.Adapter<employeeAdapter.ViewHo
     My_images images = My_images.getInstance();
 
     // data is passed into the constructor
-    public employeeAdapter(Context context, ArrayList<dataItem> data) {
+    public RecyclerViewAdapter(Context context, ArrayList<dataItem> data) {
         this.mInflater = LayoutInflater.from(context);
         this.data = data;
         this.context = context;

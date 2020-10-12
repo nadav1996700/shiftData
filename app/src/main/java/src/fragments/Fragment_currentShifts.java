@@ -14,22 +14,16 @@ import com.example.src.R;
 public class Fragment_currentShifts extends Fragment implements CallBack_RequestsFragment {
     protected View view;
     private Fragment_shifts fragment_shifts;
-    private Fragment_calender fragment_calender;
 
     public Fragment_currentShifts() {}
-
-    public static Fragment_currentShifts newInstance() {
-        Fragment_currentShifts fragment = new Fragment_currentShifts();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fragment_calender = Fragment_calender.newInstance();
+        Fragment_calender fragment_calender = new Fragment_calender();
         fragment_calender.setCallBack_RequestsFragment(this);
-        fragment_shifts = fragment_shifts.newInstance();
+        fragment_shifts = new Fragment_shifts(getActivity());
         initFragments(fragment_calender, R.id.current_shifts_LAY_calender);
         initFragments(fragment_shifts, R.id.current_shifts_LAY_shifts);
     }

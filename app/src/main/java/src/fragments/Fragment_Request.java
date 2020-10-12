@@ -14,22 +14,16 @@ import com.example.src.R;
 public class Fragment_Request extends Fragment implements CallBack_RequestsFragment {
     protected View view;
     private Fragment_select_requests fragment_select_requests;
-    private Fragment_calender fragment_calender;
 
     public Fragment_Request() {}
-
-    public static Fragment_Request newInstance() {
-        Fragment_Request fragment = new Fragment_Request();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fragment_calender = Fragment_calender.newInstance();
+        Fragment_calender fragment_calender = new Fragment_calender();
         fragment_calender.setCallBack_RequestsFragment(this);
-        fragment_select_requests = Fragment_select_requests.newInstance();
+        fragment_select_requests = new Fragment_select_requests();
         initFragments(fragment_calender, R.id.Requests_LAY_calender);
         initFragments(fragment_select_requests, R.id.Requests_LAY_request);
     }

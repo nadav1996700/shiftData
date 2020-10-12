@@ -36,11 +36,6 @@ public class Fragment_select_requests extends Fragment implements CallBack_Reque
     public Fragment_select_requests() {
     }
 
-    public static Fragment_select_requests newInstance() {
-        Fragment_select_requests fragment = new Fragment_select_requests();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

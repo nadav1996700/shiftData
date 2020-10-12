@@ -1,16 +1,17 @@
 package src.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.src.R;
 import com.google.android.material.tabs.TabLayout;
@@ -18,25 +19,26 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
+import java.util.Objects;
 
-import src.Classes.Worker;
+import src.Classes.RecyclerViewAdapter;
+import src.Classes.dataItem;
 import src.Utils.My_Firebase;
 
-public class Fragment_shifts extends Fragment implements CallBack_ShiftFragment {
+public class Fragment_shifts extends Fragment implements CallBack_currentShiftFragment {
     protected View view;
     private String chosen_date;
-    private String chosen_shift;
+    private String chosen_shift = "Morning";
     private TabLayout tabLayout;
-    private ListView workers_list;
+    private RecyclerView workers_list;
+    private Activity activity;
     My_Firebase firebase = My_Firebase.getInstance();
 
-    public Fragment_shifts() {}
-
-    public static Fragment_shifts newInstance() {
-        Fragment_shifts fragment = new Fragment_shifts();
-        return fragment;
+    public Fragment_shifts(Activity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -47,67 +49,79 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftFragment 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(view == null)
+        if (view == null)
             view = inflater.inflate(R.layout.fragment_shifts, container, false);
         setValues();
         setTabListener();
+        showListByDateAndShift();
         return view;
     }
 
     private void setValues() {
         tabLayout = view.findViewById(R.id.fragment_shifts_LAY_tabs);
         workers_list = view.findViewById(R.id.fragment_shifts_LST_list);
+        // set RecyclerView
+        setRecyclerView();
+        // initialize chosen date to current date
+         chosen_date = new SimpleDateFormat("dd-MM-yyyy").format(new Date()).
+                replace('-', ',');
     }
 
     private void setTabListener() {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getText().toString()) {
-                    case "evening shift":
-                        chosen_shift = "evening";
+                switch (tab.getPosition()) {
+                    case 0:
+                        chosen_shift = "Morning";
                         break;
-                    case "night shift":
-                        chosen_shift = "night";
+                    case 1:
+                        chosen_shift = "Evening";
                         break;
-                    default:
-                        chosen_shift = "morning";
+                    case 2:
+                        chosen_shift = "Night";
                         break;
                 }
+                showListByDateAndShift();
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
     }
 
-    public void showListByShift() {
+    private void setRecyclerView() {
+        workers_list = view.findViewById(R.id.fragment_shifts_LST_list);
+        workers_list.setLayoutManager(new LinearLayoutManager(activity));
+        workers_list.addItemDecoration(new DividerItemDecoration(workers_list.getContext(),
+                DividerItemDecoration.VERTICAL));
+    }
+
+    public void showListByDateAndShift() {
         // set reference
-        String path = "/" + firebase.getCompany() + "shifts/current_shifts/" +
+        String path = "/" + firebase.getCompany() + "/shifts/current_shifts/" +
                 chosen_date + "/" + chosen_shift;
         firebase.setReference(path);
         // get data
-        firebase.getReference().addValueEventListener(new ValueEventListener() {
+        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Worker> workers = new ArrayList<>();
-                for(DataSnapshot child : dataSnapshot.getChildren()) {
-                    String first_name = child.child("first_name").getValue().toString();
-                    String last_name = child.child("last_name").getValue().toString();
-                    String username = child.child("username").getValue().toString();
-                    String password = child.child("password").getValue().toString();
-                    String id = child.child("id").getValue().toString();
-                    String phone = child.child("phone").getValue().toString();
-                    String age = child.child("age").getValue().toString();
-                    // create Worker
-                    workers.add(new Worker(first_name, last_name, username,
-                            password, id, phone, Integer.parseInt(age)));
-                    Log.d("pttt", "created worker " + workers.toString());
+                ArrayList<dataItem> workers = new ArrayList<>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String first_name = Objects.requireNonNull(child.child("first_name").
+                            getValue()).toString();
+                    String last_name = Objects.requireNonNull(child.child("last_name").
+                            getValue()).toString();
+                    String id = Objects.requireNonNull(child.child("id").getValue()).toString();
+                    // create Worker item (dataItem)
+                    workers.add(new dataItem(id, first_name, last_name));
                 }
-                showDataOnList(workers);
+                workers_list.setAdapter(new RecyclerViewAdapter(activity, workers));
             }
 
             @Override
@@ -117,17 +131,9 @@ public class Fragment_shifts extends Fragment implements CallBack_ShiftFragment 
         });
     }
 
-    private void showDataOnList(ArrayList<Worker> workers) {
-        String[] array = Arrays.copyOf(workers.toArray(), workers.toArray().length, String[].class);
-        Log.d("pttt", "inside adapter method = " + array.toString());
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, array);
-        workers_list.setAdapter(adapter);
-    }
-
     @Override
     public void setDate(String date) {
         chosen_date = date;
-        showListByShift();
+        showListByDateAndShift();
     }
 }

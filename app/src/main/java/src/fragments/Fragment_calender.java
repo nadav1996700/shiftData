@@ -11,17 +11,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
 
-public class Fragment_calender extends Fragment implements CallBack_ShiftFragment, CallBack_RequestsFragment {
+public class Fragment_calender extends Fragment implements CallBack_currentShiftFragment,
+        CallBack_RequestsFragment {
     protected View view;
     private CalendarView calendarView;
-    private CallBack_ShiftFragment callBack_shiftFragment;
+    private CallBack_currentShiftFragment callBack_currentShiftFragment;
     private CallBack_RequestsFragment callBack_requestsActivity;
 
-    public Fragment_calender() {}
-
-    public static Fragment_calender newInstance() {
-        Fragment_calender fragment = new Fragment_calender();
-        return fragment;
+    public Fragment_calender() {
     }
 
     @Override
@@ -32,7 +29,7 @@ public class Fragment_calender extends Fragment implements CallBack_ShiftFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(view == null)
+        if (view == null)
             view = inflater.inflate(R.layout.fragment_calender, container, false);
 
         calendarView = view.findViewById(R.id.calender_CAL_calender);
@@ -40,8 +37,9 @@ public class Fragment_calender extends Fragment implements CallBack_ShiftFragmen
         return view;
     }
 
-    public void setCallBack_shiftFragment(CallBack_ShiftFragment callBack_shiftFragment) {
-        this.callBack_shiftFragment = callBack_shiftFragment;
+    public void setCallBack_currentShiftFragment(CallBack_currentShiftFragment
+                                                         callBack_currentShiftFragment) {
+        this.callBack_currentShiftFragment = callBack_currentShiftFragment;
     }
 
     public void setCallBack_RequestsFragment(CallBack_RequestsFragment callBack_requestsActivity) {
@@ -53,10 +51,9 @@ public class Fragment_calender extends Fragment implements CallBack_ShiftFragmen
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 String date = day + "," + (month + 1) + "," + year;
-                if(callBack_shiftFragment != null) {
-                    callBack_shiftFragment.setDate(date);
-                }
-                else if(callBack_requestsActivity != null) {
+                if (callBack_currentShiftFragment != null) {
+                    callBack_currentShiftFragment.setDate(date);
+                } else if (callBack_requestsActivity != null) {
                     callBack_requestsActivity.setDate(date);
                 }
             }

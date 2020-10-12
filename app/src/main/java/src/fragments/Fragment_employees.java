@@ -1,7 +1,6 @@
 package src.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.src.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -24,16 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import javax.security.auth.callback.Callback;
-
+import src.Classes.RecyclerViewAdapter;
 import src.Classes.dataItem;
-import src.Classes.employeeAdapter;
 import src.Utils.My_Firebase;
-import src.Utils.My_images;
 
 public class Fragment_employees extends Fragment {
     protected View view;
-    private employeeAdapter adapter;
     private RecyclerView recyclerView;
     private ArrayList<dataItem> dataItems = new ArrayList<>();
     private FloatingActionButton addWorker;
@@ -43,10 +37,6 @@ public class Fragment_employees extends Fragment {
 
     public Fragment_employees(Activity activity) {
         this.activity = activity;
-    }
-
-    public static Fragment_employees newInstance(Activity activity) {
-        return new Fragment_employees(activity);
     }
 
     @Override
@@ -62,7 +52,7 @@ public class Fragment_employees extends Fragment {
         // set AddWorker button
         addWorker = view.findViewById(R.id.employees_BTN_addWorker);
         floatingButtonListener();
-        // set up the RecyclerView
+        // set RecyclerView
         setRecyclerView();
         // fill ArrayList with data
         getData();
@@ -91,7 +81,7 @@ public class Fragment_employees extends Fragment {
                     String id = Objects.requireNonNull(child.child("id").getValue()).toString();
                     dataItems.add(new dataItem(id, first_name, last_name));
                 }
-                updateAdapter();
+                recyclerView.setAdapter(new RecyclerViewAdapter(activity, dataItems));
             }
 
             @Override
@@ -99,12 +89,6 @@ public class Fragment_employees extends Fragment {
                 Log.d("ERROR_TAG", "Error in loading worker data");
             }
         });
-    }
-
-    private void updateAdapter() {
-        Log.d("pttt", "updateAdapter = " + dataItems.toString());
-        adapter = new employeeAdapter(activity, dataItems);
-        recyclerView.setAdapter(adapter);
     }
 
     private void floatingButtonListener() {
