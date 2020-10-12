@@ -2,8 +2,10 @@ package src.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +13,14 @@ import android.widget.Button;
 
 import com.example.src.R;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+import src.Classes.dataItem;
 import src.Utils.My_Firebase;
 
 public class Fragment_select_requests extends Fragment implements CallBack_RequestsFragment {
@@ -26,7 +33,8 @@ public class Fragment_select_requests extends Fragment implements CallBack_Reque
     private Button add_request;
     My_Firebase firebase = My_Firebase.getInstance();
 
-    public Fragment_select_requests() {}
+    public Fragment_select_requests() {
+    }
 
     public static Fragment_select_requests newInstance() {
         Fragment_select_requests fragment = new Fragment_select_requests();
@@ -41,7 +49,7 @@ public class Fragment_select_requests extends Fragment implements CallBack_Reque
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(view == null)
+        if (view == null)
             view = inflater.inflate(R.layout.fragment_select_requests, container, false);
         // initialize variables
         setValues();
@@ -55,29 +63,51 @@ public class Fragment_select_requests extends Fragment implements CallBack_Reque
             @Override
             public void onClick(View view) {
                 if (chosen_date != null)
-                    AddRequestToFirebase();
+                    createDataItem();
             }
         });
     }
 
     // worker can work in multiple shifts
-    private void AddRequestToFirebase() {
-        if(morning_chip.isChecked()) {
-            add_shift("morning");
+    private void AddRequestToFirebase(dataItem dataItem) {
+        if (morning_chip.isChecked()) {
+            add_shift("Morning", dataItem);
         }
-        if(evening_chip.isChecked()) {
-            add_shift("evening");
+        if (evening_chip.isChecked()) {
+            add_shift("Evening", dataItem);
         }
-        if(night_chip.isChecked()) {
-            add_shift("night");
+        if (night_chip.isChecked()) {
+            add_shift("Night", dataItem);
         }
     }
 
     // add worker id to specific day and shift
-    private void add_shift(String shift) {
+    private void add_shift(String shift, dataItem dataItem) {
         firebase.setReference("/" + firebase.getCompany() + "/shifts/requests/"
-        + chosen_date + "/" + shift + "/" + firebase.getWorker_id());
-        firebase.getReference().setValue("");
+                + chosen_date + "/" + shift + "/" + firebase.getWorker_id());
+        firebase.getReference().setValue(dataItem);
+    }
+
+    // create dataItem object that contain id, name, last_name
+    private void createDataItem() {
+        firebase.setReference("/" + firebase.getCompany() + "/workers/"
+                + firebase.getWorker_id());
+        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String first_name = Objects.requireNonNull(snapshot.child("first_name").getValue())
+                        .toString();
+                String last_name = Objects.requireNonNull(snapshot.child("last_name").getValue())
+                        .toString();
+                dataItem dataItem = new dataItem(firebase.getWorker_id(), first_name, last_name);
+                AddRequestToFirebase(dataItem);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("error", "error in loading workers");
+            }
+        });
     }
 
     private void setValues() {

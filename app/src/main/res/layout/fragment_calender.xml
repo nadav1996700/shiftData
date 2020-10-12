@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#195EE4"
+    android:background="#EFF1F4"
     tools:context="src.fragments.Fragment_calender">
 
     <CalendarView
         android:id="@+id/calender_CAL_calender"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="5dp"/>
 
 </LinearLayout>

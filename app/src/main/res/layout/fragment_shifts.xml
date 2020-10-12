@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DFEAE9"
+    android:background="#D8DBDF"
     android:orientation="vertical"
     tools:context="src.fragments.Fragment_shifts">
 
@@ -11,8 +11,8 @@
         android:id="@+id/fragment_shifts_LAY_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EDEBEF"
-        app:tabIconTint="#E6D21E"
+        android:background="#EFF1F4"
+        app:tabIconTint="#073AF1"
         app:tabSelectedTextColor="#073AF1"
         app:tabTextColor="#0C0710">
 

@@ -168,8 +168,8 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onBackPressed() {
+        super.onBackPressed();
         finish();
     }
 }

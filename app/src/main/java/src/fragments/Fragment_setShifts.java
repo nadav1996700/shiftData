@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -27,7 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
+import src.Classes.dataItem;
 import src.Utils.My_Firebase;
 
 public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -76,30 +79,27 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         set_select_shift_Adapter();
         // set chips listeners
         chip_listeners();
-        // buttons listeners
-        buttons_listeners();
+        // set on item selected - activate buttons
+        setOnItemSelected_Spinner();
         return view;
     }
 
-    private void buttons_listeners() {
+    private void buttons_listeners(final dataItem selected_worker) {
+        final String path = "/" + firebase.getCompany() + "/shifts/current_shifts/"
+                + selected_date + "/" + select_shift.getText().toString()
+                + "/" + selected_worker.getId();
         add_to_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (select_worker.getText().toString().equals(""))
-                    error_message.setText(R.string.select_worker);
-                else {
-
-                }
+                firebase.setReference(path);
+                firebase.getReference().setValue(selected_worker);
             }
         });
         remove_from_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (select_worker.getText().toString().equals(""))
-                    error_message.setText(R.string.select_worker);
-                else {
-
-                }
+                firebase.setReference(path);
+                firebase.getReference().removeValue();
             }
         });
     }
@@ -132,45 +132,90 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         });
     }
 
+    /* this function keep listening to changes, ger real time data about requests */
     private void setAdapter_only_submitted() {
         if (date.getText().toString().equals("") || select_shift.getText().toString().equals(""))
             error_message.setText(R.string.setShifts_error);
         else {
+            String path = "/" + firebase.getCompany() + "/shifts/requests/"
+                    + selected_date + "/" + select_shift.getText().toString();
+            Log.d("pttt", "path = " + path);
             firebase.setReference("/" + firebase.getCompany() + "/shifts/requests/"
                     + selected_date + "/" + select_shift.getText().toString());
-            firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            firebase.getReference().addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                    ArrayList<dataItem> workers = new ArrayList<>();
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        Log.d("pttt", "child = " + child.toString());
+                        String id = Objects.requireNonNull(child.child("id").getValue()).toString();
+                        String first_name = Objects.requireNonNull(child.child("first_name")
+                                .getValue()).toString();
+                        String last_name = Objects.requireNonNull(child.child("last_name")
+                                .getValue()).toString();
+                        workers.add(new dataItem(id, first_name, last_name));
+                    }
+                    setSpinner(workers);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Log.d("error", "error in loading workers");
                 }
             });
         }
     }
 
+    /* get all workers once and set adapter */
     private void setAdapter_allWorkers() {
         if (date.getText().toString().equals("") || select_shift.getText().toString().equals(""))
             error_message.setText(R.string.setShifts_error);
         else {
-            firebase.setReference("/" + firebase.getCompany() + "/shifts/requests/"
-                    + selected_date + "/" + select_shift.getText().toString());
+            firebase.setReference("/" + firebase.getCompany() + "/workers");
             firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                    ArrayList<dataItem> workers = new ArrayList<>();
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        String id = Objects.requireNonNull(child.child("id").getValue()).toString();
+                        String first_name = Objects.requireNonNull(child.child("first_name")
+                                .getValue()).toString();
+                        String last_name = Objects.requireNonNull(child.child("last_name")
+                                .getValue()).toString();
+                        workers.add(new dataItem(id, first_name, last_name));
+                    }
+                    setSpinner(workers);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Log.d("error", "error in loading workers");
                 }
             });
         }
     }
+
+    /* set spinner data */
+    private void setSpinner(ArrayList<dataItem> workers) {
+        ArrayAdapter<dataItem> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
+                workers);
+        select_worker.setAdapter(adapter);
+    }
+
+    private void setOnItemSelected_Spinner() {
+        select_worker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                dataItem selected_worker = (dataItem) adapterView.getItemAtPosition(pos);
+                // buttons listeners
+                buttons_listeners(selected_worker);
+                add_to_shift.setEnabled(true);
+                remove_from_shift.setEnabled(true);
+                error_message.setText("");
+            }
+        });
+    }
+
 
     private void initValues() {
         calender = view.findViewById(R.id.setShifts_BTN_pickDate);
