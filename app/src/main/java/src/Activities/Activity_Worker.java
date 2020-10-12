@@ -159,7 +159,7 @@ public class Activity_Worker extends AppCompatActivity {
         images.downloadImageUrl(path, worker_image);
         /* header background image */
         path = "gs://shiftdata-a19a0.appspot.com/general_images/" +
-                "worker_background.jpg";
+                "Worker_header.jpg";
         images.downloadImageUrl(path, header_background);
     }
 
