@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -53,17 +54,13 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         this.activity = activity;
     }
 
-    public static Fragment_setShifts newInstance(Activity activity) {
-        return new Fragment_setShifts(activity);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null)
             view = inflater.inflate(R.layout.fragment_set_shifts, container, false);
@@ -76,11 +73,14 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
                 showDataPickerDialog();
             }
         });
+        // set select_shift adapter and listener
         set_select_shift_Adapter();
+        // init workers list
+        only_submitted.setChecked(true);
         // set chips listeners
         chip_listeners();
         // set on item selected - activate buttons
-        setOnItemSelected_Spinner();
+        setOnItemSelected_Worker();
         return view;
     }
 
@@ -105,11 +105,10 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
     }
 
     private void chip_listeners() {
-        only_submitted.setChecked(true);
-        all_workers.setOnClickListener(new View.OnClickListener() {
+        all_workers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (all_workers.isChecked()) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     only_submitted.setChecked(false);
                     setAdapter_allWorkers();
                 } else {
@@ -118,10 +117,10 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
                 }
             }
         });
-        only_submitted.setOnClickListener(new View.OnClickListener() {
+        only_submitted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (only_submitted.isChecked()) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     all_workers.setChecked(false);
                     setAdapter_only_submitted();
                 } else {
@@ -139,15 +138,12 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         else {
             String path = "/" + firebase.getCompany() + "/shifts/requests/"
                     + selected_date + "/" + select_shift.getText().toString();
-            Log.d("pttt", "path = " + path);
-            firebase.setReference("/" + firebase.getCompany() + "/shifts/requests/"
-                    + selected_date + "/" + select_shift.getText().toString());
+            firebase.setReference(path);
             firebase.getReference().addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     ArrayList<dataItem> workers = new ArrayList<>();
                     for (DataSnapshot child : snapshot.getChildren()) {
-                        Log.d("pttt", "child = " + child.toString());
                         String id = Objects.requireNonNull(child.child("id").getValue()).toString();
                         String first_name = Objects.requireNonNull(child.child("first_name")
                                 .getValue()).toString();
@@ -202,7 +198,7 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         select_worker.setAdapter(adapter);
     }
 
-    private void setOnItemSelected_Spinner() {
+    private void setOnItemSelected_Worker() {
         select_worker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -257,5 +253,20 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         options.add("Night");
         ArrayAdapter<String> adapter = new ArrayAdapter(activity, android.R.layout.simple_spinner_item, options);
         select_shift.setAdapter(adapter);
+        // set listener
+        select_shift.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                select_worker.setText("");
+                if(all_workers.isChecked())
+                    setAdapter_allWorkers();
+                else
+                    set_select_shift_Adapter();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 }

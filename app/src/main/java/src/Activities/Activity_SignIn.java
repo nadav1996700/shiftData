@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import src.Utils.My_Firebase;
-import src.Utils.My_images;
 
 public class Activity_SignIn extends AppCompatActivity {
 
@@ -45,7 +44,7 @@ public class Activity_SignIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Activity_SignIn.this, Activity_SignUp.class));
-                overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
+                overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
                 finish();
             }
         });
@@ -112,7 +111,7 @@ public class Activity_SignIn extends AppCompatActivity {
                     else {
                         // get in to main screen of manager - Activity Manager
                         startActivity(new Intent(Activity_SignIn.this, Activity_Manager.class));
-                        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+                        overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
                     }
                 }
             }
@@ -154,7 +153,7 @@ public class Activity_SignIn extends AppCompatActivity {
     private void userIsWorker(String id) {
         firebase.setWorker_id(id);
         startActivity(new Intent(Activity_SignIn.this, Activity_Worker.class));
-        overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
+        overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
     }
 
     /* set error message if login fail */

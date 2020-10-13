@@ -23,7 +23,7 @@ import java.util.Objects;
 import src.Classes.dataItem;
 import src.Utils.My_Firebase;
 
-public class Fragment_select_requests extends Fragment implements CallBack_RequestsFragment {
+public class Fragment_select_requests extends Fragment implements CallBack_setDate {
     protected View view;
     private String chosen_date;
     private ArrayList<Chip> chips;
@@ -42,7 +42,7 @@ public class Fragment_select_requests extends Fragment implements CallBack_Reque
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null)
             view = inflater.inflate(R.layout.fragment_select_requests, container, false);

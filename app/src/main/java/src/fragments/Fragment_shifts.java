@@ -28,7 +28,7 @@ import src.Classes.RecyclerViewAdapter;
 import src.Classes.dataItem;
 import src.Utils.My_Firebase;
 
-public class Fragment_shifts extends Fragment implements CallBack_currentShiftFragment {
+public class Fragment_shifts extends Fragment implements CallBack_setDate {
     protected View view;
     private String chosen_date;
     private String chosen_shift = "Morning";
@@ -47,7 +47,7 @@ public class Fragment_shifts extends Fragment implements CallBack_currentShiftFr
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null)
             view = inflater.inflate(R.layout.fragment_shifts, container, false);
@@ -63,7 +63,7 @@ public class Fragment_shifts extends Fragment implements CallBack_currentShiftFr
         // set RecyclerView
         setRecyclerView();
         // initialize chosen date to current date
-         chosen_date = new SimpleDateFormat("dd-MM-yyyy").format(new Date()).
+        chosen_date = new SimpleDateFormat("dd-MM-yyyy").format(new Date()).
                 replace('-', ',');
     }
 

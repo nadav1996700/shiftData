@@ -40,7 +40,7 @@
             android:backgroundTint="@color/colorTopBackground"
             android:scaleType="fitXY"
             android:elevation="6dp"
-            android:src="@drawable/ic_set_shifts" />
+            android:src="@drawable/ic__calender_set_shifts" />
 
     </RelativeLayout>
 

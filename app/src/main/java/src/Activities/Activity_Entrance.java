@@ -6,22 +6,21 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.src.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import src.Utils.My_images;
 
 public class Activity_Entrance extends AppCompatActivity {
-    private final int DELAY = 5000;
-    private ImageView imageView;
-    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,25 +29,33 @@ public class Activity_Entrance extends AppCompatActivity {
         if (checkInternetConnection()) {
             // set center image
             setCenterImage();
+            // initialize variables
+            setValues();
             // wait DELAY time before enter the app
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
+            final int DELAY = 5000;
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     startActivity(new Intent(Activity_Entrance.this, Activity_SignIn.class));
-                    overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
                     finish();
                 }
             }, DELAY);
         }
     }
 
+    private void setValues() {
+        Animation topAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        Animation buttomAnim = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        ImageView centerImage = findViewById(R.id.entrance_IMG_entrance);
+        TextView title = findViewById(R.id.entrance_LBL_title);
+        centerImage.setAnimation(topAnim);
+        title.setAnimation(buttomAnim);
+    }
+
     private void setCenterImage() {
-        imageView = findViewById(R.id.entrance_IMG_entrance);
         My_images images = My_images.initHelper(this);
-        String path = "gs://shiftdata-a19a0.appspot.com/general_images/" +
-                "icon_entarance.png";
-        images.downloadImageUrl(path, imageView);
+        images.setPlaceholder(R.id.entrance_IMG_entrance);
+        images.setImage(ContextCompat.getDrawable(this, R.drawable.calendar_entrance_icon));
     }
 
     private boolean checkInternetConnection() {

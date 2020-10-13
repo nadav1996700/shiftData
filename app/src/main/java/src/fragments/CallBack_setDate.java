@@ -1,5 +1,5 @@
 package src.fragments;
 
-public interface CallBack_RequestsFragment {
+public interface CallBack_setDate {
     void setDate(String date);
 }

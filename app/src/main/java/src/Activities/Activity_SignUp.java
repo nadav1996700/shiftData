@@ -13,7 +13,6 @@ import com.example.src.R;
 
 import src.Classes.Company;
 import src.Utils.My_Firebase;
-import src.Utils.My_images;
 
 public class Activity_SignUp extends AppCompatActivity {
 
@@ -38,7 +37,7 @@ public class Activity_SignUp extends AppCompatActivity {
                     // upload company to firebase, and open login screen
                     uploadCompany();
                     startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
-                    overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+                    overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
                     finish();
                 }
             }
@@ -49,7 +48,7 @@ public class Activity_SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
-                overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+                overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
                 finish();
             }
         });
