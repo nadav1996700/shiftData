@@ -82,4 +82,11 @@ public class Activity_Entrance extends AppCompatActivity {
         });
         dialog.show();
     }
+
+    @Override
+    public void onResume() {
+        My_images.getInstance().setActivity(Activity_Entrance.this);
+        super.onResume();
+    }
 }
+

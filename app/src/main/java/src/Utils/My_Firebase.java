@@ -14,12 +14,15 @@ public class My_Firebase {
     private String company;
     private String worker_id;
 
-    private My_Firebase() {}
+    private My_Firebase() {
+    }
 
-    public static My_Firebase getInstance() {return instance;}
+    public static My_Firebase getInstance() {
+        return instance;
+    }
 
     public static My_Firebase initHelper() {
-        if(instance == null)
+        if (instance == null)
             instance = new My_Firebase();
         return instance;
     }

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import src.Utils.My_Firebase;
+import src.Utils.My_images;
 
 public class Activity_SignIn extends AppCompatActivity {
 
@@ -87,8 +89,8 @@ public class Activity_SignIn extends AppCompatActivity {
         setSpinnerData();
     }
 
-    /* set spinner data */
-    private void setSpinner(ArrayList<String> options) {
+    /* set Adapter data */
+    private void setAdapter(ArrayList<String> options) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         spinner.setAdapter(adapter);
     }
@@ -139,7 +141,7 @@ public class Activity_SignIn extends AppCompatActivity {
                     String name = child.getKey();
                     company_names.add(name);
                 }
-                setSpinner(company_names);
+                setAdapter(company_names);
             }
 
             @Override

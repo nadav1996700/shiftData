@@ -35,6 +35,7 @@ import src.Classes.dataItem;
 import src.Utils.My_Firebase;
 
 public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnDateSetListener {
+    My_Firebase firebase = My_Firebase.getInstance();
     protected View view;
     private ImageButton calender;
     private EditText date;
@@ -45,10 +46,11 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
     private Chip only_submitted;
     private Button add_to_shift;
     private Button remove_from_shift;
+    private String selected_shift;
     private String selected_date;
     private Activity activity;
-    My_Firebase firebase = My_Firebase.getInstance();
-
+    private String path_only_submitted;
+    private String path_all_workers;
 
     public Fragment_setShifts(Activity activity) {
         this.activity = activity;
@@ -75,8 +77,6 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         });
         // set select_shift adapter and listener
         set_select_shift_Adapter();
-        // init workers list
-        only_submitted.setChecked(true);
         // set chips listeners
         chip_listeners();
         // set on item selected - activate buttons
@@ -110,10 +110,10 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     only_submitted.setChecked(false);
-                    setAdapter_allWorkers();
+                    setAdapter(path_all_workers);
                 } else {
                     only_submitted.setChecked(true);
-                    setAdapter_only_submitted();
+                    setAdapter(path_only_submitted);
                 }
             }
         });
@@ -122,22 +122,20 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     all_workers.setChecked(false);
-                    setAdapter_only_submitted();
+                    setAdapter(path_only_submitted);
                 } else {
                     all_workers.setChecked(true);
-                    setAdapter_allWorkers();
+                    setAdapter(path_all_workers);
                 }
             }
         });
     }
 
-    /* this function keep listening to changes, ger real time data about requests */
-    private void setAdapter_only_submitted() {
-        if (date.getText().toString().equals("") || select_shift.getText().toString().equals(""))
+    /* this function keep listening to changes, get real time data about workers */
+    private void setAdapter(String path) {
+        if (date == null || selected_shift == null)
             error_message.setText(R.string.setShifts_error);
         else {
-            String path = "/" + firebase.getCompany() + "/shifts/requests/"
-                    + selected_date + "/" + select_shift.getText().toString();
             firebase.setReference(path);
             firebase.getReference().addValueEventListener(new ValueEventListener() {
                 @Override
@@ -162,36 +160,7 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         }
     }
 
-    /* get all workers once and set adapter */
-    private void setAdapter_allWorkers() {
-        if (date.getText().toString().equals("") || select_shift.getText().toString().equals(""))
-            error_message.setText(R.string.setShifts_error);
-        else {
-            firebase.setReference("/" + firebase.getCompany() + "/workers");
-            firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ArrayList<dataItem> workers = new ArrayList<>();
-                    for (DataSnapshot child : snapshot.getChildren()) {
-                        String id = Objects.requireNonNull(child.child("id").getValue()).toString();
-                        String first_name = Objects.requireNonNull(child.child("first_name")
-                                .getValue()).toString();
-                        String last_name = Objects.requireNonNull(child.child("last_name")
-                                .getValue()).toString();
-                        workers.add(new dataItem(id, first_name, last_name));
-                    }
-                    setSpinner(workers);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d("error", "error in loading workers");
-                }
-            });
-        }
-    }
-
-    /* set spinner data */
+    /* set workers spinner data */
     private void setSpinner(ArrayList<dataItem> workers) {
         ArrayAdapter<dataItem> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
                 workers);
@@ -223,6 +192,11 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         add_to_shift = view.findViewById(R.id.setShifts_BTN_add);
         remove_from_shift = view.findViewById(R.id.setShifts_BTN_remove);
         error_message = view.findViewById(R.id.setShifts_LBL_error);
+
+        // set path variables
+        path_only_submitted = "/" + firebase.getCompany() + "/shifts/requests/" +
+                selected_date + "/" + selected_shift;
+        path_all_workers = "/" + firebase.getCompany() + "/workers";
     }
 
     private void showDataPickerDialog() {
@@ -243,9 +217,23 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         // set EditText
         String chosen_date = day + "/" + (month + 1) + "/" + year;
         date.setText(chosen_date);
+        // set adapter
+        select_workers_adapter();
     }
 
-    /* set spinner data */
+    /* decide which adapter to set for workers according to selected chip*/
+    private void select_workers_adapter() {
+        select_worker.setText("");
+        if (all_workers.isChecked())
+            setAdapter(path_all_workers);
+        else {
+            path_only_submitted = "/" + firebase.getCompany() + "/shifts/requests/" +
+                    selected_date + "/" + selected_shift;
+            setAdapter(path_only_submitted);
+        }
+    }
+
+    /* set shift spinner adapter data */
     private void set_select_shift_Adapter() {
         ArrayList<String> options = new ArrayList();
         options.add("Morning");
@@ -254,18 +242,11 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         ArrayAdapter<String> adapter = new ArrayAdapter(activity, android.R.layout.simple_spinner_item, options);
         select_shift.setAdapter(adapter);
         // set listener
-        select_shift.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        select_shift.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                select_worker.setText("");
-                if(all_workers.isChecked())
-                    setAdapter_allWorkers();
-                else
-                    set_select_shift_Adapter();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                selected_shift = adapterView.getItemAtPosition(pos).toString();
+                select_workers_adapter();
             }
         });
     }

@@ -36,9 +36,7 @@ public class Activity_SignUp extends AppCompatActivity {
                 if (validateData()) {
                     // upload company to firebase, and open login screen
                     uploadCompany();
-                    startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
-                    overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
-                    finish();
+                    startSignInActivity();
                 }
             }
         });
@@ -47,11 +45,15 @@ public class Activity_SignUp extends AppCompatActivity {
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
-                overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
-                finish();
+                startSignInActivity();
             }
         });
+    }
+
+    private void startSignInActivity() {
+        startActivity(new Intent(Activity_SignUp.this, Activity_SignIn.class));
+        overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
+        finish();
     }
 
     private void uploadCompany() {

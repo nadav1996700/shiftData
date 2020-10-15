@@ -95,6 +95,7 @@ public class My_images {
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView);
+
     }
 
     /* convert intent data (from gallery) into drawable */
