@@ -1,6 +1,6 @@
 package src.Utils;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,32 +21,24 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Objects;
 
 public class My_images {
     private static My_images instance;
-    private Activity activity;
-    private int download_placeholder;
+    private Context context;
 
-    private My_images(Activity activity) {
-        this.activity = activity;
-    }
-
-    public void setPlaceholder(int placeholder) {
-        this.download_placeholder = placeholder;
+    private My_images(Context context) {
+        this.context = context;
     }
 
     public static My_images getInstance() {
         return instance;
     }
 
-    public static My_images initHelper(Activity activity) {
+    public static My_images initHelper(Context context) {
         if (instance == null)
-            instance = new My_images(activity);
+            instance = new My_images(context);
         return instance;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
     }
 
     /* download image from firebase reference into placeholder */
@@ -82,29 +74,28 @@ public class My_images {
     }
 
     private void setImageByUri(Uri uri, ImageView imageView) {
-        Glide.with(activity)
+        Glide.with(context)
                 .load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView);
     }
 
     /* set images using glide library (by drawable) */
-    public void setImage(Drawable photo) {
-        ImageView imageView = activity.findViewById(download_placeholder);
-        Glide.with(activity)
+    public void setImage(Drawable photo, ImageView imageView) {
+        //ImageView imageView = activity.findViewById(download_placeholder);
+        Glide.with(context)
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView);
-
     }
 
     /* convert intent data (from gallery) into drawable */
     public Drawable convertDataToDrawable(Intent data) {
         try {
             final Uri imageUri = data.getData();
-            final InputStream imageStream = activity.getContentResolver().openInputStream(imageUri);
+            final InputStream imageStream = context.getContentResolver().openInputStream(Objects.requireNonNull(imageUri));
             final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-            return new BitmapDrawable(activity.getResources(), selectedImage);
+            return new BitmapDrawable(context.getResources(), selectedImage);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;

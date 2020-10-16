@@ -2,6 +2,9 @@ package src.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,10 +22,11 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.src.R;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -31,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
-import src.Classes.dataItem;
+import src.Classes.DataItem;
 import src.Utils.My_Firebase;
 
 public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -41,13 +45,13 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
     private EditText date;
     private AutoCompleteTextView select_shift;
     private AutoCompleteTextView select_worker;
-    private TextView error_message;
     private Chip all_workers;
     private Chip only_submitted;
     private Button add_to_shift;
     private Button remove_from_shift;
     private String selected_shift;
     private String selected_date;
+    private DataItem selected_worker;
     private Activity activity;
     private String path_only_submitted;
     private String path_all_workers;
@@ -81,27 +85,49 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         chip_listeners();
         // set on item selected - activate buttons
         setOnItemSelected_Worker();
+        // buttons listeners
+        buttons_listeners();
         return view;
     }
 
-    private void buttons_listeners(final dataItem selected_worker) {
-        final String path = "/" + firebase.getCompany() + "/shifts/current_shifts/"
-                + selected_date + "/" + select_shift.getText().toString()
-                + "/" + selected_worker.getId();
+    private void buttons_listeners() {
         add_to_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                firebase.setReference(path);
-                firebase.getReference().setValue(selected_worker);
+                if (selected_worker == null)
+                    select_worker.setBackgroundColor(Color.RED);
+                else {
+                    firebase.setReference(getWorkerPath());
+                    firebase.getReference().setValue(selected_worker);
+                    select_worker.setBackgroundColor(Color.parseColor("#40B1E4"));
+                }
             }
         });
         remove_from_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                firebase.setReference(path);
-                firebase.getReference().removeValue();
+                if (selected_worker == null)
+                    select_worker.setBackgroundColor(Color.RED);
+                else {
+                    firebase.setReference(getWorkerPath());
+                    firebase.getReference().removeValue();
+                    select_worker.setBackgroundColor(Color.parseColor("#40B1E4"));
+                }
             }
         });
+    }
+
+    /* set path that used to add or remove worker,
+     * if date, shift, or worker is null, returns null */
+    private String getWorkerPath() {
+        try {
+            return "/" + firebase.getCompany() + "/shifts/current_shifts/"
+                    + selected_date + "/" + select_shift.getText().toString()
+                    + "/" + selected_worker.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void chip_listeners() {
@@ -133,36 +159,32 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
 
     /* this function keep listening to changes, get real time data about workers */
     private void setAdapter(String path) {
-        if (date == null || selected_shift == null)
-            error_message.setText(R.string.setShifts_error);
-        else {
-            firebase.setReference(path);
-            firebase.getReference().addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ArrayList<dataItem> workers = new ArrayList<>();
-                    for (DataSnapshot child : snapshot.getChildren()) {
-                        String id = Objects.requireNonNull(child.child("id").getValue()).toString();
-                        String first_name = Objects.requireNonNull(child.child("first_name")
-                                .getValue()).toString();
-                        String last_name = Objects.requireNonNull(child.child("last_name")
-                                .getValue()).toString();
-                        workers.add(new dataItem(id, first_name, last_name));
-                    }
-                    setSpinner(workers);
+        firebase.setReference(path);
+        firebase.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<DataItem> workers = new ArrayList<>();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    String id = Objects.requireNonNull(child.child("id").getValue()).toString();
+                    String first_name = Objects.requireNonNull(child.child("first_name")
+                            .getValue()).toString();
+                    String last_name = Objects.requireNonNull(child.child("last_name")
+                            .getValue()).toString();
+                    workers.add(new DataItem(id, first_name, last_name));
                 }
+                setSpinner(workers);
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d("error", "error in loading workers");
-                }
-            });
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("error", "error in loading workers");
+            }
+        });
     }
 
     /* set workers spinner data */
-    private void setSpinner(ArrayList<dataItem> workers) {
-        ArrayAdapter<dataItem> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
+    private void setSpinner(ArrayList<DataItem> workers) {
+        ArrayAdapter<DataItem> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
                 workers);
         select_worker.setAdapter(adapter);
     }
@@ -171,16 +193,10 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         select_worker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                dataItem selected_worker = (dataItem) adapterView.getItemAtPosition(pos);
-                // buttons listeners
-                buttons_listeners(selected_worker);
-                add_to_shift.setEnabled(true);
-                remove_from_shift.setEnabled(true);
-                error_message.setText("");
+                selected_worker = (DataItem) adapterView.getItemAtPosition(pos);
             }
         });
     }
-
 
     private void initValues() {
         calender = view.findViewById(R.id.setShifts_BTN_pickDate);
@@ -191,7 +207,6 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         only_submitted = view.findViewById(R.id.setShifts_CHIP_only_requested);
         add_to_shift = view.findViewById(R.id.setShifts_BTN_add);
         remove_from_shift = view.findViewById(R.id.setShifts_BTN_remove);
-        error_message = view.findViewById(R.id.setShifts_LBL_error);
 
         // set path variables
         path_only_submitted = "/" + firebase.getCompany() + "/shifts/requests/" +
@@ -200,14 +215,15 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
     }
 
     private void showDataPickerDialog() {
-        DatePickerDialog dataPickerDialog = new DatePickerDialog(
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
                 activity,
+                R.style.DialogTheme,
                 this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
-        dataPickerDialog.show();
+        datePickerDialog.show();
     }
 
     @Override

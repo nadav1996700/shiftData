@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,17 +22,20 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import src.Utils.My_Firebase;
-import src.Utils.My_images;
+import src.Utils.My_SP;
 
 public class Activity_SignIn extends AppCompatActivity {
-
+    public static final String COMPANY_KEY = "COMPANY";
+    public static final String USERNAME_KEY = "USERNAME";
+    public static final String PASSWORD_KEY = "PASSWORD";
     private AutoCompleteTextView spinner;
     private EditText username;
     private EditText password;
     private Button sign_in;
-    private Button new_company;
+    private TextView new_company;
     private TextView error_message;
     My_Firebase firebase = My_Firebase.getInstance();
+    My_SP my_sp = My_SP.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,10 @@ public class Activity_SignIn extends AppCompatActivity {
 
     /* check the fields data and raise error message if necessary */
     private boolean validateData() {
-        if (username.getText().toString().trim().length() == 0) {
+        if (spinner.getText().toString().length() == 0) {
+            error_message.setText(R.string.select_Business);
+            return false;
+        } else if (username.getText().toString().trim().length() == 0) {
             error_message.setText(R.string.enter_username);
             return false;
         } else if (password.getText().toString().trim().length() == 0) {
@@ -83,10 +88,27 @@ public class Activity_SignIn extends AppCompatActivity {
         password = findViewById(R.id.signIn_EDT_password);
         sign_in = findViewById(R.id.signIn_BTN_signIn);
         error_message = findViewById(R.id.signIn_LBL_error);
-        new_company = findViewById(R.id.signIn_BTN_register);
-
+        new_company = findViewById(R.id.signIn_LBL_register);
+        // set data from sharedPreferences
+        setDataFromSP();
         // set spinner data
         setSpinnerData();
+    }
+
+    private void setDataFromSP() {
+        // load data
+        spinner.setText(my_sp.loadData(COMPANY_KEY));
+        username.setText(my_sp.loadData(USERNAME_KEY));
+        password.setText(my_sp.loadData(PASSWORD_KEY));
+    }
+
+    @Override
+    public void onStop() {
+        // save data to sp
+        my_sp.saveString(spinner.getText().toString(), COMPANY_KEY);
+        my_sp.saveString(username.getText().toString(), USERNAME_KEY);
+        my_sp.saveString(password.getText().toString(), PASSWORD_KEY);
+        super.onStop();
     }
 
     /* set Adapter data */
@@ -98,7 +120,7 @@ public class Activity_SignIn extends AppCompatActivity {
     /* check if user exist in firebase */
     private void checkDetails() {
         firebase.setReference("/" + firebase.getCompany());
-        firebase.getReference().addValueEventListener(new ValueEventListener() {
+        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String db_username = Objects.requireNonNull(snapshot.child("username").
@@ -181,7 +203,7 @@ public class Activity_SignIn extends AppCompatActivity {
                         break;
                     }
                 }
-                if(flag == 0)
+                if (flag == 0)
                     // failed to commit login
                     setError_message();
             }

@@ -42,7 +42,6 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     private TextView name;
     private Activity activity = this;
     private CallBack_employeesFragment callBack_employeesFragment = this;
-    private Fragment_employees fragment_employees;
     My_images images = My_images.getInstance();
 
     @Override
@@ -55,8 +54,6 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
         title.setText(R.string.shifts_calender);
         initFragment(new Fragment_currentShifts());
         navigationView.setCheckedItem(R.id.Menu_watch_shifts);
-        fragment_employees = new Fragment_employees(this);
-        fragment_employees.setCallBack(this);
 
         menu_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +140,6 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     /* set background image on header */
     private void setHeaderImage() {
         /* header background image */
-        images.setActivity(this);
         String path = "gs://shiftdata-a19a0.appspot.com/general_images/" +
                 "manager_background.jpg";
         images.downloadImageUrl(path, headerImage);
@@ -156,8 +152,8 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
         if (requestCode == Add_Worker_IMAGE) {
             Drawable photo = images.convertDataToDrawable(data);
             if (photo != null) {
-                images.setPlaceholder(R.id.addWorker_IV_photo);
-                images.setImage(photo);
+                ImageView imageView = findViewById(R.id.addWorker_IV_photo);
+                images.setImage(photo, imageView);
             }
         }
     }

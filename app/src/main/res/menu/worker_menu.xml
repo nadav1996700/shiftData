@@ -17,9 +17,13 @@
             android:id="@+id/Menu_submit_shifts"
             android:icon="@drawable/ic_submit_shifts"
             android:title="@string/submit_shifts" />
+        <item
+            android:id="@+id/Menu_contacts"
+            android:icon="@drawable/ic_company_employees"
+            android:title="@string/Contacts" />
     </group>
 
-    <item android:title="account"
+    <item android:title="@string/Account"
         android:id="@+id/WorkerMenu_account">
         <menu>
             <item

@@ -14,20 +14,21 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
+import src.Utils.My_Firebase;
 import src.Utils.My_images;
+import src.fragments.EmployeesClickListener;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<dataItem> data;
+    private ArrayList<DataItem> data;
     private LayoutInflater mInflater;
-    private Context context;
+    private EmployeesClickListener employeesClickListener;
     My_images images = My_images.getInstance();
 
     // data is passed into the constructor
-    public RecyclerViewAdapter(Context context, ArrayList<dataItem> data) {
+    public RecyclerViewAdapter(Context context, ArrayList<DataItem> data) {
         this.mInflater = LayoutInflater.from(context);
         this.data = data;
-        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -41,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // binds the data in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        dataItem dataItem = data.get(position);
+        DataItem dataItem = data.get(position);
         // set full name
         String name = dataItem.getFirst_name() + " " + dataItem.getLast_name();
         holder.TV_name.setText(name);
@@ -57,6 +58,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return data.size();
     }
 
+    // get data by position
+    public DataItem getItem(int position) {
+        return data.get(position);
+    }
+
+    public void setEmployeeClickListener(EmployeesClickListener employeesClickListener) {
+        this.employeesClickListener = employeesClickListener;
+    }
+
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView TV_name;
@@ -68,6 +78,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             TV_name = itemView.findViewById(R.id.raw_LBL_details);
             imageView = itemView.findViewById(R.id.raw_IMG_photo);
             place_holder = R.id.raw_IMG_photo;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (employeesClickListener != null) {
+                        String id = getItem(getAdapterPosition()).getId();
+                        My_Firebase.getInstance().setWorker_id(id);
+                        employeesClickListener.presentDialog();
+                    }
+                }
+            });
         }
     }
 }

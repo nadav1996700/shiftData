@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import src.Classes.RecyclerViewAdapter;
-import src.Classes.dataItem;
+import src.Classes.DataItem;
 import src.Utils.My_Firebase;
 
 public class Fragment_shifts extends Fragment implements CallBack_setDate {
@@ -111,7 +111,7 @@ public class Fragment_shifts extends Fragment implements CallBack_setDate {
         firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<dataItem> workers = new ArrayList<>();
+                ArrayList<DataItem> workers = new ArrayList<>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String first_name = Objects.requireNonNull(child.child("first_name").
                             getValue()).toString();
@@ -119,7 +119,7 @@ public class Fragment_shifts extends Fragment implements CallBack_setDate {
                             getValue()).toString();
                     String id = Objects.requireNonNull(child.child("id").getValue()).toString();
                     // create Worker item (dataItem)
-                    workers.add(new dataItem(id, first_name, last_name));
+                    workers.add(new DataItem(id, first_name, last_name));
                 }
                 workers_list.setAdapter(new RecyclerViewAdapter(activity, workers));
             }

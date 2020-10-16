@@ -21,16 +21,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import src.Utils.My_images;
 
 public class Activity_Entrance extends AppCompatActivity {
+    private MaterialAlertDialogBuilder dialog;
+    private ImageView centerImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrance);
         if (checkInternetConnection()) {
-            // set center image
-            setCenterImage();
             // initialize variables
             setValues();
+            // set center image
+            setCenterImage();
             // wait DELAY time before enter the app
             final int DELAY = 5000;
             new Handler().postDelayed(new Runnable() {
@@ -46,16 +48,15 @@ public class Activity_Entrance extends AppCompatActivity {
     private void setValues() {
         Animation topAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         Animation buttomAnim = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-        ImageView centerImage = findViewById(R.id.entrance_IMG_entrance);
+        centerImage = findViewById(R.id.entrance_IMG_entrance);
         TextView title = findViewById(R.id.entrance_LBL_title);
         centerImage.setAnimation(topAnim);
         title.setAnimation(buttomAnim);
     }
 
     private void setCenterImage() {
-        My_images images = My_images.initHelper(this);
-        images.setPlaceholder(R.id.entrance_IMG_entrance);
-        images.setImage(ContextCompat.getDrawable(this, R.drawable.calendar_entrance_icon));
+        My_images images = My_images.getInstance();
+        images.setImage(ContextCompat.getDrawable(this, R.drawable.calendar_entrance_icon), centerImage);
     }
 
     private boolean checkInternetConnection() {
@@ -70,7 +71,7 @@ public class Activity_Entrance extends AppCompatActivity {
     }
 
     private void internet_dialog() {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(getResources().getString(R.string.internet_dialog_title));
         dialog.setMessage(getResources().getString(R.string.internet_supporting_text));
         dialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -80,13 +81,13 @@ public class Activity_Entrance extends AppCompatActivity {
                 finish();
             }
         });
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
         dialog.show();
-    }
-
-    @Override
-    public void onResume() {
-        My_images.getInstance().setActivity(Activity_Entrance.this);
-        super.onResume();
     }
 }
 

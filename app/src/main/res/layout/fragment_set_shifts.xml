@@ -92,7 +92,7 @@
                 android:checkable="true"
                 android:text="@string/All_workers"
                 android:textColor="#0E0E0E"
-                app:chipBackgroundColor="#4D7DC6" />
+                app:chipBackgroundColor="#589AFF" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/setShifts_CHIP_only_requested"
@@ -103,7 +103,7 @@
                 android:checked="true"
                 android:text="@string/only_submitted"
                 android:textColor="#0E0E0E"
-                app:chipBackgroundColor="#4D7DC6" />
+                app:chipBackgroundColor="#589AFF" />
         </LinearLayout>
 
     </LinearLayout>
@@ -142,7 +142,7 @@
             android:text="@string/Add_to_shift"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
-            android:enabled="false"
+            app:cornerRadius="20dp"
             app:strokeColor="@color/colorPrimaryDark"
             app:strokeWidth="2dp" />
 
@@ -154,19 +154,9 @@
             android:text="@string/Remove_from_shift"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
-            android:enabled="false"
+            app:cornerRadius="20dp"
             app:strokeColor="@color/colorPrimaryDark"
             app:strokeWidth="2dp" />
-
-        <TextView
-            android:id="@+id/setShifts_LBL_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text=""
-            android:textColor="#EA1D0E"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
     </LinearLayout>
 

@@ -1,7 +1,11 @@
 package src.Activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
@@ -30,13 +34,15 @@ import java.util.Objects;
 
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
+import src.fragments.CallBack_contactsSweep;
+import src.fragments.Fragment_Contacts;
 import src.fragments.Fragment_Profile;
 import src.fragments.Fragment_Request;
 import src.fragments.Fragment_currentShifts;
 
 import static src.fragments.Fragment_Profile.PICK_PROFILE_IMAGE;
 
-public class Activity_Worker extends AppCompatActivity {
+public class Activity_Worker extends AppCompatActivity implements CallBack_contactsSweep {
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private ImageButton menu_BTN;
@@ -44,8 +50,10 @@ public class Activity_Worker extends AppCompatActivity {
     private View header;
     private TextView name;
     private TextView id;
+    private Activity activity = this;
     private ImageView header_background;
     private ShapeableImageView worker_image;
+    private CallBack_contactsSweep callBack_contactsSweep = this;
     My_images images = My_images.getInstance();
 
     @Override
@@ -58,6 +66,7 @@ public class Activity_Worker extends AppCompatActivity {
         title.setText(R.string.shifts_calender);
         initFragment(new Fragment_currentShifts());
         navigationView.setCheckedItem(R.id.Menu_watch_shifts);
+
 
         menu_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +92,13 @@ public class Activity_Worker extends AppCompatActivity {
                     case R.id.Menu_My_profile:
                         title.setText(R.string.Profile);
                         initFragment(new Fragment_Profile());
+                        drawer.close();
+                        return true;
+                    case R.id.Menu_contacts:
+                        title.setText(R.string.Contacts);
+                        Fragment_Contacts fragment_contacts = new Fragment_Contacts(activity);
+                        fragment_contacts.setCallBack_contactsSweep(callBack_contactsSweep);
+                        initFragment(fragment_contacts);
                         drawer.close();
                         return true;
                     case R.id.Menu_log_out:
@@ -153,9 +169,9 @@ public class Activity_Worker extends AppCompatActivity {
     /* set worker image and background image on header */
     private void setImages() {
         /* worker image */
-        images.setActivity(this);
+        //images.setActivity(this);
         String path = "gs://shiftdata-a19a0.appspot.com/workers_images/" +
-                        id.getText().toString();
+                id.getText().toString();
         images.downloadImageUrl(path, worker_image);
         /* header background image */
         path = "gs://shiftdata-a19a0.appspot.com/general_images/" +
@@ -170,10 +186,32 @@ public class Activity_Worker extends AppCompatActivity {
         if (requestCode == PICK_PROFILE_IMAGE) {
             Drawable photo = images.convertDataToDrawable(data);
             if (photo != null) {
-                images.setPlaceholder(R.id.Profile_IV_photo);
-                images.setImage(photo);
+                ImageView imageView = findViewById(R.id.Profile_IV_photo);
+                //images.setPlaceholder(R.id.Profile_IV_photo);
+                images.setImage(photo, imageView);
             }
         }
+    }
+
+    @Override
+    public void makeCall(String phone) {
+        String requiredPermission = Manifest.permission.CALL_PHONE;
+        int checkVal = activity.checkCallingOrSelfPermission(requiredPermission);
+        if (checkVal == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse(phone));
+            startActivity(intent);
+        } else {
+            // show error dialog
+            Log.d("pttt", "error in permission!");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        //title.setText(R.string.shifts_calender);
+        //initFragment(new Fragment_currentShifts());
+        super.onResume();
     }
 
     @Override

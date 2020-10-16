@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import src.Classes.dataItem;
+import src.Classes.DataItem;
 import src.Utils.My_Firebase;
 
 public class Fragment_select_requests extends Fragment implements CallBack_setDate {
@@ -64,7 +64,7 @@ public class Fragment_select_requests extends Fragment implements CallBack_setDa
     }
 
     // worker can work in multiple shifts
-    private void AddRequestToFirebase(dataItem dataItem) {
+    private void AddRequestToFirebase(DataItem dataItem) {
         if (morning_chip.isChecked()) {
             add_shift("Morning", dataItem);
         }
@@ -77,7 +77,7 @@ public class Fragment_select_requests extends Fragment implements CallBack_setDa
     }
 
     // add worker id to specific day and shift
-    private void add_shift(String shift, dataItem dataItem) {
+    private void add_shift(String shift, DataItem dataItem) {
         firebase.setReference("/" + firebase.getCompany() + "/shifts/requests/"
                 + chosen_date + "/" + shift + "/" + firebase.getWorker_id());
         firebase.getReference().setValue(dataItem);
@@ -94,7 +94,7 @@ public class Fragment_select_requests extends Fragment implements CallBack_setDa
                         .toString();
                 String last_name = Objects.requireNonNull(snapshot.child("last_name").getValue())
                         .toString();
-                dataItem dataItem = new dataItem(firebase.getWorker_id(), first_name, last_name);
+                DataItem dataItem = new DataItem(firebase.getWorker_id(), first_name, last_name);
                 AddRequestToFirebase(dataItem);
             }
 
