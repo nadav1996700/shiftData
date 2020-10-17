@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.src.R;
 
-import src.Classes.Company;
 import src.Utils.My_Firebase;
 
 public class Activity_SignUp extends AppCompatActivity {
@@ -56,20 +55,20 @@ public class Activity_SignUp extends AppCompatActivity {
         finish();
     }
 
-    private void uploadCompany() {
-        Company company = new Company(company_name.getText().toString()
-                , username.getText().toString(), password.getText().toString());
-        addCompany(company);
-    }
-
     /* add company details to firebase */
-    public void addCompany(Company company) {
+    public void uploadCompany() {
+        String companyName = company_name.getText().toString();
+        String userName = username.getText().toString();
+        String Password = password.getText().toString();
         My_Firebase firebase = My_Firebase.getInstance();
         // add company name to list of company names
-        firebase.getReference().child("/company_names/" + company.getName()).setValue("");
-        // add company object to database
-        firebase.setReference("/" + company.getName());
-        firebase.getReference().child("/").setValue(company);
+        firebase.setReference("/company_names");
+        firebase.getReference().child(companyName).setValue("");
+        // add company details to database
+        firebase.setReference("/" + companyName);
+        firebase.getReference().child("name").setValue(companyName);
+        firebase.getReference().child("username").setValue(userName);
+        firebase.getReference().child("password").setValue(Password);
     }
 
     private void setValues() {

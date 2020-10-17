@@ -28,7 +28,8 @@
         android:layout_below="@+id/WorkerHeader_IV_workerPhoto"
         android:text="@string/First_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#E8EAF1"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         android:textSize="17sp" />
 
     <TextView
@@ -38,7 +39,7 @@
         android:layout_below="@+id/WorkerHeader_LBL_name"
         android:layout_marginStart="15dp"
         android:text="@string/ID"
-        android:textColor="#0A0A0B"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="13sp" />
 

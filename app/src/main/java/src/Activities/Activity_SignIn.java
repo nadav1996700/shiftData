@@ -1,6 +1,5 @@
 package src.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,7 +34,6 @@ public class Activity_SignIn extends AppCompatActivity {
     private Button sign_in;
     private TextView new_company;
     private TextView error_message;
-    private Activity activity = this;
     My_Firebase firebase = My_Firebase.getInstance();
     My_SP my_sp = My_SP.getInstance();
 
@@ -145,7 +143,7 @@ public class Activity_SignIn extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // show error dialog
-                Common_utils.getInstance().error_dialog(activity);
+                Common_utils.getInstance().error_dialog(Activity_SignIn.this);
             }
         });
     }
@@ -173,7 +171,7 @@ public class Activity_SignIn extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // show error dialog
-                Common_utils.getInstance().error_dialog(activity);
+                Common_utils.getInstance().error_dialog(Activity_SignIn.this);
             }
         });
     }
@@ -216,7 +214,7 @@ public class Activity_SignIn extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // show error dialog
-                Common_utils.getInstance().error_dialog(activity);
+                Common_utils.getInstance().error_dialog(Activity_SignIn.this);
             }
         });
     }
