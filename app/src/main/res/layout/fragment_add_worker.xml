@@ -86,7 +86,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/rounded_edit_text"
             android:hint="@string/Phone"
-            android:inputType="text"
+            android:inputType="phone"
             android:padding="10dp"
             android:textColor="#86818E"
             android:textColorHint="#86818E" />

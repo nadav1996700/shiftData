@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import src.Classes.DataItem;
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 
 public class Fragment_select_requests extends Fragment implements CallBack_setDate {
@@ -100,7 +100,7 @@ public class Fragment_select_requests extends Fragment implements CallBack_setDa
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("error", "error in loading workers");
+                Common_utils.getInstance().error_dialog(getActivity());
             }
         });
     }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import src.Classes.Worker;
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
 
@@ -39,15 +40,11 @@ public class Fragment_Profile extends Fragment {
     private EditText username;
     private EditText password;
     private ShapeableImageView profile_photo;
-    private ArrayList<EditText> list;
+    private ArrayList<EditText> editTexts_list;
     My_Firebase firebase = My_Firebase.getInstance();
     My_images images = My_images.getInstance();
 
     public Fragment_Profile() {
-    }
-
-    public static Fragment_Profile newInstance() {
-        return new Fragment_Profile();
     }
 
     @Override
@@ -127,12 +124,12 @@ public class Fragment_Profile extends Fragment {
     }
 
     private void disable_editText() {
-        for (EditText editText : list)
+        for (EditText editText : editTexts_list)
             editText.setEnabled(false);
     }
 
     private void enable_editText() {
-        for (EditText editText : list)
+        for (EditText editText : editTexts_list)
             editText.setEnabled(true);
     }
 
@@ -148,11 +145,12 @@ public class Fragment_Profile extends Fragment {
         password = view.findViewById(R.id.Profile_EDT_password);
         profile_photo = view.findViewById(R.id.Profile_IV_photo);
 
-        list = new ArrayList<>();
-        list.add(phone);
-        list.add(age);
-        list.add(username);
-        list.add(password);
+        // init edit texts list
+        editTexts_list = new ArrayList<>();
+        editTexts_list.add(phone);
+        editTexts_list.add(age);
+        editTexts_list.add(username);
+        editTexts_list.add(password);
     }
 
     /* read single worker from firebase */
@@ -180,7 +178,8 @@ public class Fragment_Profile extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
+                // show error dialog
+                Common_utils.getInstance().error_dialog(getActivity());
             }
         });
     }

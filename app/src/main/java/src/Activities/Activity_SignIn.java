@@ -1,8 +1,8 @@
 package src.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 import src.Utils.My_SP;
 
@@ -34,6 +35,7 @@ public class Activity_SignIn extends AppCompatActivity {
     private Button sign_in;
     private TextView new_company;
     private TextView error_message;
+    private Activity activity = this;
     My_Firebase firebase = My_Firebase.getInstance();
     My_SP my_sp = My_SP.getInstance();
 
@@ -142,6 +144,8 @@ public class Activity_SignIn extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                // show error dialog
+                Common_utils.getInstance().error_dialog(activity);
             }
         });
     }
@@ -168,7 +172,8 @@ public class Activity_SignIn extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
+                // show error dialog
+                Common_utils.getInstance().error_dialog(activity);
             }
         });
     }
@@ -210,7 +215,8 @@ public class Activity_SignIn extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
+                // show error dialog
+                Common_utils.getInstance().error_dialog(activity);
             }
         });
     }

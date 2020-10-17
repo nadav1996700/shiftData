@@ -1,9 +1,10 @@
 package src.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -11,11 +12,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.src.R;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +23,7 @@ import java.util.Objects;
 
 import src.Classes.DataItem;
 import src.Classes.RecyclerViewAdapter;
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 
 public class Fragment_Contacts extends Fragment {
@@ -69,6 +66,7 @@ public class Fragment_Contacts extends Fragment {
                 DividerItemDecoration.VERTICAL));
     }
 
+    /* get data of workers for adapter */
     private void getData() {
         // get path
         firebase.setReference("/" + firebase.getCompany() + "/workers");
@@ -89,7 +87,8 @@ public class Fragment_Contacts extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
+                // show error dialog
+                Common_utils.getInstance().error_dialog(activity);
             }
         });
     }
@@ -100,6 +99,7 @@ public class Fragment_Contacts extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    /* set OnSwiped method - call worker by swipe */
     ItemTouchHelper.SimpleCallback itemTouchHelperCallBack =
             new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 @Override
@@ -115,21 +115,23 @@ public class Fragment_Contacts extends Fragment {
                 }
             };
 
+    /* download worker's phone and make a call */
     private void callWorker(String worker_id) {
-            firebase.setReference("/" + firebase.getCompany() + "/workers/" +
-                    worker_id + "/phone");
-            firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String phone =  "tel: " + Objects.requireNonNull(snapshot.getValue()).toString();
-                    if(callBack_contactsSweep != null)
-                        callBack_contactsSweep.makeCall(phone);
-                }
+        firebase.setReference("/" + firebase.getCompany() + "/workers/" +
+                worker_id + "/phone");
+        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String phone = "tel: " + Objects.requireNonNull(snapshot.getValue()).toString();
+                if (callBack_contactsSweep != null)
+                    callBack_contactsSweep.makeCall(phone);
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // show error dialog
+                Common_utils.getInstance().error_dialog(activity);
+            }
+        });
     }
 }

@@ -1,15 +1,8 @@
 package src.fragments;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +15,12 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -52,12 +46,10 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
     private String selected_shift;
     private String selected_date;
     private DataItem selected_worker;
-    private Activity activity;
     private String path_only_submitted;
     private String path_all_workers;
 
-    public Fragment_setShifts(Activity activity) {
-        this.activity = activity;
+    public Fragment_setShifts() {
     }
 
     @Override
@@ -184,7 +176,7 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
 
     /* set workers spinner data */
     private void setSpinner(ArrayList<DataItem> workers) {
-        ArrayAdapter<DataItem> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
+        ArrayAdapter<DataItem> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item,
                 workers);
         select_worker.setAdapter(adapter);
     }
@@ -216,7 +208,7 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
 
     private void showDataPickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                activity,
+                requireActivity(),
                 R.style.DialogTheme,
                 this,
                 Calendar.getInstance().get(Calendar.YEAR),
@@ -255,7 +247,7 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         options.add("Morning");
         options.add("Evening");
         options.add("Night");
-        ArrayAdapter<String> adapter = new ArrayAdapter(activity, android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> adapter = new ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, options);
         select_shift.setAdapter(adapter);
         // set listener
         select_shift.setOnItemClickListener(new AdapterView.OnItemClickListener() {

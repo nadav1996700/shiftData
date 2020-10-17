@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -32,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
 import src.fragments.CallBack_contactsSweep;
@@ -47,7 +47,6 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
     private NavigationView navigationView;
     private ImageButton menu_BTN;
     private TextView title;
-    private View header;
     private TextView name;
     private TextView id;
     private Activity activity = this;
@@ -126,7 +125,7 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
         title = findViewById(R.id.Worker_LBL_title);
 
         // header
-        header = navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
         name = header.findViewById(R.id.WorkerHeader_LBL_name);
         id = header.findViewById(R.id.WorkerHeader_LBL_id);
         header_background = header.findViewById(R.id.WorkerHeader_IV_background);
@@ -148,7 +147,8 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
+                // show error dialog
+                Common_utils.getInstance().error_dialog(activity);
             }
         });
         id.setText(firebase.getWorker_id());
@@ -169,7 +169,6 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
     /* set worker image and background image on header */
     private void setImages() {
         /* worker image */
-        //images.setActivity(this);
         String path = "gs://shiftdata-a19a0.appspot.com/workers_images/" +
                 id.getText().toString();
         images.downloadImageUrl(path, worker_image);
@@ -187,7 +186,6 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
             Drawable photo = images.convertDataToDrawable(data);
             if (photo != null) {
                 ImageView imageView = findViewById(R.id.Profile_IV_photo);
-                //images.setPlaceholder(R.id.Profile_IV_photo);
                 images.setImage(photo, imageView);
             }
         }
@@ -196,22 +194,15 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
     @Override
     public void makeCall(String phone) {
         String requiredPermission = Manifest.permission.CALL_PHONE;
-        int checkVal = activity.checkCallingOrSelfPermission(requiredPermission);
+        int checkVal = checkCallingOrSelfPermission(requiredPermission);
         if (checkVal == PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(Intent.ACTION_CALL);
             intent.setData(Uri.parse(phone));
             startActivity(intent);
         } else {
             // show error dialog
-            Log.d("pttt", "error in permission!");
+            Common_utils.getInstance().error_dialog(this);
         }
-    }
-
-    @Override
-    public void onResume() {
-        //title.setText(R.string.shifts_calender);
-        //initFragment(new Fragment_currentShifts());
-        super.onResume();
     }
 
     @Override

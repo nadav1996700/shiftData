@@ -91,9 +91,10 @@ public class My_images {
 
     /* convert intent data (from gallery) into drawable */
     public Drawable convertDataToDrawable(Intent data) {
+        final Uri imageUri = data.getData();
+        final InputStream imageStream;
         try {
-            final Uri imageUri = data.getData();
-            final InputStream imageStream = context.getContentResolver().openInputStream(Objects.requireNonNull(imageUri));
+            imageStream = context.getContentResolver().openInputStream(Objects.requireNonNull(imageUri));
             final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
             return new BitmapDrawable(context.getResources(), selectedImage);
         } catch (FileNotFoundException e) {

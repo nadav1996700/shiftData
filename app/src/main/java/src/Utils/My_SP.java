@@ -3,8 +3,6 @@ package src.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-
 public class My_SP {
     private static My_SP instance;
     private SharedPreferences prefs;
@@ -23,12 +21,10 @@ public class My_SP {
         return instance;
     }
 
-    // save String object to SharedPreferences using Gson
+    // save String object to SharedPreferences
     public void saveString(String data, String key) {
         SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(data);
-        editor.putString(key, json);
+        editor.putString(key, data);
         editor.apply();
     }
 

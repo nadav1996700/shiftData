@@ -35,10 +35,7 @@ public class Fragment_addWorker extends Fragment {
     private Button select_photo;
     My_images images = My_images.getInstance();
 
-    public Fragment_addWorker() {}
-
-    public static Fragment_addWorker newInstance() {
-        return new Fragment_addWorker();
+    public Fragment_addWorker() {
     }
 
     @Override
@@ -103,16 +100,13 @@ public class Fragment_addWorker extends Fragment {
         } else if (last_name.getText().toString().trim().length() == 0) {
             error_message.setText(R.string.enter_last_name);
             return false;
-        }
-        else if (phone.getText().toString().trim().length() == 0) {
+        } else if (phone.getText().toString().trim().length() == 0) {
             error_message.setText(R.string.enter_phone);
             return false;
-        }
-        else if (age.getText().toString().trim().length() == 0) {
+        } else if (age.getText().toString().trim().length() == 0) {
             error_message.setText(R.string.enter_age);
             return false;
-        }
-        else if (id.getText().toString().trim().length() == 0) {
+        } else if (id.getText().toString().trim().length() == 0) {
             error_message.setText(R.string.enter_id);
             return false;
         }

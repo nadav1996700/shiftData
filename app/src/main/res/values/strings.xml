@@ -72,9 +72,11 @@
     <string name="select_action">Select Action</string>
     <string name="see_profile">PROFILE</string>
     <string name="delete_worker">DELETE</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="employee_massage">switch to profile page or delete worker</string>
     <string name="sweep_worker">sweep worker to make a call</string>
     <string name="Contacts">Contacts</string>
+    <string name="error_title">Something went wrong…</string>
+    <string name="dialog_error_message">please try again later</string>
 
 </resources>

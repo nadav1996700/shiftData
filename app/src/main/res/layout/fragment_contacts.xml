@@ -14,10 +14,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:text="@string/sweep_worker"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contacts_LST_list"

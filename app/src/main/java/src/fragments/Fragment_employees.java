@@ -1,9 +1,7 @@
 package src.fragments;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import src.Classes.RecyclerViewAdapter;
 import src.Classes.DataItem;
+import src.Classes.RecyclerViewAdapter;
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 
 public class Fragment_employees extends Fragment implements EmployeesClickListener {
@@ -33,13 +32,10 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
     private RecyclerView recyclerView;
     private ArrayList<DataItem> DataItems = new ArrayList<>();
     private FloatingActionButton addWorker;
-    private Activity activity;
     private CallBack_employeesFragment callBack_employeesFragment;
-    private MaterialAlertDialogBuilder dialog;
     My_Firebase firebase = My_Firebase.getInstance();
 
-    public Fragment_employees(Activity activity) {
-        this.activity = activity;
+    public Fragment_employees() {
     }
 
     @Override
@@ -64,7 +60,7 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
 
     private void setRecyclerView() {
         recyclerView = view.findViewById(R.id.employees_LST_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
     }
@@ -89,13 +85,14 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
+                // show error dialog
+                Common_utils.getInstance().error_dialog(getActivity());
             }
         });
     }
 
     private void setAdapter() {
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(activity, DataItems);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), DataItems);
         adapter.setEmployeeClickListener(this);
         recyclerView.setAdapter(adapter);
     }
@@ -114,7 +111,7 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
     }
 
     private void show_dialog() {
-        dialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         dialog.setTitle(getResources().getString(R.string.select_action));
         dialog.setMessage(R.string.employee_massage);
         dialog.setIcon(R.drawable.ic_employee_dialog);

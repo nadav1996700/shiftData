@@ -1,6 +1,5 @@
 package src.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +25,7 @@ import java.util.Objects;
 
 import src.Classes.RecyclerViewAdapter;
 import src.Classes.DataItem;
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 
 public class Fragment_shifts extends Fragment implements CallBack_setDate {
@@ -34,11 +34,10 @@ public class Fragment_shifts extends Fragment implements CallBack_setDate {
     private String chosen_shift = "Morning";
     private TabLayout tabLayout;
     private RecyclerView workers_list;
-    private Activity activity;
     My_Firebase firebase = My_Firebase.getInstance();
 
-    public Fragment_shifts(Activity activity) {
-        this.activity = activity;
+    public Fragment_shifts() {
+
     }
 
     @Override
@@ -97,7 +96,7 @@ public class Fragment_shifts extends Fragment implements CallBack_setDate {
 
     private void setRecyclerView() {
         workers_list = view.findViewById(R.id.fragment_shifts_LST_list);
-        workers_list.setLayoutManager(new LinearLayoutManager(activity));
+        workers_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         workers_list.addItemDecoration(new DividerItemDecoration(workers_list.getContext(),
                 DividerItemDecoration.VERTICAL));
     }
@@ -121,12 +120,12 @@ public class Fragment_shifts extends Fragment implements CallBack_setDate {
                     // create Worker item (dataItem)
                     workers.add(new DataItem(id, first_name, last_name));
                 }
-                workers_list.setAdapter(new RecyclerViewAdapter(activity, workers));
+                workers_list.setAdapter(new RecyclerViewAdapter(getActivity(), workers));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR_TAG", "Error in loading worker data");
+                Common_utils.getInstance().error_dialog(getActivity());
             }
         });
     }

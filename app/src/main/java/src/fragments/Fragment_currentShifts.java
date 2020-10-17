@@ -24,7 +24,7 @@ public class Fragment_currentShifts extends Fragment implements CallBack_setDate
 
         Fragment_calender fragment_calender = new Fragment_calender();
         fragment_calender.setCallBack_setDate(this);
-        fragment_shifts = new Fragment_shifts(getActivity());
+        fragment_shifts = new Fragment_shifts();
         initFragments(fragment_calender, R.id.current_shifts_LAY_calender);
         initFragments(fragment_shifts, R.id.current_shifts_LAY_shifts);
     }
