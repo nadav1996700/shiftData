@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
 import src.fragments.CallBack_employeesFragment;
+import src.fragments.Fragment_Profile;
 import src.fragments.Fragment_addWorker;
 import src.fragments.Fragment_currentShifts;
 import src.fragments.Fragment_employees;
@@ -37,7 +38,6 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
     private ImageButton menu_BTN;
     private ImageView headerImage;
     private TextView title;
-    private View header;
     private TextView name;
     private CallBack_employeesFragment callBack_employeesFragment = this;
     My_images images = My_images.getInstance();
@@ -111,7 +111,7 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
         title = findViewById(R.id.Manager_LBL_title);
 
         // header
-        header = navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
         name = header.findViewById(R.id.ManagerHeader_LBL_name);
         headerImage = header.findViewById(R.id.ManagerHeader_IV_background);
         setHeader();
@@ -157,6 +157,11 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
 
     @Override
     public void changeFragment(Fragment fragment) {
+        if (fragment.getClass().toString().equals(Fragment_addWorker.class.toString())) {
+            title.setText(R.string.newWorker);
+            navigationView.setCheckedItem(R.id.Menu_addWorker);
+        } else if (fragment.getClass().toString().equals(Fragment_Profile.class.toString()))
+            title.setText(R.string.Profile);
         initFragment(fragment);
     }
 

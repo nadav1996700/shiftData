@@ -26,6 +26,7 @@ import src.Classes.DataItem;
 import src.Classes.RecyclerViewAdapter;
 import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
+import src.Utils.My_images;
 
 public class Fragment_employees extends Fragment implements EmployeesClickListener {
     protected View view;
@@ -92,9 +93,11 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
     }
 
     private void setAdapter() {
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), DataItems);
-        adapter.setEmployeeClickListener(this);
-        recyclerView.setAdapter(adapter);
+        if(getActivity() != null) {
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), DataItems);
+            adapter.setEmployeeClickListener(this);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     private void floatingButtonListener() {
@@ -130,6 +133,9 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
                 firebase.setReference("/" + firebase.getCompany() + "/workers/" + firebase.getWorker_id());
                 firebase.getReference().removeValue();
                 Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                // remove photo
+                firebase.setStorage_reference("/" + firebase.getWorker_id());
+                firebase.getStorage_reference().delete();
             }
         });
         dialog.setNeutralButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {

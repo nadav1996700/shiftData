@@ -82,14 +82,15 @@ public class Fragment_addWorker extends Fragment {
 
     /* create new worker from editText data */
     private Worker createWorker() {
-        String fname = first_name.getText().toString();
-        String lname = last_name.getText().toString();
-        int mage = Integer.parseInt(age.getText().toString());
-        String mphone = phone.getText().toString();
-        String uid = id.getText().toString();
-        String username = fname + "." + lname;
+        String worker_first_name = first_name.getText().toString();
+        String worker_last_name = last_name.getText().toString();
+        int worker_age = Integer.parseInt(age.getText().toString());
+        String worker_phone = phone.getText().toString();
+        String worker_id = id.getText().toString();
+        String worker_username = worker_first_name + "." + worker_last_name;
 
-        return new Worker(fname, lname, username, uid, uid, mphone, mage);
+        return new Worker(worker_first_name, worker_last_name, worker_username, worker_id,
+                worker_id, worker_phone, worker_age);
     }
 
     /* check that all fields are correctly filled */

@@ -25,7 +25,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:elevation="6dp"
-        app:backgroundTint="#FF8629"
+        app:backgroundTint="@color/ic_launcher_background"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add" />
 
