@@ -81,24 +81,20 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
                     case R.id.Menu_watch_shifts:
                         title.setText(R.string.shifts_calender);
                         initFragment(new Fragment_currentShifts());
-                        drawer.close();
                         return true;
                     case R.id.Menu_submit_shifts:
                         title.setText(R.string.shifts_request);
                         initFragment(new Fragment_Request());
-                        drawer.close();
                         return true;
                     case R.id.Menu_My_profile:
                         title.setText(R.string.Profile);
                         initFragment(new Fragment_Profile());
-                        drawer.close();
                         return true;
                     case R.id.Menu_contacts:
                         title.setText(R.string.Contacts);
                         Fragment_Contacts fragment_contacts = new Fragment_Contacts(activity);
                         fragment_contacts.setCallBack_contactsSweep(callBack_contactsSweep);
                         initFragment(fragment_contacts);
-                        drawer.close();
                         return true;
                     case R.id.Menu_log_out:
                         finish();
@@ -112,9 +108,12 @@ public class Activity_Worker extends AppCompatActivity implements CallBack_conta
 
     /* start new fragment */
     private void initFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.worker_fragmentContainer, fragment);
-        transaction.commit();
+        if (Common_utils.getInstance().checkInternetConnection(this)) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.worker_fragmentContainer, fragment);
+            transaction.commit();
+            drawer.close();
+        }
     }
 
     /* initialize variables */

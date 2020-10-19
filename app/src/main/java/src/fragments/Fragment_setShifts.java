@@ -86,27 +86,43 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         add_to_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selected_worker == null)
-                    select_worker.setBackgroundColor(Color.RED);
-                else {
+                if (checkFields()) {
                     firebase.setReference(getWorkerPath());
                     firebase.getReference().setValue(selected_worker);
-                    select_worker.setBackgroundColor(Color.parseColor("#40B1E4"));
                 }
             }
         });
         remove_from_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selected_worker == null)
-                    select_worker.setBackgroundColor(Color.RED);
-                else {
+                if (checkFields()) {
                     firebase.setReference(getWorkerPath());
                     firebase.getReference().removeValue();
-                    select_worker.setBackgroundColor(Color.parseColor("#40B1E4"));
                 }
             }
         });
+    }
+
+    /* check that all the fields filled, or change there background color to red */
+    private boolean checkFields() {
+        if (selected_date == null) {
+            date.setBackgroundColor(Color.RED);
+            return false;
+        } else if (selected_shift == null) {
+            select_shift.setBackgroundColor(Color.RED);
+            return false;
+        } else if (selected_worker == null) {
+            select_worker.setBackgroundColor(Color.RED);
+            return false;
+        }
+        return true;
+    }
+
+    /* replace red color (error color) of fields to their original color */
+    private void resetFieldsColor() {
+        date.setBackgroundColor(Color.parseColor("#40B1E4"));
+        select_shift.setBackgroundColor(Color.parseColor("#40B1E4"));
+        select_worker.setBackgroundColor(Color.parseColor("#40B1E4"));
     }
 
     /* set path that used to add or remove worker,
@@ -181,10 +197,13 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         select_worker.setAdapter(adapter);
     }
 
+    /* when worker selected, replace red color (error color) to light blue
+     * and get selected worker */
     private void setOnItemSelected_Worker() {
         select_worker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                select_worker.setBackgroundColor(Color.parseColor("#40B1E4"));
                 selected_worker = (DataItem) adapterView.getItemAtPosition(pos);
             }
         });
@@ -225,13 +244,15 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         // set EditText
         String chosen_date = day + "/" + (month + 1) + "/" + year;
         date.setText(chosen_date);
+        date.setBackground(getResources().getDrawable(R.drawable.rounded_edit_text));
         // set adapter
         select_workers_adapter();
     }
 
-    /* decide which adapter to set for workers according to selected chip*/
+    /* decide which adapter to set for workers according to selected chip */
     private void select_workers_adapter() {
         select_worker.setText("");
+        selected_worker = null;
         if (all_workers.isChecked())
             setAdapter(path_all_workers);
         else {
@@ -254,6 +275,7 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 selected_shift = adapterView.getItemAtPosition(pos).toString();
+                select_shift.setBackgroundColor(Color.parseColor("#40B1E4"));
                 select_workers_adapter();
             }
         });

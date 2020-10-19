@@ -26,7 +26,6 @@ import src.Classes.DataItem;
 import src.Classes.RecyclerViewAdapter;
 import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
-import src.Utils.My_images;
 
 public class Fragment_employees extends Fragment implements EmployeesClickListener {
     protected View view;
@@ -59,6 +58,7 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
         return view;
     }
 
+    /* set settings of RecyclerView */
     private void setRecyclerView() {
         recyclerView = view.findViewById(R.id.employees_LST_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,6 +66,7 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
                 DividerItemDecoration.VERTICAL));
     }
 
+    /* get employees data */
     private void getData() {
         // get path
         firebase.setReference("/" + firebase.getCompany() + "/workers");
@@ -92,14 +93,16 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
         });
     }
 
+    /* set adapter of RecyclerView */
     private void setAdapter() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), DataItems);
             adapter.setEmployeeClickListener(this);
             recyclerView.setAdapter(adapter);
         }
     }
 
+    /* addWorker button listener */
     private void floatingButtonListener() {
         addWorker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +116,7 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
         this.callBack_employeesFragment = callBack_employeesFragment;
     }
 
+    /* show dialog when worker has been chosen/pressed */
     private void show_dialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         dialog.setTitle(getResources().getString(R.string.select_action));
@@ -151,10 +155,5 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
     @Override
     public void presentDialog() {
         show_dialog();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 }

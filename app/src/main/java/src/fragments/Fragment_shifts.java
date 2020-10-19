@@ -1,7 +1,6 @@
 package src.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-import src.Classes.RecyclerViewAdapter;
 import src.Classes.DataItem;
+import src.Classes.RecyclerViewAdapter;
 import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 
@@ -66,6 +65,7 @@ public class Fragment_shifts extends Fragment implements CallBack_setDate {
                 replace('-', ',');
     }
 
+    /* change list of worker by selected tab */
     private void setTabListener() {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -94,6 +94,7 @@ public class Fragment_shifts extends Fragment implements CallBack_setDate {
         });
     }
 
+    /* set settings of RecyclerView */
     private void setRecyclerView() {
         workers_list = view.findViewById(R.id.fragment_shifts_LST_list);
         workers_list.setLayoutManager(new LinearLayoutManager(getActivity()));

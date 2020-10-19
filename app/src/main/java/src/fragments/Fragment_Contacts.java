@@ -59,6 +59,7 @@ public class Fragment_Contacts extends Fragment {
         this.callBack_contactsSweep = callBack_contactsSweep;
     }
 
+    /* settings of RecyclerView */
     private void setRecyclerView() {
         recyclerView = view.findViewById(R.id.contacts_LST_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -93,6 +94,7 @@ public class Fragment_Contacts extends Fragment {
         });
     }
 
+    /* set RecyclerView adapter */
     private void setAdapter() {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(activity, DataItems);
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);

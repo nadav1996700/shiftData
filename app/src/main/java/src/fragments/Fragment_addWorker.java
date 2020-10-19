@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
 
-import java.util.Objects;
-
 import src.Classes.Worker;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
@@ -51,6 +49,7 @@ public class Fragment_addWorker extends Fragment {
 
         setValues(view);
 
+        /* check fields and upload new Worker */
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +60,7 @@ public class Fragment_addWorker extends Fragment {
             }
         });
 
+        /* get worker image from gallery */
         select_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

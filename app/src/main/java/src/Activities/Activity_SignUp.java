@@ -71,6 +71,7 @@ public class Activity_SignUp extends AppCompatActivity {
         firebase.getReference().child("password").setValue(Password);
     }
 
+    /* initialize variables */
     private void setValues() {
         company_name = findViewById(R.id.signUp_EDT_business);
         username = findViewById(R.id.signUp_EDT_username);

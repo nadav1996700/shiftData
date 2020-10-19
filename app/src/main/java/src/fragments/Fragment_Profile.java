@@ -2,13 +2,11 @@ package src.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -63,6 +61,7 @@ public class Fragment_Profile extends Fragment {
         /* present current data from firebase */
         presentData();
 
+        /* edit button allows user to update details */
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +79,8 @@ public class Fragment_Profile extends Fragment {
             }
         });
 
+        /* this button become visible when edit button pressed and
+        allow user to select photo from gallery*/
         select_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,11 +124,13 @@ public class Fragment_Profile extends Fragment {
         images.uploadImage(profile_photo, path);
     }
 
+    /* disable when edit text is not pressed */
     private void disable_editText() {
         for (EditText editText : editTexts_list)
             editText.setEnabled(false);
     }
 
+    /* enable when edit text has been pressed */
     private void enable_editText() {
         for (EditText editText : editTexts_list)
             editText.setEnabled(true);

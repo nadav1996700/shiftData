@@ -1,14 +1,13 @@
 package src.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
 import com.google.android.material.chip.Chip;
@@ -16,7 +15,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import src.Classes.DataItem;
@@ -26,7 +24,6 @@ import src.Utils.My_Firebase;
 public class Fragment_select_requests extends Fragment implements CallBack_setDate {
     protected View view;
     private String chosen_date;
-    private ArrayList<Chip> chips;
     private Chip morning_chip;
     private Chip evening_chip;
     private Chip night_chip;
@@ -110,11 +107,6 @@ public class Fragment_select_requests extends Fragment implements CallBack_setDa
         evening_chip = view.findViewById(R.id.Requests_CHIP_evening);
         night_chip = view.findViewById(R.id.Requests_CHIP_night);
         add_request = view.findViewById(R.id.Requests_BTN_addRequest);
-
-        chips = new ArrayList<>();
-        chips.add(morning_chip);
-        chips.add(evening_chip);
-        chips.add(night_chip);
     }
 
     @Override

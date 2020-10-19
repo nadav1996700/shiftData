@@ -50,11 +50,6 @@ public class My_images {
             public void onSuccess(Uri uri) {
                 setImageByUri(uri, imageView);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("ERROR_TAG", "Error in downloading image");
-            }
         });
     }
 

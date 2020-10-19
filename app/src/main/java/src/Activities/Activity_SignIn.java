@@ -96,7 +96,7 @@ public class Activity_SignIn extends AppCompatActivity {
     }
 
     private void setDataFromSP() {
-        // load data
+        // load data into fields
         spinner.setText(my_sp.loadData(COMPANY_KEY));
         username.setText(my_sp.loadData(USERNAME_KEY));
         password.setText(my_sp.loadData(PASSWORD_KEY));
@@ -104,7 +104,7 @@ public class Activity_SignIn extends AppCompatActivity {
 
     @Override
     public void onStop() {
-        // save data to sp
+        // save data to sharedPreferences
         my_sp.saveString(spinner.getText().toString(), COMPANY_KEY);
         my_sp.saveString(username.getText().toString(), USERNAME_KEY);
         my_sp.saveString(password.getText().toString(), PASSWORD_KEY);
@@ -133,7 +133,7 @@ public class Activity_SignIn extends AppCompatActivity {
                     if (!db_password.equals(password.getText().toString()))
                         checkIfUserIsWorker();
                     else {
-                        // get in to main screen of manager - Activity Manager
+                        // start main screen of manager - Activity Manager
                         startActivity(new Intent(Activity_SignIn.this, Activity_Manager.class));
                         overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
                     }
@@ -157,7 +157,7 @@ public class Activity_SignIn extends AppCompatActivity {
     /* read all company names from firebase to spinner */
     private void setSpinnerData() {
         firebase.setReference("/company_names");
-        firebase.getReference().addValueEventListener(new ValueEventListener() {
+        firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<String> company_names = new ArrayList<>();
@@ -194,7 +194,6 @@ public class Activity_SignIn extends AppCompatActivity {
         firebase.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int flag = 0; // set flag in order to know if the user succeeded to sign in
                 String username, password, id;
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     id = Objects.requireNonNull(child.child("id").getValue()).toString();
@@ -202,13 +201,11 @@ public class Activity_SignIn extends AppCompatActivity {
                     password = Objects.requireNonNull(child.child("password").getValue()).toString();
                     if (checkWorker(username, password)) {
                         userIsWorker(id);
-                        flag = 1;
-                        break;
+                        return;
                     }
                 }
-                if (flag == 0)
-                    // failed to commit login
-                    setError_message();
+                // failed to commit login
+                setError_message();
             }
 
             @Override

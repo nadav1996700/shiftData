@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.src.R;
 import com.google.android.material.navigation.NavigationView;
 
+import src.Utils.Common_utils;
 import src.Utils.My_Firebase;
 import src.Utils.My_images;
 import src.fragments.CallBack_employeesFragment;
@@ -67,24 +68,20 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
                     case R.id.Menu_watch_shifts:
                         title.setText(R.string.shifts_calender);
                         initFragment(new Fragment_currentShifts());
-                        drawer.close();
                         return true;
                     case R.id.Menu_set_shifts:
                         title.setText(R.string.set_shifts);
                         initFragment(new Fragment_setShifts());
-                        drawer.close();
                         return true;
                     case R.id.Menu_employees:
                         title.setText(R.string.company_employees);
                         Fragment_employees employees = new Fragment_employees();
                         employees.setCallBack(callBack_employeesFragment);
                         initFragment(employees);
-                        drawer.close();
                         return true;
                     case R.id.Menu_addWorker:
                         title.setText(R.string.newWorker);
                         initFragment(new Fragment_addWorker());
-                        drawer.close();
                         return true;
                     case R.id.Menu_log_out:
                         finish();
@@ -98,9 +95,12 @@ public class Activity_Manager extends AppCompatActivity implements CallBack_empl
 
     /* start new fragment */
     private void initFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.Manager_fragmentContainer, fragment);
-        transaction.commit();
+        if(Common_utils.getInstance().checkInternetConnection(this)) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.Manager_fragmentContainer, fragment);
+            transaction.commit();
+            drawer.close();
+        }
     }
 
     /* initialize variables */

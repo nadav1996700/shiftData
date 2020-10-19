@@ -16,12 +16,14 @@ public class Fragment_Request extends Fragment implements CallBack_setDate {
     protected View view;
     private Fragment_select_requests fragment_select_requests;
 
-    public Fragment_Request() {}
+    public Fragment_Request() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /* set fragments on frames layouts */
         Fragment_calender fragment_calender = new Fragment_calender();
         fragment_calender.setCallBack_setDate(this);
         fragment_select_requests = new Fragment_select_requests();
@@ -32,11 +34,12 @@ public class Fragment_Request extends Fragment implements CallBack_setDate {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(view == null)
+        if (view == null)
             view = inflater.inflate(R.layout.fragment_requests, container, false);
         return view;
     }
 
+    /* set fragment on frame layout */
     private void initFragments(Fragment fragment, int layout) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(layout, fragment);

@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.src.R;
 
-public class Fragment_calender extends Fragment implements CallBack_setDate {
+public class Fragment_calender extends Fragment {
     protected View view;
     private CalendarView calendarView;
     private CallBack_setDate callBack_setDate;
@@ -35,10 +35,11 @@ public class Fragment_calender extends Fragment implements CallBack_setDate {
         return view;
     }
 
-    public void setCallBack_setDate(CallBack_setDate callBack_requestsActivity) {
-        this.callBack_setDate = callBack_requestsActivity;
+    public void setCallBack_setDate(CallBack_setDate callBack_setDate) {
+        this.callBack_setDate = callBack_setDate;
     }
 
+    /* if date change -> update callBack*/
     private void setListener() {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -48,10 +49,5 @@ public class Fragment_calender extends Fragment implements CallBack_setDate {
                     callBack_setDate.setDate(date);
             }
         });
-    }
-
-    @Override
-    public void setDate(String date) {
-        this.setDate(date);
     }
 }

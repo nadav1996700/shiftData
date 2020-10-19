@@ -12,13 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.src.R;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import src.Utils.Common_utils;
 import src.Utils.My_images;
 
 public class Activity_Entrance extends AppCompatActivity {
-    private MaterialAlertDialogBuilder dialog;
     private ImageView centerImage;
 
     @Override
@@ -42,6 +40,7 @@ public class Activity_Entrance extends AppCompatActivity {
         }
     }
 
+    /* initialize variables */
     private void setValues() {
         Animation topAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         Animation bottomAnim = AnimationUtils.loadAnimation(this, R.anim.slide_down);
@@ -51,6 +50,7 @@ public class Activity_Entrance extends AppCompatActivity {
         title.setAnimation(bottomAnim);
     }
 
+    /* load image to the center of the screen */
     private void setCenterImage() {
         My_images images = My_images.getInstance();
         images.setImage(ContextCompat.getDrawable(this, R.drawable.calendar_entrance_icon), centerImage);

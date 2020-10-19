@@ -1,5 +1,7 @@
 package src.Classes;
 
+import androidx.annotation.NonNull;
+
 public class Worker {
 
     private String first_name;
@@ -81,6 +83,7 @@ public class Worker {
         this.age = age;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return first_name + " " + last_name;

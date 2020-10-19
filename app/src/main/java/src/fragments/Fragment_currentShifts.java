@@ -16,12 +16,14 @@ public class Fragment_currentShifts extends Fragment implements CallBack_setDate
     protected View view;
     private Fragment_shifts fragment_shifts;
 
-    public Fragment_currentShifts() {}
+    public Fragment_currentShifts() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /* initialize Frames with fragment calender and fragment shifts */
         Fragment_calender fragment_calender = new Fragment_calender();
         fragment_calender.setCallBack_setDate(this);
         fragment_shifts = new Fragment_shifts();
@@ -32,11 +34,12 @@ public class Fragment_currentShifts extends Fragment implements CallBack_setDate
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(view == null)
+        if (view == null)
             view = inflater.inflate(R.layout.fragment_current_shifts, container, false);
         return view;
     }
 
+    /* set fragment on frame layout */
     private void initFragments(Fragment fragment, int layout) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(layout, fragment);
