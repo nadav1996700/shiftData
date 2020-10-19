@@ -245,7 +245,7 @@ public class Fragment_setShifts extends Fragment implements DatePickerDialog.OnD
         String chosen_date = day + "/" + (month + 1) + "/" + year;
         date.setText(chosen_date);
         date.setBackground(getResources().getDrawable(R.drawable.rounded_edit_text));
-        // set adapter
+        // set worker adapter
         select_workers_adapter();
     }
 
