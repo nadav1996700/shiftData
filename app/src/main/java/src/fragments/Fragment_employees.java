@@ -133,13 +133,11 @@ public class Fragment_employees extends Fragment implements EmployeesClickListen
         dialog.setNegativeButton(getResources().getString(R.string.delete_worker), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // remove worker
+                /* remove worker - not remove image because worker
+                 * still can appear in scheduled shifts */
                 firebase.setReference("/" + firebase.getCompany() + "/workers/" + firebase.getWorker_id());
                 firebase.getReference().removeValue();
                 Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
-                // remove photo
-                firebase.setStorage_reference("/" + firebase.getWorker_id());
-                firebase.getStorage_reference().delete();
             }
         });
         dialog.setNeutralButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
