@@ -17,6 +17,7 @@ import src.Utils.Common_utils;
 import src.Utils.My_images;
 
 public class Activity_Entrance extends AppCompatActivity {
+    private int a = 3;
     private ImageView centerImage;
 
     @Override
