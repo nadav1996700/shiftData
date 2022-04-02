@@ -6,7 +6,7 @@ The app includes the ability to create a call directly to another employee witho
 time and effort for employees.
 In addition, the application is designed in a way that allows easy and efficient use of all options as well as input checks
 and Internet tests.
-<br>
+<br> <br>
 <img src="https://user-images.githubusercontent.com/68897349/158045410-851bb023-c024-4272-884d-af45fb201d66.png" width="300" height="500" /> <br> <br>
 <img src="https://user-images.githubusercontent.com/68897349/158045412-1951bb04-0ba4-4e88-aca2-3f3b85372e20.png" width="300" height="500" /> <br> <br>
 <img src="https://user-images.githubusercontent.com/68897349/158045413-b06c46c4-d203-45ff-8c5d-748a74968093.png" width="300" height="500" /> <br> <br>
